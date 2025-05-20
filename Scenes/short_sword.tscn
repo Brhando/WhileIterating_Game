@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://cbq7nsdu58s7i"]
+
+[ext_resource type="Texture2D" uid="uid://cbjcwocov36n5" path="res://Assets/twin-blade sword/weapon sprites/one_0916_v01.png" id="1_a8u84"]
+[ext_resource type="Script" uid="uid://bph3csaasi47t" path="res://Scripts/ShortSword.cs" id="1_g6hpf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g6hpf"]
+atlas = ExtResource("1_a8u84")
+region = Rect2(96, 0, 32, 36)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pnwj1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g6hpf")
+}],
+"loop": true,
+"name": &"Sword_ground",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bf754"]
+size = Vector2(13, 16)
+
+[node name="ShortSword" type="Area2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_g6hpf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-0.5, 1)
+scale = Vector2(1.03125, 1)
+sprite_frames = SubResource("SpriteFrames_pnwj1")
+animation = &"Sword_ground"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+z_index = 1
+position = Vector2(2.5, 1)
+shape = SubResource("RectangleShape2D_bf754")
