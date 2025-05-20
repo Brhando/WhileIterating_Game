@@ -5,16 +5,25 @@ public partial class ShortSword : Area2D
 {	
 	
 	private bool _playerInRange = false; //used to track when a player is close enough to interact
-	private bool _hasShownDialogue = false; //used to track if init dialogue was displayed (only display once)
-	//private DialogUI _dialogUi;
+	private bool _hasShownDialogue = false; //used to track if dialogue was displayed (only display once)
+	private bool _hasShownClassDialogue = false;
+	private bool _completedIntro = false;
+	
+	private Panel _dialoguePanel;
+	private Label _dialogueLabel;
+	
+	
 	
 	public override void _Ready()
 	{
 		Connect("body_entered", new Callable(this, nameof(OnBodyEntered)));
 		Connect("body_exited", new Callable(this, nameof(OnBodyExited)));
 		
-		//store a reference so we don't have to look it up every time
-		//_dialogUi = GetNode<DialogUI>("/root/ResourceArea_Start/DialogUI");
+		_dialoguePanel = GetNode<Panel>("CanvasLayer/Panel");
+		_dialogueLabel = GetNode<Label>("CanvasLayer/Panel/Label");
+		
+		_dialoguePanel.Visible = false;
+		_dialogueLabel.Visible = false;
 	}
 
 	private void OnBodyEntered(Node body)
@@ -30,31 +39,64 @@ public partial class ShortSword : Area2D
 	}
 	
 	//function for displaying Intro Dialogue
-	/*private async void ShowIntroDialogue()
+	private async void ShowIntroDialogue()
 	{
-		_dialogUi.ShowMessage("The trees whisper...", 2f);
-		await ToSignal(GetTree().CreateTimer(2.5f), "timeout");
+		_dialoguePanel.Visible = true;
+		_dialogueLabel.Visible = true;
 
-		_dialogUi.ShowMessage("Your class is what you wield, not what you're born into.", 3f);
+		_dialogueLabel.Text = "The trees whisper...";
 		await ToSignal(GetTree().CreateTimer(3.5f), "timeout");
 
-		_dialogUi.ShowMessage("...Choose wisely.", 2f);
-		await ToSignal(GetTree().CreateTimer(2.5f), "timeout");
-	}*/
+		_dialogueLabel.Text = "Your class is what you wield, not what you're born into.";
+		await ToSignal(GetTree().CreateTimer(3.5f), "timeout");
+
+		_dialogueLabel.Text = "...Choose wisely.";
+		await ToSignal(GetTree().CreateTimer(3.5f), "timeout");
+		
+		_dialoguePanel.Visible = false;
+		_dialogueLabel.Visible = false;
+		
+		_completedIntro = true;
+	}
+	
+	//function for displaying class selection dialogue
+	private async void ShowClassDialogue()
+	{
+		_dialoguePanel.Visible = true;
+		_dialogueLabel.Visible = true;
+		
+		_dialogueLabel.Text = "The sword will sing in your hands!";
+		await ToSignal(GetTree().CreateTimer(3.5f), "timeout");
+		
+		_dialogueLabel.Text = "Walk with pride \"Sword Swinger\"";
+		await ToSignal(GetTree().CreateTimer(3.5f), "timeout");
+		
+		_dialoguePanel.Visible = false;
+		_dialogueLabel.Visible = false;
+		
+		var player = GetTree().CurrentScene.GetNodeOrNull<Player>("Player");
+		if (player != null)
+		{
+			player.SetClass("Sword Swinger");
+		}
+		QueueFree(); // Remove sword
+	}
 	
 	public override void _Process(double delta)
 	{
 		
 		if (_playerInRange && !_hasShownDialogue)
 		{
+			ShowIntroDialogue();
 			_hasShownDialogue = true;
-			//ShowIntroDialogue();
 		}
-		if (_playerInRange && Input.IsActionJustPressed("interact"))
+		if (_playerInRange && Input.IsActionJustPressed("interact") && _completedIntro)
 		{
-			GD.Print("Sword picked up!");
-			GetParent().GetNode<Player>("Player").SetClass("Sword Swinger");
-			QueueFree(); // Remove sword
+			if (!_hasShownClassDialogue)
+			{
+				_hasShownClassDialogue = true;
+				ShowClassDialogue();
+			}
 		}
 	}
 }
