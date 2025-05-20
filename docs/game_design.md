@@ -13,6 +13,7 @@ Classes are based on weapon type and evolve into specialized movesets depending 
 
 - **Short Sword** → Warrior-style
 - **Unfilled Tome** → Mage-style
+- **Jack-O-All** → no specialized attacks, but reduced costs
 
 Subclasses will be determined dynamically through tracked behavior over time.
 
@@ -23,6 +24,11 @@ Used to upgrade:
 - Equipment
 - Base facilities
 - Crafting options
+- Class-based items/ weapon upgrades
+- Class-based plants
+- Dungeon Heart
+- Items with activations
+
 
 *Will define once the base system is implemented.*
 
@@ -41,6 +47,11 @@ Stats evolve based on combat behavior and offer moves/upgrades that match player
 | **Emotional Turmoil** | Number of **non-charged spells** cast     |
 
 > ⚔️ **Note**: Consider tradeoff mechanics between dodging and blocking (e.g., add parry windows, stamina costs, or cooldown variance)
+
+**Some ideas for combat**
+- Chained actions gain extra ability: Attack -> attack -> double hit
+- Defend -> defend -> parry. 
+> needs a fallback (last higher cost? Lock out a turn?)
 
 ---
 
