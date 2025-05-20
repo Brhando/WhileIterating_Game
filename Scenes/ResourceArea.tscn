@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://dp5soce6cnj38"]
+[gd_scene load_steps=21 format=4 uid="uid://dp5soce6cnj38"]
 
 [ext_resource type="Script" uid="uid://bnsoaj2c0ksqv" path="res://Scripts/ResourceArea.cs" id="1_x80al"]
 [ext_resource type="PackedScene" uid="uid://ceikeeywfkpr6" path="res://Scenes/player.tscn" id="2_s0xut"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://hfferly0itgs" path="res://Assets/19.07a - Gentle Forest 3.0a ($0 palettes)/gentle sheets/gentle trees 80x96 v01.png" id="6_stxll"]
 [ext_resource type="Texture2D" uid="uid://b1b2jnhgxt2tw" path="res://Assets/19.07a - Gentle Forest 3.0a ($0 palettes)/tree wall/gentle tree wall, canopy only.png" id="7_kng72"]
 [ext_resource type="PackedScene" uid="uid://cbq7nsdu58s7i" path="res://Scenes/short_sword.tscn" id="8_e28n4"]
-[ext_resource type="PackedScene" uid="uid://ffejrccyc58b" path="res://Scenes/dialog_ui.tscn" id="9_stxll"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0204e"]
 texture = ExtResource("3_pd3d8")
@@ -3770,6 +3769,10 @@ position = Vector2(0, -1)
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, -14)
 zoom = Vector2(2, 2)
+limit_left = -400
+limit_top = -400
+limit_right = 350
+limit_bottom = 160
 position_smoothing_enabled = true
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -3794,7 +3797,3 @@ tile_set = SubResource("TileSet_wkxnq")
 [node name="ShortSword" parent="." instance=ExtResource("8_e28n4")]
 z_index = 2
 position = Vector2(-2, -259)
-
-[node name="DialogUI" parent="." instance=ExtResource("9_stxll")]
-layer = 4
-follow_viewport_enabled = true
