@@ -3,8 +3,12 @@ using System;
 
 public partial class StartingArea : Node2D
 {
-	public override void _Ready()
+	public override void _Process(double delta)
 	{
-		GD.Print("Mono + C# is working!");
+		if (Input.IsActionPressed("escape"))
+		{
+			GetTree().Quit(1);
+		}
 	}
+	
 }

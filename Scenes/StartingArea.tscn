@@ -3760,7 +3760,7 @@ physics_layer_0/collision_mask = 2
 sources/0 = SubResource("TileSetAtlasSource_6cyjc")
 sources/1 = SubResource("TileSetAtlasSource_e28n4")
 
-[node name="ResourceArea_Start" type="Node2D"]
+[node name="StartingArea" type="Node2D"]
 script = ExtResource("1_x80al")
 
 [node name="Player" parent="." instance=ExtResource("2_s0xut")]
