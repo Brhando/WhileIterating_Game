@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://dioqfnrkt7ts3"]
+
+[ext_resource type="Texture2D" uid="uid://dac0hbq5mmtvn" path="res://Assets/19.10b - Monster Battler Set 1.0a/monster battler set.png" id="1_367s2"]
+[ext_resource type="Script" uid="uid://cf1iqnrytjj2t" path="res://Scripts/EnemyEntity.cs" id="1_k415t"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k415t"]
+atlas = ExtResource("1_367s2")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7m5j2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k415t")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="EnemyEntity" type="CharacterBody2D"]
+script = ExtResource("1_k415t")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_7m5j2")
