@@ -1,6 +1,12 @@
 # TaskList
 
 ## Immediate Goals
+- [ ] Set up Home Base area
+- [ ] Create Chest script and scene
+- [ ] Create WorkBench script and scene
+- [ ] Prototype an early "day/night" system
+- [ ] Start working on a player's inventory system that persists throughout the game
+- [ ] Figure out how to make a player's hp persist throughout the "day"
 
 
 ## To Fix After Vertical Completion
