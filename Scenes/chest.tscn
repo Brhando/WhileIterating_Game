@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://r883sgfqcmd7"]
+
+[ext_resource type="Script" uid="uid://caimxwifur37k" path="res://Scripts/Chest.cs" id="1_cjfl1"]
+[ext_resource type="Texture2D" uid="uid://bbv7dc0cu8qxw" path="res://Assets/18.09a - Iconic Homestead 2.0/extras/cozy furnishings sampler.png" id="2_bagqn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pmguq"]
+atlas = ExtResource("2_bagqn")
+region = Rect2(96, 32, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dq33m"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pmguq")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j6qf6"]
+size = Vector2(32, 16)
+
+[node name="Chest" type="Area2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_cjfl1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_dq33m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_j6qf6")

@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://shfjxqbmno74"]
+
+[ext_resource type="Script" uid="uid://cmd8gfwl6b3pa" path="res://Scripts/Bed.cs" id="1_8uqln"]
+[ext_resource type="Texture2D" uid="uid://bbv7dc0cu8qxw" path="res://Assets/18.09a - Iconic Homestead 2.0/extras/cozy furnishings sampler.png" id="1_yfxyx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8uqln"]
+atlas = ExtResource("1_yfxyx")
+region = Rect2(210, 0, 30, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ki1gv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8uqln")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l6is3"]
+size = Vector2(30, 33)
+
+[node name="Bed" type="Area2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_8uqln")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ki1gv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+z_index = 1
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_l6is3")
