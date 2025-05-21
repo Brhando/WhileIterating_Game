@@ -1,6 +1,6 @@
 [gd_scene load_steps=21 format=4 uid="uid://dp5soce6cnj38"]
 
-[ext_resource type="Script" uid="uid://bnsoaj2c0ksqv" path="res://Scripts/ResourceArea.cs" id="1_x80al"]
+[ext_resource type="Script" uid="uid://bnsoaj2c0ksqv" path="res://Scripts/StartingArea.cs" id="1_x80al"]
 [ext_resource type="PackedScene" uid="uid://ceikeeywfkpr6" path="res://Scenes/player.tscn" id="2_s0xut"]
 [ext_resource type="Texture2D" uid="uid://cq7ae30lg81pq" path="res://Assets/19.07a - Gentle Forest 3.0a ($0 palettes)/gentle sheets/gentle forest v01.png" id="3_pd3d8"]
 [ext_resource type="Texture2D" uid="uid://c1gmjnu1o2tb8" path="res://Assets/19.07a - Gentle Forest 3.0a ($0 palettes)/gentle sheets/gentle 32x32 v01.png" id="4_faq4q"]
