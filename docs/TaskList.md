@@ -9,6 +9,7 @@
 - [ ] Replace magic numbers with constants (i.e. add a max health variable, damage variable, etc. to both entities)
 - [ ] Add a "Battle Over" state to disable input fully (in BattleScene) and transition to next scene
 - [ ] Add `Tome` and its pickup interaction
+- [ ] Add SFX to the entire game
 
 ## Completed
 |Task                                          |Date                   |
