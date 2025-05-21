@@ -1,0 +1,46 @@
+using Godot;
+using System;
+
+public partial class PlayerEntity : CharacterBody2D
+{
+    public int PlayerHealth = 10;
+    private AnimatedSprite2D _anim1;
+    private AnimatedSprite2D _anim2;
+    
+    public override void _Ready()
+    {
+        _anim1 = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        _anim2 = GetNode<AnimatedSprite2D>("AnimatedSprite2D2");
+        
+    }
+    
+    //used to decrement health when attacked
+    public void DecreaseHealth(int amt)
+    {
+        PlayerHealth -= amt;
+    }
+    
+    //play certain animations depending on what is happening
+    public void PlayAnimationHurt()
+    {
+        _anim1.Play("hurt");
+        _anim2.Play("hurt_s");
+    }
+
+    public void PlayAnimationStand()
+    {
+        _anim1.Play("stand");
+        _anim2.Play("stand_s");
+    }
+
+    public void PlayAnimationSlash()
+    {
+        _anim1.Play("slash");
+        _anim2.Play("slash_s");
+    }
+
+    public bool IsDead()
+    {
+        return PlayerHealth <= 0;
+    }
+}
