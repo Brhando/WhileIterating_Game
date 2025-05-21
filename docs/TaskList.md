@@ -2,6 +2,7 @@
 
 ## Immediate Goals
 - [ ] Create WorkBench script and scene
+- [ ] Set up initial town area
 - [ ] Prototype an early "day/night" system
 - [ ] Start working on a player's inventory system that persists throughout the game
 - [ ] Figure out how to make a player's hp persist throughout the "day"
