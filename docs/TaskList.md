@@ -16,6 +16,7 @@
 - [ ] Add `Tome` and its pickup interaction
 - [ ] Add SFX to the entire game
 - [ ] Add interactions and VFX/SFX for the Bed and Chest
+- [ ] Replace DialogUI with PlayerUI in StartArea
 
 ## Completed
 |Task                                          |Date                   |
