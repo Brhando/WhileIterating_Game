@@ -5,6 +5,9 @@ public partial class Player : CharacterBody2D
 {
     [Export] public float Speed = 100f;
     private AnimatedSprite2D _anim;
+    private AudioStreamPlayer2D _audio;
+    private double _stepCooldown = 0.0;
+    
     
     //used to track direction the player is facing
     //default to right
@@ -20,15 +23,18 @@ public partial class Player : CharacterBody2D
         _chosenClass = className;
         GD.Print("Player class is now: " + _chosenClass);
     }
-
+    
     public override void _Ready()
     {
         _anim = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        _audio = GetNode<AudioStreamPlayer2D>("StepSound");
     }
 
     public override void _PhysicsProcess(double delta)
     {
         Vector2 direction = Vector2.Zero;
+        
+        _stepCooldown -= delta;
         
         //movement
         if (Input.IsActionPressed("move_right"))
@@ -48,6 +54,12 @@ public partial class Player : CharacterBody2D
         {
             _facingDirection = direction;
 
+            if (_stepCooldown <= 0.0)
+            {
+                _audio.Play();
+                _stepCooldown = 0.5;
+            }
+
             // Direction-based animation (prioritize vertical over horizontal and vice versa)
             if (Mathf.Abs(direction.X) > Mathf.Abs(direction.Y))
             {
@@ -63,12 +75,15 @@ public partial class Player : CharacterBody2D
             // Standing animation based on last direction
             if (Mathf.Abs(_facingDirection.X) > Mathf.Abs(_facingDirection.Y))
             {
-                _anim.Play(_facingDirection.X > 0 ? "Stand_right" : "Stand_left");
+                _anim.Play(_facingDirection.X > 0 ? "Stand_right" : "Stand_left");  
             }
             else
             {
                 _anim.Play(_facingDirection.Y > 0 ? "Stand_down" : "Stand_up");
             }
+            
         }
+
+        
     }
 }
