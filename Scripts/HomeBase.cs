@@ -9,7 +9,6 @@ public partial class HomeBase : Node2D
     private SceneData _sceneData;
     private Node2D _spawnPoint;
     
-    private bool _hasShownMessage = false;
     private bool _playerInTravelArea = false;
     
     
@@ -46,38 +45,37 @@ public partial class HomeBase : Node2D
             _playerInTravelArea = false; //player no longer in range
     }
     
-    private async void PrintMessage(string message)
+    private void PrintMessage(string message)
     {
         _playerUi.Visible = true;
         _playerUi.Text = message;
-        await ToSignal(GetTree().CreateTimer(2.0f), "timeout");
-        _playerUi.Visible = false;
     }
 
     public override void _Process(double delta)
     {
+        string message = "";
+    
+        if (_playerInTravelArea)
+        {
+            message = "Press 'E' to enter.";
         
-        if (_chest.PlayerInRange && !_hasShownMessage)
+            if (Input.IsActionJustPressed("interact"))
+            {
+                GetTree().ChangeSceneToFile("res://Scenes/home_inside.tscn");
+            }
+        }
+        else if (_chest.PlayerInRange)
         {
-            const string message = "Press 'E' to open.";
-            _hasShownMessage = true;
-            PrintMessage(message);
+            message = "Press 'E' to open.";
         }
 
-        if (!_chest.PlayerInRange && _hasShownMessage)
+        if (message != "")
         {
-            _hasShownMessage = false;
-        }
-
-        if (_playerInTravelArea && !_hasShownMessage)
-        {
-            const string message = "Press 'E' to enter.";
-            _hasShownMessage = true;
             PrintMessage(message);
         }
-        if (_playerInTravelArea && Input.IsActionJustPressed("interact"))
+        else
         {
-            GetTree().ChangeSceneToFile("res://Scenes/home_inside.tscn");
+            _playerUi.Visible = false;
         }
     }
 }

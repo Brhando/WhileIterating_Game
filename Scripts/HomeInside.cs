@@ -7,11 +7,10 @@ public partial class HomeInside : Node2D
     private Label _playerUi;
     private Area2D _exitHouse;
     private SceneData _sceneData;
-    
-    private bool _hasShownMessage = false;
+
     private bool _playerInTravelArea = false;
-    
-    
+
+
 
     public override void _Ready()
     {
@@ -22,7 +21,7 @@ public partial class HomeInside : Node2D
         _exitHouse.Connect("body_exited", new Callable(this, nameof(BodyExited)));
         _sceneData = (SceneData)GetNode("/root/SceneData");
     }
-    
+
     private void BodyEntered(Node body)
     {
         if (body.Name == "Player")
@@ -34,40 +33,41 @@ public partial class HomeInside : Node2D
         if (body.Name == "Player")
             _playerInTravelArea = false; //player no longer in range
     }
-    
-    private async void PrintMessage(string message)
+
+    private void PrintMessage(string message)
     {
         _playerUi.Visible = true;
         _playerUi.Text = message;
-        await ToSignal(GetTree().CreateTimer(2.0f), "timeout");
-        _playerUi.Visible = false;
+
     }
 
     public override void _Process(double delta)
     {
-        if (_bed.PlayerInRange && !_hasShownMessage)
+        string message = "";
+
+        if (_playerInTravelArea)
         {
-            const string message = "Press 'E' to sleep.";
-            _hasShownMessage = true;
-            PrintMessage(message);
+            message = "Press 'E' to exit.";
+
+            if (Input.IsActionJustPressed("interact"))
+            {
+                _sceneData.ChangeSpawnPointName("SpawnExterior");
+                GetTree().ChangeSceneToFile("res://Scenes/home_base.tscn");
+            }
+        }
+        else if (_bed.PlayerInRange)
+        {
+            message = "Press 'E' to sleep.";
+            // TODO: create sleep logic (heal to full health/reset daytime resource
         }
 
-        if (!_bed.PlayerInRange && _hasShownMessage)
+        if (message != "")
         {
-            _hasShownMessage = false;
-        }
-
-        if (_playerInTravelArea && !_hasShownMessage)
-        {
-            const string message = "Press 'E' to exit.";
-            _hasShownMessage = true;
             PrintMessage(message);
         }
-        if (_playerInTravelArea && Input.IsActionJustPressed("interact"))
+        else
         {
-            _sceneData.ChangeSpawnPointName("SpawnExterior");
-            GetTree().ChangeSceneToFile("res://Scenes/home_base.tscn");
+            _playerUi.Visible = false;
         }
     }
-
 }

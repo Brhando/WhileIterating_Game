@@ -1,17 +1,17 @@
 [gd_scene load_steps=6 format=3 uid="uid://cbq7nsdu58s7i"]
 
-[ext_resource type="Texture2D" uid="uid://cbjcwocov36n5" path="res://Assets/twin-blade sword/weapon sprites/one_0916_v01.png" id="1_a8u84"]
 [ext_resource type="Script" uid="uid://bph3csaasi47t" path="res://Scripts/ShortSword.cs" id="1_g6hpf"]
+[ext_resource type="Texture2D" uid="uid://ckg3lo80aor1w" path="res://Assets/21.07b - Sword & Shield Combat 2.3a/weapon sprites/one_0108_v01.png" id="2_g6hpf"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_g6hpf"]
-atlas = ExtResource("1_a8u84")
-region = Rect2(96, 0, 32, 36)
+[sub_resource type="AtlasTexture" id="AtlasTexture_pnwj1"]
+atlas = ExtResource("2_g6hpf")
+region = Rect2(221, 0, 17, 36)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pnwj1"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_g6hpf")
+"texture": SubResource("AtlasTexture_pnwj1")
 }],
 "loop": true,
 "name": &"Sword_ground",

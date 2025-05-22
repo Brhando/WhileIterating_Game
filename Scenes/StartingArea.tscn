@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://dp5soce6cnj38"]
+[gd_scene load_steps=23 format=4 uid="uid://dp5soce6cnj38"]
 
 [ext_resource type="Script" uid="uid://bnsoaj2c0ksqv" path="res://Scripts/StartingArea.cs" id="1_x80al"]
 [ext_resource type="PackedScene" uid="uid://ceikeeywfkpr6" path="res://Scenes/player.tscn" id="2_s0xut"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://hfferly0itgs" path="res://Assets/19.07a - Gentle Forest 3.0a ($0 palettes)/gentle sheets/gentle trees 80x96 v01.png" id="6_stxll"]
 [ext_resource type="Texture2D" uid="uid://b1b2jnhgxt2tw" path="res://Assets/19.07a - Gentle Forest 3.0a ($0 palettes)/tree wall/gentle tree wall, canopy only.png" id="7_kng72"]
 [ext_resource type="PackedScene" uid="uid://cbq7nsdu58s7i" path="res://Scenes/short_sword.tscn" id="8_e28n4"]
+[ext_resource type="PackedScene" uid="uid://dn66aeqs7wgvn" path="res://Scenes/player_ui.tscn" id="9_bvvu8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0204e"]
 texture = ExtResource("3_pd3d8")
@@ -3760,6 +3761,9 @@ physics_layer_0/collision_mask = 2
 sources/0 = SubResource("TileSetAtlasSource_6cyjc")
 sources/1 = SubResource("TileSetAtlasSource_e28n4")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fdusf"]
+size = Vector2(58, 33)
+
 [node name="StartingArea" type="Node2D"]
 script = ExtResource("1_x80al")
 
@@ -3797,3 +3801,14 @@ tile_set = SubResource("TileSet_wkxnq")
 [node name="ShortSword" parent="." instance=ExtResource("8_e28n4")]
 z_index = 2
 position = Vector2(-2, -259)
+
+[node name="Exit" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+position = Vector2(-1, -303.5)
+shape = SubResource("RectangleShape2D_fdusf")
+
+[node name="PlayerUI" parent="." instance=ExtResource("9_bvvu8")]
+position = Vector2(1, 0)

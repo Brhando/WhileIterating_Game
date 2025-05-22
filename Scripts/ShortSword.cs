@@ -9,6 +9,7 @@ public partial class ShortSword : Area2D
 	private bool _hasShownClassDialogue = false;
 	private bool _completedIntro = false;
 	
+	
 	private Panel _dialoguePanel;
 	private Label _dialogueLabel;
 	
