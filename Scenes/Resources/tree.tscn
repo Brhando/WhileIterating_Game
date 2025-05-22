@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=3 uid="uid://bme0ujvyiq4ij"]
+
+[ext_resource type="Script" uid="uid://mvtsik38jyvb" path="res://Scripts/ResourceScripts/Tree.cs" id="1_08l02"]
+[ext_resource type="Texture2D" uid="uid://dyqqcoeo3hgx5" path="res://Assets/19.07a - Gentle Forest 3.0a ($10 palettes)/gentle sheets/gentle trees 80x96 v08.png" id="1_q28oy"]
+[ext_resource type="AudioStream" uid="uid://dfgqbc5it4wlr" path="res://Audio/chop.ogg" id="2_08l02"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n6ht8"]
+size = Vector2(62, 54)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nyt8s"]
+atlas = ExtResource("1_q28oy")
+region = Rect2(0, 0, 80, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_c0te7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nyt8s")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nhq6l"]
+height = 36.0
+
+[node name="Tree" type="Area2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_08l02")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -19)
+shape = SubResource("RectangleShape2D_n6ht8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+y_sort_enabled = true
+position = Vector2(1, -42)
+sprite_frames = SubResource("SpriteFrames_c0te7")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1, -18)
+shape = SubResource("CapsuleShape2D_nhq6l")
+
+[node name="Swing" type="AudioStreamPlayer2D" parent="."]
+visible = false
+stream = ExtResource("2_08l02")

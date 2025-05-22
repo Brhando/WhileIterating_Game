@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://ctnqk2l5papb5"]
+
+[ext_resource type="Script" uid="uid://pxr2pf64loo2" path="res://Scripts/ResourceScripts/Boulder.cs" id="1_mnyhr"]
+[ext_resource type="Texture2D" uid="uid://bgsh6wj35tguc" path="res://Assets/19.07a - Gentle Forest 3.0a ($10 palettes)/gentle sheets/gentle 32x32 v08.png" id="2_f5wl8"]
+[ext_resource type="AudioStream" uid="uid://dfgqbc5it4wlr" path="res://Audio/chop.ogg" id="3_givr7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nb6gu"]
+atlas = ExtResource("2_f5wl8")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wa6d0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nb6gu")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7pgt3"]
+size = Vector2(47, 44)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mnyhr"]
+
+[node name="Boulder" type="Area2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_mnyhr")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+y_sort_enabled = true
+position = Vector2(0, -15)
+sprite_frames = SubResource("SpriteFrames_wa6d0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -14)
+shape = SubResource("RectangleShape2D_7pgt3")
+
+[node name="Swing" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_givr7")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, -14)
+shape = SubResource("CircleShape2D_mnyhr")
