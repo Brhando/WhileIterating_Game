@@ -6,7 +6,7 @@ public partial class HomeInside : Node2D
     private Bed _bed;
     private Label _playerUi;
     private Area2D _exitHouse;
-    private SceneData _sceneData;
+    
 
     private bool _playerInTravelArea = false;
 
@@ -19,7 +19,6 @@ public partial class HomeInside : Node2D
         _exitHouse = GetNode<Area2D>("ExitHouse");
         _exitHouse.Connect("body_entered", new Callable(this, nameof(BodyEntered)));
         _exitHouse.Connect("body_exited", new Callable(this, nameof(BodyExited)));
-        _sceneData = (SceneData)GetNode("/root/SceneData");
     }
 
     private void BodyEntered(Node body)
@@ -51,7 +50,7 @@ public partial class HomeInside : Node2D
 
             if (Input.IsActionJustPressed("interact"))
             {
-                _sceneData.ChangeSpawnPointName("SpawnExterior");
+                SceneData.DataInstance.ChangeSpawnPointName("SpawnExterior");
                 GetTree().ChangeSceneToFile("res://Scenes/home_base.tscn");
             }
         }

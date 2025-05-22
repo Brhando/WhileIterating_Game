@@ -22,13 +22,13 @@ public partial class HomeBase : Node2D
         _enterHouse.Connect("body_exited", new Callable(this, nameof(BodyExited)));
         
         // Find the spawn point specified in the global SceneData
-        _sceneData = (SceneData)GetNode("/root/SceneData");
+        
         
         // Move the player to that spawn point
         var player = GetNode<Node2D>("Player");
-        if (_sceneData.GetSpawnPointName() != "default")
+        if (SceneData.DataInstance.GetSpawnPointName() != "default")
         {
-            var spawnPoint = GetNode<Node2D>(_sceneData.SpawnPointName);
+            var spawnPoint = GetNode<Node2D>(SceneData.DataInstance.SpawnPointName);
             player.GlobalPosition = spawnPoint.GlobalPosition;
         }
     }

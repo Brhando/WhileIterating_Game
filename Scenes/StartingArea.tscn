@@ -3768,6 +3768,7 @@ size = Vector2(58, 33)
 script = ExtResource("1_x80al")
 
 [node name="Player" parent="." instance=ExtResource("2_s0xut")]
+z_index = 5
 position = Vector2(0, -1)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
