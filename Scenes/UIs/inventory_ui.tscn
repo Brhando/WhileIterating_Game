@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3 uid="uid://bcl54vqu80yk7"]
+
+[ext_resource type="Script" uid="uid://baiccclrph02" path="res://Scripts/UI Scripts/InventoryUI.cs" id="1_qeks5"]
+[ext_resource type="PackedScene" uid="uid://cre16ihsr3bno" path="res://Scenes/UIs/inventory_slot.tscn" id="2_yafp8"]
+
+[node name="InventoryUI" type="Control" node_paths=PackedStringArray("_grid")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 1
+script = ExtResource("1_qeks5")
+_grid = NodePath("CanvasLayer/Panel/GridContainer")
+_slotScene = ExtResource("2_yafp8")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+custom_minimum_size = Vector2(200, 300)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -150.0
+offset_right = 100.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/Panel"]
+custom_minimum_size = Vector2(180, 250)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+columns = 4
