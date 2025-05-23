@@ -4,8 +4,8 @@
 - [ ] Create WorkBench script and scene
 - [ ] Set up initial town area
 - [ ] Prototype an early "day/night" system
-- [ ] Start working on a player's inventory system that persists throughout the game
 - [ ] Figure out how to make a player's hp persist throughout the "day"
+- [ ] Develop a Day/night cycle
 
 
 ## To Fix/Add After Vertical Completion
@@ -29,3 +29,7 @@
 | [x] Create Bed script and Scene              |21 May, 2025           |
 | [x] Setup global sigleton ScriptData         |21 May, 2025           |
 | [x] Setup and get spawn points working       |21 May, 2025           |
+| [x] Setup initial resource area              |22 May, 2025           |
+| [x] Setup basic player inventory             |22 May, 2025           |
+| [x] Created collectable materials (wood & stone)|22 May, 2025        |
+| [x] Created inventory UI                     |22 May, 2025           |
