@@ -38,6 +38,7 @@ public partial class Boulder : Area2D
             //clear boulder and collect rocks once boulder is out of health
             if (_boulderHealth <= 0)
             {
+                GameManager.Instance.AddItem("Stone", 5);
                 QueueFree(); 
             }
         }

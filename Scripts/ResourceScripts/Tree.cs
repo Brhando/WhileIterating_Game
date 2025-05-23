@@ -39,6 +39,7 @@ public partial class Tree : Area2D
             //clear tree and collect wood once tree is out of health
             if (_treeHealth <= 0)
             {
+                GameManager.Instance.AddItem("Wood", 5);
                 QueueFree(); 
             }
         }
