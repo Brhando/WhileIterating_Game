@@ -5,5 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Scenes\" />
+    <Folder Include="Scenes\UIs\" />
+    <Folder Include="Scripts\UI Scripts\" />
   </ItemGroup>
 </Project>
