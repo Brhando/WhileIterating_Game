@@ -76,8 +76,11 @@ public partial class BattleScene : Node
     {
         _state = BattleState.EnemyTurn;
         _turnLabel.Text = "Enemy's Turn";
-
-        await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
+        
+        _enemy.PlayAnimationAttack();
+        await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
+        _enemy.PlayAnimationStand();
+        
         _player.PlayAnimationHurt(); //play damage animation
         
         await ToSignal(GetTree().CreateTimer(1.0f), "timeout"); //wait for animation

@@ -23,4 +23,13 @@ public partial class EnemyEntity : CharacterBody2D
         return EnemyHealth <= 0;
     }
     
+    public void PlayAnimationAttack()
+    {
+        _anim.Play("Attack");
+    }
+
+    public void PlayAnimationStand()
+    {
+        _anim.Play("Stand");
+    }
 }
