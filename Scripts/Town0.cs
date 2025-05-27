@@ -107,6 +107,7 @@ public partial class Town0 : Node2D
             ShowMessage("Press 'E' to open map.");
             if (Input.IsActionJustPressed("interact"))
             {
+                SceneData.DataInstance.ChangeSpawnPointName("default");
                 GetTree().ChangeSceneToFile("res://Scenes/map_interface.tscn");
             }
         }

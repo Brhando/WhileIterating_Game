@@ -55,7 +55,7 @@ public partial class HomeBase : Node2D
 
     public override void _Process(double delta)
     {
-        string message = "";
+        var message = "";
     
         if (_playerInTravelArea)
         {
@@ -76,6 +76,7 @@ public partial class HomeBase : Node2D
             message = "Press 'E' to open map.";
             if (Input.IsActionJustPressed("interact"))
             {
+                SceneData.DataInstance.ChangeSpawnPointName("default");
                 GetTree().ChangeSceneToFile("res://Scenes/map_interface.tscn");
             }
         }

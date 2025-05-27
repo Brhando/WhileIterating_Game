@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://cw3m2nk5cx6js"]
+[gd_scene load_steps=12 format=4 uid="uid://cw3m2nk5cx6js"]
 
 [ext_resource type="Script" uid="uid://bhvi31rrmdu1m" path="res://Scripts/Town0.cs" id="1_ke5j5"]
 [ext_resource type="TileSet" uid="uid://b4o5y8xhni313" path="res://Assets/TileSets/town_set.tres" id="1_oc1rb"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bcl54vqu80yk7" path="res://Scenes/UIs/inventory_ui.tscn" id="4_ke5j5"]
 [ext_resource type="AudioStream" uid="uid://cyyhejsa1yolo" path="res://Audio/doorOpen_1.ogg" id="6_rftyb"]
 [ext_resource type="PackedScene" uid="uid://d1awf77pek6tt" path="res://Scenes/map_open.tscn" id="7_jtdn6"]
+[ext_resource type="PackedScene" uid="uid://2e0p876dwpx8" path="res://Scenes/UIs/day_night_filter.tscn" id="8_1ypie"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rftyb"]
 size = Vector2(38.375, 22.5)
@@ -91,3 +92,5 @@ tile_set = ExtResource("1_oc1rb")
 
 [node name="MapOpen" parent="." instance=ExtResource("7_jtdn6")]
 position = Vector2(903, -333)
+
+[node name="DayNightFilter" parent="." instance=ExtResource("8_1ypie")]

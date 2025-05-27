@@ -1,4 +1,11 @@
-[gd_scene format=3 uid="uid://dn66aeqs7wgvn"]
+[gd_scene load_steps=3 format=3 uid="uid://dn66aeqs7wgvn"]
+
+[ext_resource type="Script" uid="uid://bhvbkrg0onyq8" path="res://Scripts/UI Scripts/TimeLabel.cs" id="1_ohrjl"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4ai1x"]
+font_color = Color(1, 0.605632, 0.109034, 1)
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
 
 [node name="PlayerUI" type="Node2D"]
 
@@ -21,3 +28,13 @@ grow_horizontal = 2
 grow_vertical = 2
 horizontal_alignment = 1
 autowrap_mode = 2
+
+[node name="TimeLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 40.0
+grow_vertical = 0
+label_settings = SubResource("LabelSettings_4ai1x")
+script = ExtResource("1_ohrjl")

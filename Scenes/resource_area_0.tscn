@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://cqvemxntf7ulv"]
+[gd_scene load_steps=18 format=4 uid="uid://cqvemxntf7ulv"]
 
 [ext_resource type="Texture2D" uid="uid://p74331pt7mr7" path="res://Assets/19.07a - Gentle Forest 3.0a ($10 palettes)/gentle sheets/gentle forest v08.png" id="1_0kvdd"]
 [ext_resource type="Script" uid="uid://da1mrlr43m52h" path="res://Scripts/ResourceArea0.cs" id="1_ctybj"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bcl54vqu80yk7" path="res://Scenes/UIs/inventory_ui.tscn" id="6_agy3i"]
 [ext_resource type="PackedScene" uid="uid://dn66aeqs7wgvn" path="res://Scenes/player_ui.tscn" id="7_6648r"]
 [ext_resource type="PackedScene" uid="uid://d1awf77pek6tt" path="res://Scenes/map_open.tscn" id="8_6138t"]
+[ext_resource type="PackedScene" uid="uid://2e0p876dwpx8" path="res://Scenes/UIs/day_night_filter.tscn" id="9_6138t"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a0v7j"]
 texture = ExtResource("1_0kvdd")
@@ -1040,3 +1041,5 @@ position = Vector2(-19, 8)
 
 [node name="MapOpen" parent="." instance=ExtResource("8_6138t")]
 position = Vector2(-1, 196)
+
+[node name="DayNightFilter" parent="." instance=ExtResource("9_6138t")]

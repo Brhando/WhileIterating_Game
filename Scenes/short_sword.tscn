@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cbq7nsdu58s7i"]
+[gd_scene load_steps=7 format=3 uid="uid://cbq7nsdu58s7i"]
 
 [ext_resource type="Script" uid="uid://bph3csaasi47t" path="res://Scripts/ShortSword.cs" id="1_g6hpf"]
 [ext_resource type="Texture2D" uid="uid://ckg3lo80aor1w" path="res://Assets/21.07b - Sword & Shield Combat 2.3a/weapon sprites/one_0108_v01.png" id="2_g6hpf"]
@@ -19,7 +19,10 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bf754"]
-size = Vector2(13, 16)
+size = Vector2(14, 20)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g6hpf"]
+radius = 3.44661
 
 [node name="ShortSword" type="Area2D"]
 collision_layer = 2
@@ -34,7 +37,7 @@ animation = &"Sword_ground"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 z_index = 1
-position = Vector2(2.5, 1)
+position = Vector2(2, 3)
 shape = SubResource("RectangleShape2D_bf754")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -54,3 +57,11 @@ grow_horizontal = 2
 grow_vertical = 2
 horizontal_alignment = 1
 autowrap_mode = 2
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1.40495, 6.59723)
+shape = SubResource("CircleShape2D_g6hpf")

@@ -29,6 +29,7 @@ public partial class ResourceArea0 : Node2D
 
             if (Input.IsActionJustPressed("interact"))
             {
+                SceneData.DataInstance.ChangeSpawnPointName("default");
                 GetTree().ChangeSceneToFile("res://Scenes/map_interface.tscn");
             }
         }

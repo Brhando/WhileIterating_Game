@@ -15,16 +15,19 @@ public partial class GameManager : Node
 
     public override void _Ready()
     {
+        //if there isn't an instance yet-> create a new one
         if (Instance == null)
         {
             Instance = this;
         }
+        //if there is, delete it, so that you don't have duplicates
         else
         {
             QueueFree();
         }
     }
-
+/////////////////////////////////////--Inventory Stuff--////////////////////////////////////////////    
+    //used to add items to the inventory
     public bool AddItem(string itemName, int amount = 1)
     {
         int currentTotal = Inventory.Values.Sum();
@@ -50,5 +53,59 @@ public partial class GameManager : Node
         return Inventory.GetValueOrDefault(itemName, 0);
     }
 
+///////////////////////////////////--Day/Night System--//////////////////////////////////////////////
+    public enum TimeOfDay
+    {
+        Morning,
+        MidMorning,
+        Noon,
+        Afternoon,
+        Night
+    };
+    
+    public TimeOfDay CurrentTimeOfDay { get; private set; } = TimeOfDay.Morning;
+    
+    //For systems that need to know when the time changes we create a signal
+    [Signal] public delegate void TimeOfDayChangedEventHandler(TimeOfDay newTime);
+    
+    //integer used to track number of days that have passed
+    public int DayCount { get; private set; } = 1;
+    
+    //function to advance time
+    public void AdvanceTime()
+    {
+        if (CurrentTimeOfDay != TimeOfDay.Night)
+        {
+            CurrentTimeOfDay += 1;
+            EmitSignalTimeOfDayChanged(CurrentTimeOfDay);
+        }
+        else
+        {
+            GD.Print("It is already night. You need to sleep.");
+        }
+    }
+    
+    //function to call AdvanceTime if a player travels to a new area
+    public void Travel(string areaName)
+    {
+        if (areaName == "Dungeon")
+        {
+            CurrentTimeOfDay = TimeOfDay.Night;
+        }
+        else
+        {
+            AdvanceTime();
+        }
+        EmitSignalTimeOfDayChanged(CurrentTimeOfDay);
+    }
+    
+    //function to reset the time of day if the player sleeps
+    public void Sleep()
+    {
+        CurrentTimeOfDay = TimeOfDay.Morning;
+        DayCount++;
+        EmitSignalTimeOfDayChanged(CurrentTimeOfDay);
+        GD.Print("New day started. Day: " + DayCount);
+    }
     
 }

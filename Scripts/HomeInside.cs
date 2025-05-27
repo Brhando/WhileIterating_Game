@@ -5,6 +5,7 @@ public partial class HomeInside : Node2D
 {
     private Bed _bed;
     private Label _playerUi;
+    private TimeLabel _timeLabel;
     private Area2D _exitHouse;
     
 
@@ -16,6 +17,7 @@ public partial class HomeInside : Node2D
     {
         _bed = GetNode<Bed>("Bed");
         _playerUi = GetNode<Label>("PlayerUI/CanvasLayer/Panel/Label");
+        _timeLabel = GetNode<TimeLabel>("PlayerUI/CanvasLayer/TimeLabel");
         _exitHouse = GetNode<Area2D>("ExitHouse");
         _exitHouse.Connect("body_entered", new Callable(this, nameof(BodyEntered)));
         _exitHouse.Connect("body_exited", new Callable(this, nameof(BodyExited)));
@@ -42,7 +44,7 @@ public partial class HomeInside : Node2D
 
     public override void _Process(double delta)
     {
-        string message = "";
+        var message = "";
 
         if (_playerInTravelArea)
         {
@@ -57,7 +59,11 @@ public partial class HomeInside : Node2D
         else if (_bed.PlayerInRange)
         {
             message = "Press 'E' to sleep.";
-            // TODO: create sleep logic (heal to full health/reset daytime resource
+            if (Input.IsActionJustPressed("interact") && (GameManager.Instance.CurrentTimeOfDay == GameManager.TimeOfDay.Afternoon || GameManager.Instance.CurrentTimeOfDay == GameManager.TimeOfDay.Night))
+            {
+                GameManager.Instance.Sleep();
+                _timeLabel.UpdateTimeLabel();
+            }
         }
 
         if (message != "")
