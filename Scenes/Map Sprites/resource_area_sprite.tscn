@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7wdk8iqyrbsj"]
+
+[ext_resource type="Texture2D" uid="uid://dpnp4amwk3upu" path="res://Assets/MapStuff/Resource Area.png" id="1_11pm2"]
+
+[node name="ResourceAreaSprite" type="Sprite2D"]
+texture = ExtResource("1_11pm2")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -29.0
+offset_top = -6.0
+offset_right = 14.0
+offset_bottom = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Resource Area"
+vertical_alignment = 2
