@@ -26,7 +26,7 @@ public partial class GameManager : Node
             QueueFree();
         }
     }
-/////////////////////////////////////--Inventory Stuff--////////////////////////////////////////////    
+/////////////////////////////////////--Inventory System--////////////////////////////////////////////    
     //used to add items to the inventory
     public bool AddItem(string itemName, int amount = 1)
     {
