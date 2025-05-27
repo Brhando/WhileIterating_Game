@@ -13,9 +13,11 @@ public partial class InventoryUI : Control
 
     private void UpdateInventory()
     {
-        foreach (Node child in _grid.GetChildren())
+        //clear each item
+        foreach (var child in _grid.GetChildren())
             child.QueueFree();
-
+        
+        //readd updated items and amounts
         foreach (var entry in GameManager.Instance.Inventory)
         {
             var slot = _slotScene.Instantiate<Control>();
@@ -25,7 +27,7 @@ public partial class InventoryUI : Control
         }
     }
 
-    private Texture2D GetIconForItem(string itemName)
+    private static Texture2D GetIconForItem(string itemName)
     {
         // Replace with actual item icon lookup
         return GD.Load<Texture2D>($"res://Assets/Icons/{itemName}.png");
