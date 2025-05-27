@@ -8,22 +8,24 @@ public partial class HomeBase : Node2D
     private Area2D _enterHouse;
     private SceneData _sceneData;
     private Node2D _spawnPoint;
-    
+    private MapOpen _mapOpen;
+    private CanvasLayer _inventoryUi;
     private bool _playerInTravelArea = false;
     
     
     public override void _Ready()
     {
         _chest = GetNode<Chest>("Chest");
-        
+        _mapOpen = GetNode<MapOpen>("MapOpen");
         _playerUi = GetNode<Label>("PlayerUI/CanvasLayer/Panel/Label");
         _enterHouse = GetNode<Area2D>("EnterHouse");
+        _inventoryUi = GetNode<CanvasLayer>("InventoryUI/CanvasLayer");
         _enterHouse.Connect("body_entered", new Callable(this, nameof(BodyEntered)));
         _enterHouse.Connect("body_exited", new Callable(this, nameof(BodyExited)));
         
+        _inventoryUi.Visible = false;
+        
         // Find the spawn point specified in the global SceneData
-        
-        
         // Move the player to that spawn point
         var player = GetNode<Node2D>("Player");
         if (SceneData.DataInstance.GetSpawnPointName() != "default")
@@ -68,6 +70,15 @@ public partial class HomeBase : Node2D
         {
             message = "Press 'E' to open.";
         }
+        
+        else if (_mapOpen.PlayerInTravelArea)
+        {
+            message = "Press 'E' to open map.";
+            if (Input.IsActionJustPressed("interact"))
+            {
+                GetTree().ChangeSceneToFile("res://Scenes/map_interface.tscn");
+            }
+        }
 
         if (message != "")
         {
@@ -76,6 +87,11 @@ public partial class HomeBase : Node2D
         else
         {
             _playerUi.Visible = false;
+        }
+
+        if (Input.IsActionJustPressed("inventory"))
+        {
+            _inventoryUi.Visible = !_inventoryUi.Visible;
         }
     }
 }

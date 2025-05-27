@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://c2m3r3l8134oq"]
+[gd_scene load_steps=26 format=4 uid="uid://c2m3r3l8134oq"]
 
 [ext_resource type="Texture2D" uid="uid://2r64ljtl3bfg" path="res://Assets/18.09a - Iconic Homestead 2.0/iconic_homestead v1.png" id="1_51qb4"]
 [ext_resource type="Script" uid="uid://datbbb7i4wjyb" path="res://Scripts/HomeBase.cs" id="1_w4kij"]
@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://dn66aeqs7wgvn" path="res://Scenes/player_ui.tscn" id="4_76bdo"]
 [ext_resource type="PackedScene" uid="uid://r883sgfqcmd7" path="res://Scenes/chest.tscn" id="5_w4kij"]
 [ext_resource type="Texture2D" uid="uid://cq7ae30lg81pq" path="res://Assets/19.07a - Gentle Forest 3.0a ($0 palettes)/gentle sheets/gentle forest v01.png" id="6_fjakw"]
+[ext_resource type="PackedScene" uid="uid://d1awf77pek6tt" path="res://Scenes/map_open.tscn" id="8_5rm0k"]
+[ext_resource type="PackedScene" uid="uid://bcl54vqu80yk7" path="res://Scenes/UIs/inventory_ui.tscn" id="9_fjakw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hl0j8"]
 texture = ExtResource("1_51qb4")
@@ -7875,3 +7877,12 @@ shape = SubResource("RectangleShape2D_w4kij")
 
 [node name="SpawnExterior" type="Node2D" parent="."]
 position = Vector2(151, -312)
+
+[node name="MapOpen" parent="." instance=ExtResource("8_5rm0k")]
+position = Vector2(-5, 20)
+
+[node name="InventoryUI" parent="." instance=ExtResource("9_fjakw")]
+offset_left = -41.0
+offset_top = 22.0
+offset_right = -1.0
+offset_bottom = 62.0

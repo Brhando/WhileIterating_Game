@@ -11,6 +11,7 @@ public partial class Town0 : Node2D
     private Label _playerUi;
     private Area2D _enterMain, _enterSmall0, _enterSmall1;
     private AudioStreamPlayer2D _audio;
+    private MapOpen _mapOpen;
     
     private void BodyEntered(Node2D body)
     {
@@ -46,6 +47,7 @@ public partial class Town0 : Node2D
         _enterSmall0 = GetNode<Area2D>("EnterSmall0");
         _enterSmall1 = GetNode<Area2D>("EnterSmall1");
         _audio = GetNode<AudioStreamPlayer2D>("DoorOpen");
+        _mapOpen = GetNode<MapOpen>("MapOpen");
         
         _audio.Finished += OnAudioFinished;
         
@@ -98,6 +100,14 @@ public partial class Town0 : Node2D
             if (Input.IsActionJustPressed("interact"))
             {
                 ChangeScene();
+            }
+        }
+        else if (_mapOpen.PlayerInTravelArea)
+        {
+            ShowMessage("Press 'E' to open map.");
+            if (Input.IsActionJustPressed("interact"))
+            {
+                GetTree().ChangeSceneToFile("res://Scenes/map_interface.tscn");
             }
         }
         else
