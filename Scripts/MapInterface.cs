@@ -7,6 +7,7 @@ public partial class MapInterface : Node2D
     private Button _button2;
     private Button _button3;
     private Button _button4;
+    private Panel _playerUi;
     private bool _isNight = false;
         public override void _Ready()
         {
@@ -14,11 +15,13 @@ public partial class MapInterface : Node2D
             _button2 = GetNode<Button>("Button2");
             _button3 = GetNode<Button>("Button3");
             _button4 = GetNode<Button>("Button4");
+            _playerUi = GetNode<Panel>("PlayerUI/CanvasLayer/Panel");
             
             _button1.Pressed += OnButton1Pressed;
             _button2.Pressed += OnButton2Pressed;
             _button3.Pressed += OnButton3Pressed;
             _button4.Pressed += OnButton4Pressed;
+            _playerUi.Visible = false;
             
             CheckTimeOfDay();
             if (_isNight)
