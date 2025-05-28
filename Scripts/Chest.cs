@@ -10,8 +10,11 @@ public partial class Chest : Area2D
     {
         _anim = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _anim.Play("default");
+
         Connect("body_entered", new Callable(this, nameof(OnBodyEntered)));
         Connect("body_exited", new Callable(this, nameof(OnBodyExited)));
+
+        GameManager.Instance.ActiveChest = this; // Register self
     }
     
     public void OnBodyEntered(Node body)
@@ -33,6 +36,13 @@ public partial class Chest : Area2D
         {
             //ToDo: Open and be able to manage chest inventory
         }
+    }
+    
+    //deregister the chest upon exiting the tree
+    public override void _ExitTree()
+    {
+        if (GameManager.Instance.ActiveChest == this)
+            GameManager.Instance.ActiveChest = null;
     }
     
 }

@@ -10,6 +10,7 @@ outline_color = Color(0, 0, 0, 1)
 [node name="PlayerUI" type="Node2D"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
 
 [node name="Panel" type="Panel" parent="CanvasLayer"]
 custom_minimum_size = Vector2(200, 100)

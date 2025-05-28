@@ -1,22 +1,41 @@
 using Godot;
+using System;
 
-public partial class InventoryUI : Control
+public partial class ChestUI : CanvasLayer
 {
-    [Export] private GridContainer _grid;
+    private Button _button1;
+    private GridContainer _grid;
+    [Export] private Chest _chest;
     [Export] private PackedScene _slotScene;
-
     public override void _Ready()
     {
-        GameManager.Instance.Connect("InventoryChanged", new Callable(this, nameof(UpdateInventory)));
-        UpdateInventory(); // initial load
+        Visible = false;
+        _button1 = GetNode<Button>("Panel/CloseButton");
+        _grid = GetNode<GridContainer>("Panel/GridContainer");
+        
+        GameManager.Instance.ChestInventoryChanged += UpdateInventory;
+        UpdateInventory(); //initial load
     }
-    
+
+    public override void _Process(double delta)
+    {
+        if (Input.IsActionJustPressed("interact"))
+        {
+            Visible = true;
+        }
+
+        if ((Visible && _button1.IsPressed()) || !_chest.PlayerInRange)
+        {
+            Visible = false;
+        }
+    }
+    //disconnect upon tree exit
     public override void _ExitTree()
     {
         if (GameManager.Instance != null)
-            GameManager.Instance.InventoryChanged -= UpdateInventory;
+            GameManager.Instance.ChestInventoryChanged -= UpdateInventory;
     }
-
+    
     private void UpdateInventory()
     {
         //guard against null instances
@@ -32,20 +51,23 @@ public partial class InventoryUI : Control
             _grid.RemoveChild(child);
             child.QueueFree();
         }
-        //add in the newly updated children
-        foreach (var entry in GameManager.Instance.Inventory)
+        //rebuild with the new children
+        foreach (var entry in GameManager.Instance.ChestInventory)
         {
-            var slot = _slotScene.Instantiate<InventorySlot>();
+            var slot = _slotScene.Instantiate<ChestSlot>();
             slot.ItemName = entry.Key;
             slot.GetNode<TextureRect>("TextureRect").Texture = GetIconForItem(entry.Key);
             slot.GetNode<Label>("TextureRect/Label").Text = entry.Value.ToString();
             _grid.AddChild(slot);
         }
     }
-
+    
     private static Texture2D GetIconForItem(string itemName)
     {
-        // Replace with actual item icon lookup
+        //item icon lookup
         return GD.Load<Texture2D>($"res://Assets/Icons/{itemName}.png");
     }
+    
+    
+    
 }
