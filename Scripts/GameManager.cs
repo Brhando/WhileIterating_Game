@@ -5,14 +5,7 @@ using System.Collections.Generic;
 public partial class GameManager : Node
 {
     public static GameManager Instance;
-    [Signal] public delegate void InventoryChangedEventHandler();
-
-    // Dictionary to store item names and their quantities
-    public Dictionary<string, int> Inventory = new();
     
-    //inventory space capacity
-    private int _inventoryCap = 20;
-
     public override void _Ready()
     {
         //if there isn't an instance yet-> create a new one
@@ -26,13 +19,22 @@ public partial class GameManager : Node
             QueueFree();
         }
     }
-/////////////////////////////////////--Inventory System--////////////////////////////////////////////    
-    //used to add items to the inventory
+/////////////////////////////////////--Inventory System--////////////////////////////////////////////
+    // Dictionary to store item names and their quantities
+    public Dictionary<string, int> Inventory = new();
+    public Dictionary<string, int> ChestInventory = new();
+    [Signal] public delegate void InventoryChangedEventHandler();
+    [Signal] public delegate void ChestInventoryChangedEventHandler();
+    public Chest ActiveChest { get; set; }
+    //inventory space capacity
+    private int _inventoryCap = 10;
+    private int _chestCap = 20;
+    //used to add items to the player inventory
     public bool AddItem(string itemName, int amount = 1)
     {
-        int currentTotal = Inventory.Values.Sum();
-
-        if (currentTotal + amount > _inventoryCap)
+        var uniqueItemCount = Inventory.Count;
+        
+        if (!Inventory.ContainsKey(itemName) && uniqueItemCount >= _inventoryCap)
         {
             GD.Print("Inventory full!");
             return false;
@@ -44,10 +46,96 @@ public partial class GameManager : Node
             Inventory[itemName] = amount;
 
         GD.Print($"Added {amount} {itemName}. Total: {Inventory[itemName]}");
-        EmitSignal(nameof(InventoryChanged));
+        CallDeferred(nameof(EmitInventoryChanged));
         return true;
     }
+    private void EmitInventoryChanged()
+    {
+        EmitSignal(nameof(InventoryChanged));
+    }
 
+    //used to remove from player inventory
+    public bool RemoveItem(string itemName, int amount = 1)
+    {
+        if (Inventory.ContainsKey(itemName))
+        {
+            var currentTotal = Inventory[itemName];
+            currentTotal -= amount;
+            
+            if (currentTotal < 0)
+            {
+                GD.Print("You can't remove more than you have!");
+                return false;
+            }
+            
+            if (currentTotal == 0)
+                Inventory.Remove(itemName);
+            else
+            {
+                Inventory[itemName] = currentTotal;
+            }
+            EmitSignalInventoryChanged();
+            return true;
+        }
+        return false;
+    }
+    
+    //used to add items to chest inventory
+    public bool AddChestItem(string itemName, int amount = 1)
+    {
+        var uniqueItemCount = ChestInventory.Count;
+
+        if (!ChestInventory.ContainsKey(itemName) && uniqueItemCount >= _chestCap)
+        {
+            GD.Print("Chest full!");
+            return false;
+        }
+
+        if (ChestInventory.ContainsKey(itemName))
+        {
+            ChestInventory[itemName] += amount;
+        }
+        else
+        {
+            ChestInventory[itemName] = amount;
+        }
+        
+        GD.Print($"Added {amount} {itemName} to Chest");
+        CallDeferred(nameof(EmitChestInventoryChanged));
+        return true;
+    }
+    
+    private void EmitChestInventoryChanged()
+    {
+        EmitSignal(nameof(ChestInventoryChanged));
+    }
+    
+    //used to remove from chest inventory
+    public bool RemoveChestItem(string itemName, int amount = 1)
+    {
+        if (ChestInventory.ContainsKey(itemName))
+        {
+            var currentTotal = ChestInventory[itemName];
+            currentTotal -= amount;
+            
+            if (currentTotal < 0)
+            {
+                GD.Print("You can't remove more than you have!");
+                return false;
+            }
+            
+            if (currentTotal == 0)
+                ChestInventory.Remove(itemName);
+            else
+            {
+                ChestInventory[itemName] = currentTotal;
+            }
+            EmitSignalChestInventoryChanged();
+            return true;
+        }
+        return false;
+    }
+    
     public int GetItemCount(string itemName)
     {
         return Inventory.GetValueOrDefault(itemName, 0);
