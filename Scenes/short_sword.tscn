@@ -21,8 +21,8 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bf754"]
 size = Vector2(14, 20)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_g6hpf"]
-radius = 3.44661
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g6hpf"]
+size = Vector2(8.79753, 8.79861)
 
 [node name="ShortSword" type="Area2D"]
 collision_layer = 2
@@ -63,5 +63,5 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(1.40495, 6.59723)
-shape = SubResource("CircleShape2D_g6hpf")
+position = Vector2(2, 4)
+shape = SubResource("RectangleShape2D_g6hpf")
