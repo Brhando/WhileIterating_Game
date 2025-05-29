@@ -30,14 +30,6 @@ public partial class Chest : Area2D
     }
     
     
-    public override void _Process(double delta)
-    {
-        if (PlayerInRange && Input.IsActionJustPressed("interact"))
-        {
-            //ToDo: Open and be able to manage chest inventory
-        }
-    }
-    
     //deregister the chest upon exiting the tree
     public override void _ExitTree()
     {
