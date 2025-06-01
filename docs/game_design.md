@@ -90,6 +90,7 @@ Stats evolve based on combat behavior and offer moves/upgrades that match player
 
 **Repeat until one side is defeated.**
 
+(https://docs.google.com/document/d/1k-VsJI0226yCALnMip5kOQOchXAWSE_lxopsEgqFm-g/edit?tab=t.0)
 
 
 ---
