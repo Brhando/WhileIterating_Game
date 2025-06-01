@@ -6,13 +6,33 @@ Upgrade character / Craft items / Upgrade base → Sleep → Repeat
 
 ---
 
+## Possible Win Conditions:
+The *Turning* and *rebirth* are the main functions of the world. It should be the main motivator.
+- Lore unlocks with every run and main dungeon being defeated
+- The goal becomes clear over time. Win = Uncover the “truth” behind the Turning, or your past lives.
+- Win = Beat the final dungeon boss and trigger “The Turning,” which:
+- Resets the world with subtle changes (new class unlock, persistent upgrades).
+- Progressively reveals deeper lore layers and unlocks “true endings.”
+
+---
+
+## NPC Archetypes & Functions
+- Craftsman: Improves weapons, offers rare upgrades if befriended.
+- Scout: Reveals new map zones based on their mood/allegiance.
+- Healer: Offers temporary buffs or second chances in dungeon runs.
+- Lorekeeper: Unlocks past-life memories (turning-related perks).
+
+**Each should have their own personal quests and buffs to the player**
+
+---
+
 ## Origins (Weapon-Based Classes)
 > “Your class is what you wield, not what you're born into.”
 
 Classes are based on weapon type and evolve into specialized movesets depending on playstyle. These are referred to as **Origins**.
 
-- **Short Sword** → Warrior-style
-- **Unfilled Tome** → Mage-style
+- **Short Sword** → Warrior-style: Berserker and Warder; Introduce *stamina* resource
+- **Unfilled Tome** → Mage-style: chained vs planned heavy; Introduce *mana-like* resource
 - **Jack-O-All** → no specialized attacks, but reduced costs
 
 Subclasses will be determined dynamically through tracked behavior over time.
@@ -30,7 +50,9 @@ Used to upgrade:
 - Items with activations
 
 
-*Will define once the base system is implemented.*
+Item ideas:
+- Food: provides resource buffs (restoration to mana/stamina)
+- Herbs/plant concoctions give buffs to fighting (poison/fire resist, chances to trigger events)
 
 ---
 
