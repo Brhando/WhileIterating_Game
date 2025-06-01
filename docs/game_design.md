@@ -90,20 +90,19 @@ Stats evolve based on combat behavior and offer moves/upgrades that match player
 
 ## Overworld Map
 - Top-down UI map with **selectable zones**
-- **Day Timer** has 6 bars:  
+- **Day Timer** has 5 bars:  
   - Morning  
   - Mid-Morning  
   - Noon  
-  - Afternoon  
-  - Evening  
+  - Afternoon    
   - Night
 
 ### Time Costs:
-- Traveling to most zones: **3 bars**
-- Traveling to dungeon: **6 bars**
+- Traveling to most zones: **1 bar**
+- Traveling to dungeon: **5 bars**
 - **Non-travel actions** (farming, crafting) before travel cost **0 bars**
 
-> Once all 6 bars are consumed, the player must return to base and sleep.
+> Once all 5 bars are consumed, the player must return to base and sleep.
 
 ---
 
@@ -113,10 +112,22 @@ Each zone contains:
 - 🌿 **Resource Collection Area** (foraging, mining, etc.)
 - 🏚️ **Exploration/Story Area** (ruins, shrine, town, etc.)
 - 🕳️ **Dungeon** (combat-heavy area with increasing difficulty)
+- **Forest** (exploration and random items with higher danger meter)
 
 > Resources in a zone do **not replenish** until the zone's dungeon has been cleared.
 
 ---
+
+## Danger Meter & Prep Choices for Travelling
+
+- increases steadily and resets upon entering combat
+- higher meter -> higher chance of combat
+
+Before entering a zone, player can:
+
+- Sneak In (reduce danger, reduce loot)
+- Scout Ahead (spend time to remove combat entirely)
+- Charge In (increase danger, increase XP/loot if combat triggers)
 
 ## Dungeon Layout
 
