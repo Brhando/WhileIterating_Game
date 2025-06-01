@@ -2,10 +2,11 @@
 
 ## Immediate Goals
 - [ ] Create WorkBench script and scene
-- [ ] Set up initial town area
-- [ ] Prototype an early "day/night" system
+- [ ] Create an early crafting system and recipes
 - [ ] Figure out how to make a player's hp persist throughout the "day"
-- [ ] Develop a Day/night cycle
+- [ ] Create a dungeon that is a collection of randomized nodes (5 - 10 rooms/ scenes)
+- [ ] Fully flesh out Warrior class combat tree
+- [ ] Finish 10 enemy types with basic behaviors 
 
 
 ## To Fix/Add After Vertical Completion
@@ -33,3 +34,5 @@
 | [x] Setup basic player inventory             |22 May, 2025           |
 | [x] Created collectable materials (wood & stone)|22 May, 2025        |
 | [x] Created inventory UI                     |22 May, 2025           |
+| [x] Add day/night system                      |26 May, 2025          |
+| [x] Create base town area                     |26 May, 2025          |
