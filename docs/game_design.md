@@ -72,8 +72,25 @@ Stats evolve based on combat behavior and offer moves/upgrades that match player
 
 **Some ideas for combat**
 - Chained actions gain extra ability: Attack -> attack -> double hit
-- Defend -> defend -> parry. 
+- Defend -> defend -> parry.
 > needs a fallback (last higher cost? Lock out a turn?)
+
+1. Player Turn:
+   → Choose 1–3 Actions (from equipped skill set)
+   → Apply Effects (damage, buffs, etc.)
+   → Resolve turn
+
+2. Enemy Turn:
+   → Each enemy performs their action(s)
+
+3. Reset & Status Tick:
+   → Buffs/Debuffs reduce duration
+   → Cooldowns tick
+   → Resource regeneration (Stamina/Mana)
+
+**Repeat until one side is defeated.**
+
+
 
 ---
 
