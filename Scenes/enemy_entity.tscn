@@ -1,12 +1,56 @@
-[gd_scene load_steps=7 format=3 uid="uid://dioqfnrkt7ts3"]
+[gd_scene load_steps=17 format=3 uid="uid://dioqfnrkt7ts3"]
 
 [ext_resource type="Script" uid="uid://cf1iqnrytjj2t" path="res://Scripts/EnemyEntity.cs" id="1_k415t"]
 [ext_resource type="Texture2D" uid="uid://igvn3xaqdg2k" path="res://Assets/MadeSprites/slime1.png" id="2_fq2ch"]
 [ext_resource type="Texture2D" uid="uid://dw2lii6xb3lrt" path="res://Assets/MadeSprites/slime2.png" id="3_4bg0i"]
 [ext_resource type="Texture2D" uid="uid://ccphjjghc7nw8" path="res://Assets/MadeSprites/slime3.png" id="4_8um22"]
 [ext_resource type="Texture2D" uid="uid://115rdq4pdyt" path="res://Assets/MadeSprites/slime4.png" id="5_m5mj5"]
+[ext_resource type="Texture2D" uid="uid://c3qp1sovtvc1s" path="res://Assets/MadeSprites/goblin1.png" id="6_seybv"]
+[ext_resource type="Texture2D" uid="uid://bpflaucnjapt5" path="res://Assets/MadeSprites/goblin3.png" id="7_82b2a"]
+[ext_resource type="Texture2D" uid="uid://ccm5qk6qdj1fh" path="res://Assets/MadeSprites/goblin4.png" id="8_i3bub"]
+[ext_resource type="Texture2D" uid="uid://cxthx8nhf1lyt" path="res://Assets/MadeSprites/goblin2.png" id="9_faptu"]
+[ext_resource type="Texture2D" uid="uid://bt0auh3d3w235" path="res://Assets/MadeSprites/skeleton1.png" id="10_e6pj2"]
+[ext_resource type="Texture2D" uid="uid://b1q4b4lg7inwn" path="res://Assets/MadeSprites/skeleton3.png" id="11_33i4k"]
+[ext_resource type="Texture2D" uid="uid://dtk6jbvr0jg61" path="res://Assets/MadeSprites/skeleton4.png" id="12_lad0a"]
+[ext_resource type="Texture2D" uid="uid://c722e1yjnq60j" path="res://Assets/MadeSprites/skeleton2.png" id="13_5fs7u"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_seybv"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_e6pj2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_seybv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_82b2a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_i3bub")
+}],
+"loop": true,
+"name": &"Attack",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_seybv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_faptu")
+}],
+"loop": true,
+"name": &"Hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_seybv")
+}],
+"loop": true,
+"name": &"Stand",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_33i4k"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -20,20 +64,61 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("5_m5mj5")
-}, {
-"duration": 1.0,
-"texture": ExtResource("3_4bg0i")
-}, {
-"duration": 1.0,
-"texture": ExtResource("2_fq2ch")
 }],
 "loop": true,
 "name": &"Attack",
-"speed": 5.0
+"speed": 4.0
 }, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("2_fq2ch")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_4bg0i")
+}],
+"loop": true,
+"name": &"Hurt",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_fq2ch")
+}],
+"loop": true,
+"name": &"Stand",
+"speed": 4.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lad0a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_e6pj2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_33i4k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_lad0a")
+}],
+"loop": true,
+"name": &"Attack",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_e6pj2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_5fs7u")
+}],
+"loop": true,
+"name": &"Hurt",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_e6pj2")
 }],
 "loop": true,
 "name": &"Stand",
@@ -42,7 +127,9 @@ animations = [{
 
 [node name="EnemyEntity" type="CharacterBody2D"]
 script = ExtResource("1_k415t")
+GoblinFrames = SubResource("SpriteFrames_e6pj2")
+SlimeFrames = SubResource("SpriteFrames_33i4k")
+SkeletonFrames = SubResource("SpriteFrames_lad0a")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_seybv")
 animation = &"Attack"

@@ -33,8 +33,8 @@ public partial class BattleScene : Node
         _attackButton.Pressed += OnPlayerAttackPressed;
         
         //set initial text values
-        _enemyHp.Text = _enemy.EnemyHealth + " / 10";
-        _playerHp.Text = _player.PlayerHealth + " / 10";
+        _enemyHp.Text = _enemy.GetHealth() + " / " + _enemy.GetMaxHealth();
+        _playerHp.Text = PlayerData.Instance.GetPlayerHealth() + " / " + PlayerData.Instance.GetPlayerMaxHealth();
         _attackButtonLabel.Text = "SLASH!";
         
 
@@ -57,9 +57,13 @@ public partial class BattleScene : Node
         await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
         _player.PlayAnimationStand();
         
+        _enemy.PlayAnimationHurt();
+        await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
+        _enemy.PlayAnimationStand();
+        
         //decrease health and update the label's text
         _enemy.DecreaseHealth(3);
-        _enemyHp.Text = _enemy.EnemyHealth + " / 10";
+        _enemyHp.Text = _enemy.GetHealth() + " / " + _enemy.GetMaxHealth();
 
         if (_enemy.IsDead())
         {
@@ -88,7 +92,7 @@ public partial class BattleScene : Node
         
         //decrease health and update text
         _player.DecreaseHealth(2);
-        _playerHp.Text = _player.PlayerHealth + " / 10";
+        _playerHp.Text = PlayerData.Instance.GetPlayerHealth() + " / " + PlayerData.Instance.GetPlayerMaxHealth();
 
         if (_player.IsDead())
         {

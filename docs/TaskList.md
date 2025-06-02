@@ -1,6 +1,7 @@
 # TaskList
 
 ## Immediate Goals
+- [ ] Finish Day 10 Devlog
 - [ ] Clean up buff code and logic
 - [ ] Reconnect code to singletons (player class update, battle scene management, enemy entity, etc.)
 - [ ] Create WorkBench script and scene

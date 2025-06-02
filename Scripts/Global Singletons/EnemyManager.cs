@@ -46,23 +46,38 @@ public partial class EnemyManager : Node
     //class to define enemies
     public class Enemy
     {
-        private string _name;
+        private readonly string _name;
         private int _health;
+        private readonly int _maxHealth;
         private int _level;
         private List<EnemySkill> _skills;
+        public int Health => _health;
+        public string Name => _name;
+        public int MaxHealth => _maxHealth;
         
         //constructor
-        public Enemy(string name, int health, int level = 1)
+        public Enemy(string name, int health, int maxHealth, int level = 1)
         {
             _name = name;
             _health = health;
+            _maxHealth = maxHealth;
             _level = level;
             _skills = new List<EnemySkill>();
+            
         }
+        
         //func used to add skills
         public void AddSkill(EnemySkill skill)
         {
             _skills.Add(skill);
+        }
+        public void TakeDamage(int amount)
+        {
+            _health = Mathf.Max(0, _health - amount);
+        }
+        public bool IsDead()
+        {
+            return _health <= 0;
         }
     }
 
@@ -78,15 +93,15 @@ public partial class EnemyManager : Node
     //Initialization
     private void InitializeEnemies()
     {
-        _goblin = new Enemy("Goblin", 15);
+        _goblin = new Enemy("Goblin", 15, 15);
         _goblin.AddSkill(_strike);
         _goblin.AddSkill(_block);
 
-        _slime = new Enemy("Slime", 12);
+        _slime = new Enemy("Slime", 12, 12);
         _slime.AddSkill(_strike);
         _slime.AddSkill(_block);
 
-        _skeleton = new Enemy("Skeleton", 20);
+        _skeleton = new Enemy("Skeleton", 20, 20);
         _skeleton.AddSkill(_strike);
         _skeleton.AddSkill(_block);
 

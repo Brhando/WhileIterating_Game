@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 SceneData="*res://Scripts/SceneData.cs"
 GameManager="*res://Scripts/GameManager.cs"
+EnemyManager="*res://Scripts/Global Singletons/EnemyManager.cs"
+CombatManager="*res://Scripts/Global Singletons/CombatManager.cs"
+PlayerData="*res://Scripts/Global Singletons/PlayerData.cs"
+SkillData="*res://Scripts/Global Singletons/SkillData.cs"
 
 [display]
 

@@ -108,6 +108,16 @@ public partial class PlayerData: Node
         return _playerStamina;
     }
 
+    public int GetPlayerHealth()
+    {
+        return _playerHealth;
+    }
+
+    public int GetPlayerMaxHealth()
+    {
+        return _healthCap;
+    }
+
     public void ResetStamina()
     {
         _playerStamina = _staminaCap;
