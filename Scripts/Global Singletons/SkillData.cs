@@ -106,6 +106,7 @@ public partial class SkillData : Node
 
         SkillLibrary["Prayer"] = new Skill
         {
+            Name = "Prayer",
             ActionCost = 2,
             StaminaCost = 0,
             Damage = 0,

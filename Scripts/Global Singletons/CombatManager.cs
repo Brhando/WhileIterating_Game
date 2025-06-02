@@ -72,12 +72,19 @@ public partial class CombatManager: Node
         };
 
     }
+    //combat entities
+    public EnemyEntity Enemy;
+    public PlayerEntity Player;
+    
+    //bool to track button access
+    public bool ButtonLock = true;
+    public bool VictoryButtonLock = true;
     
     //Combat variables to track
-    public int ActionsLeft = 3;
-    public int AttackCounter;
-    public int DefendCounter;
-    public int PrayCounter;
+    private int ActionsLeft = 3;
+    private int AttackCounter = 0;
+    private int DefendCounter = 0;
+    private int PrayCounter = 0;
     public bool AttackChain;
     public bool DefendChain;
     public bool PrayerChain;
@@ -85,11 +92,103 @@ public partial class CombatManager: Node
     
     
     //turn tracker
-    public enum BattleState { PlayerTurn, EnemyTurn, Win, Lose }
-    public BattleState CurrentBattleState { get; private set; } = BattleState.PlayerTurn;
+    private enum BattleState { PlayerTurn, EnemyTurn, Win, Lose }
+    private BattleState _currentBattleState;
+    
+    //signal to track turn changes 
+    [Signal] public delegate void BattleStateChangedEventHandler();
     
     //dictionary to hold buff applying logic
     private readonly Dictionary<string, Action> _blessingEffects = new();
+    
+    public void StartBattle(PlayerEntity player, EnemyEntity enemy)
+    {
+        Player = player;
+        Enemy = enemy;
+
+        _currentBattleState = BattleState.PlayerTurn;
+        StartPlayerTurn();
+    }
+    
+    public void StartPlayerTurn()
+    {
+        _currentBattleState = BattleState.PlayerTurn;
+        TurnReset();
+        ButtonLock = false;
+        EmitSignalBattleStateChanged();
+        
+    }
+    
+    public async void ExecutePlayerSkill(SkillData.Skill skill)
+    {
+        GD.Print($"Trying to execute skill: {skill.Name}");
+        var success = UseSkill(skill.Name); // Already handles stamina & damage
+        if (!success) return;
+
+        // Play animations based on skill
+        if (skill.Name == "Slash")
+        {
+            Player.PlayAnimationSlash();
+        }
+        else if (skill.Name == "Thrust")
+        {
+            //Player.PlayAnimationThrust();
+        }
+
+        await ToSignal(GetTree().CreateTimer(1), "timeout");
+        Player.PlayAnimationStand();
+
+        Enemy.PlayAnimationHurt();
+        await ToSignal(GetTree().CreateTimer(1), "timeout");
+        Enemy.PlayAnimationStand();
+        Enemy.DecreaseHealth(skill.Damage);
+
+        if (Enemy.IsDead())
+        {
+            _currentBattleState = BattleState.Win;
+            VictoryButtonLock = false;
+            ButtonLock = true;
+            EmitSignalBattleStateChanged();
+            return;
+        }
+
+        await ToSignal(GetTree().CreateTimer(1), "timeout");
+    }
+    
+    public async void StartEnemyTurn()
+    {
+        _currentBattleState = BattleState.EnemyTurn;
+        EmitSignalBattleStateChanged();
+        Enemy.PlayAnimationAttack();
+        await ToSignal(GetTree().CreateTimer(1), "timeout");
+        Enemy.PlayAnimationStand();
+        
+        Player.PlayAnimationHurt();
+        await ToSignal(GetTree().CreateTimer(1), "timeout");
+        Player.PlayAnimationStand();
+        Player.DecreaseHealth(2);
+
+        if (Player.IsDead())
+        {
+            _currentBattleState = BattleState.Lose;
+            // Handle loss
+            return;
+        }
+
+        await ToSignal(GetTree().CreateTimer(1), "timeout");
+        StartPlayerTurn();
+    }
+
+    public void EndPlayerTurn()
+    {
+        ButtonLock = true;
+        StartEnemyTurn();
+    }
+
+    public string GetBattleState()
+    {
+        return _currentBattleState.ToString();
+    }
 
     public void TurnReset()
     {
@@ -100,14 +199,14 @@ public partial class CombatManager: Node
         {
             if (i == 0 && _buffApplied[i] == 1)
             {
-                PlayerData.Instance.PlayerBlock -= 3;
+                PlayerData.Instance.PlayerDamageLight -= 3;
+                PlayerData.Instance.PlayerDamageMid -= 3;
+                PlayerData.Instance.PlayerDamageHeavy -= 3;
             }
 
             if (i == 1 && _buffApplied[i] == 1)
             {
-                PlayerData.Instance.PlayerDamageLight -= 3;
-                PlayerData.Instance.PlayerDamageMid -= 3;
-                PlayerData.Instance.PlayerDamageHeavy -= 3;
+                PlayerData.Instance.PlayerBlock -= 3;
             }
 
             if (i == 2 && _buffApplied[i] == 1)
@@ -141,19 +240,27 @@ public partial class CombatManager: Node
 
     public bool UseSkill(string skillName)
     {
-        if (!SkillData.Instance.SkillLibrary.ContainsKey(skillName)) return false;
-        
-        var skill = SkillData.Instance.SkillLibrary[skillName];
-
-        if (ActionsLeft < skill.ActionCost || PlayerData.Instance.GetPlayerStamina() < skill.ActionCost)
+        GD.Print($"Stamina: {PlayerData.Instance.GetPlayerStamina()}, Action: {ActionsLeft}");
+        if (!SkillData.Instance.SkillLibrary.TryGetValue(skillName, out var skill))
         {
-            GD.Print("Not enough actions or stamina left");
+            GD.PrintErr($"Skill '{skillName}' not found in SkillLibrary.");
             return false;
         }
-        
-        PlayerData.Instance.DecreaseStamina(skill.StaminaCost);
+
+        if (ActionsLeft < skill.ActionCost)
+        {
+            GD.PrintErr("Not enough actions to use skill.");
+            return false;
+        }
+
+        if (PlayerData.Instance.GetPlayerStamina() < skill.StaminaCost)
+        {
+            GD.PrintErr("Not enough stamina to use skill.");
+            return false;
+        }
+
         ActionsLeft -= skill.ActionCost;
-        skill.ExecuteEffect.Invoke();
+        skill.ExecuteEffect?.Invoke();
         return true;
     }
 

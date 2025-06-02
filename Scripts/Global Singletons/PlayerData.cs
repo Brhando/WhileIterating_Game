@@ -17,7 +17,14 @@ public partial class PlayerData: Node
         {
             QueueFree();
         }
+        
+        SetSkills(_playerClass);
+        
     }
+    
+    //signals to track  when the player's health/stamina/block changes
+    [Signal] public delegate void HealthBlockStaminaChangedEventHandler();
+    
     
     //player stats to be tracked globally
     private int _playerHealth = 25;
@@ -39,16 +46,24 @@ public partial class PlayerData: Node
     //player loadout
     public Dictionary<string, SkillData.Skill> PlayerSkills = new();
     
-    /* public SetSkills(string playerClass) {
-        if (playerClass == "Sword Swinger") {
-            PlayerSkills["Slash"] = SkillData.Instance.SkillLibrary["Slash"];
-            PlayerSkills["Thrust"] = SkillData.Instance.SkillLibrary["Thrust"];
-            PlayerSkills["Light Block"] = SkillData.Instance.SkillLibrary["Light Block"];
-            PlayerSkills["Prayer"] = SkillData.Instance.SkillLibrary["Prayer"];
-            PlayerSkills["Whirlwind"] = SkillData.Instance.SkillLibrary["Whirlwind"];
-        }
+     private void SetSkills(string playerClass) {
+         if (playerClass == null)
+         {
+             PlayerSkills["Skill1"] = null;
+             PlayerSkills["Skill2"] = null;
+             PlayerSkills["Skill3"] = null;
+             PlayerSkills["Skill4"] = null;
+             PlayerSkills["Skill5"] = null;
+         }
+         else if (playerClass == "Sword Swinger") {
+            PlayerSkills["Skill1"] = SkillData.Instance?.SkillLibrary["Slash"];
+            PlayerSkills["Skill2"] = SkillData.Instance?.SkillLibrary["Thrust"];
+            PlayerSkills["Skill3"] = SkillData.Instance?.SkillLibrary["Light Block"];
+            PlayerSkills["Skill4"] = SkillData.Instance?.SkillLibrary["Prayer"];
+            PlayerSkills["Skill5"] = SkillData.Instance?.SkillLibrary["Whirlwind"];
+         }
      
-     } */
+     } 
     public void Heal(int amount)
     {
         var health = _playerHealth;
@@ -63,11 +78,15 @@ public partial class PlayerData: Node
         {
             _playerHealth = _healthCap;
         }
-        
+        EmitSignalHealthBlockStaminaChanged();
     }
     public void TakeDamage(int amount)
     {
+        var initAmt = amount;
+        PlayerBlock = Mathf.Max(0, PlayerBlock - amount);
+        amount = Mathf.Max(0, initAmt - PlayerBlock);
         _playerHealth = Mathf.Max(0, _playerHealth - amount);
+        EmitSignalHealthBlockStaminaChanged();
     }
 
     public void IncreaseStamina(int amount)
@@ -84,6 +103,7 @@ public partial class PlayerData: Node
         {
             _playerStamina = _staminaCap;
         } 
+        EmitSignalHealthBlockStaminaChanged();
     }
 
     public bool DecreaseStamina(int amount)
@@ -96,16 +116,21 @@ public partial class PlayerData: Node
             GD.Print("Cannot have negative stamina.");
             return false;
         }
-        else
-        {
-            _playerStamina = stamina;
-        }
+        
+        
+        _playerStamina = stamina;
+        EmitSignalHealthBlockStaminaChanged();
         return true;
     }
 
     public int GetPlayerStamina()
     {
         return _playerStamina;
+    }
+
+    public int GetPlayerMaxStamina()
+    {
+        return _staminaCap;
     }
 
     public int GetPlayerHealth()
@@ -121,11 +146,14 @@ public partial class PlayerData: Node
     public void ResetStamina()
     {
         _playerStamina = _staminaCap;
+        EmitSignalHealthBlockStaminaChanged();
     }
+    
 
     public void IncrementBlocks()
     {
         _totalBlocks++;
+        EmitSignalHealthBlockStaminaChanged();
     }
 
     public void IncrementHeavy()
@@ -141,6 +169,12 @@ public partial class PlayerData: Node
     public int GetHeavy()
     {
         return _totalHeavy;
+    }
+
+    public void SetClass(string className)
+    {
+        _playerClass = className;
+        SetSkills(_playerClass);
     }
     
 

@@ -50,18 +50,20 @@ public partial class EnemyManager : Node
         private int _health;
         private readonly int _maxHealth;
         private int _level;
+        private int _shield;
         private List<EnemySkill> _skills;
         public int Health => _health;
         public string Name => _name;
         public int MaxHealth => _maxHealth;
         
         //constructor
-        public Enemy(string name, int health, int maxHealth, int level = 1)
+        public Enemy(string name, int health, int maxHealth, int level = 1, int shield = 0)
         {
             _name = name;
             _health = health;
             _maxHealth = maxHealth;
             _level = level;
+            _shield = shield;
             _skills = new List<EnemySkill>();
             
         }
@@ -81,8 +83,8 @@ public partial class EnemyManager : Node
         }
     }
 
-    private EnemySkill _strike = new("Strike", 5, "Attack");
-    private EnemySkill _block = new("Block", 0, "Defend", 5);
+    private readonly EnemySkill _strike = new("Strike", 5, "Attack");
+    private readonly EnemySkill _block = new("Block", 0, "Defend", 5);
 
     private Enemy _goblin;
     private Enemy _slime;

@@ -75,11 +75,11 @@ public partial class ShortSword : Area2D
 		_dialoguePanel.Visible = false;
 		_dialogueLabel.Visible = false;
 		
-		var player = GetTree().CurrentScene.GetNodeOrNull<Player>("Player");
-		if (player != null)
-		{
-			player.SetClass("Sword Swinger");
-		}
+		
+		
+		PlayerData.Instance.SetClass("Sword Swinger");
+		GD.Print("Class set to Sword Swinger.");
+		
 		QueueFree(); // Remove sword
 	}
 	
