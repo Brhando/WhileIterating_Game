@@ -1,11 +1,10 @@
 # TaskList
 
 ## Immediate Goals
+- [ ] Clean up buff code and logic
 - [ ] Create WorkBench script and scene
 - [ ] Create an early crafting system and recipes
-- [ ] Figure out how to make a player's hp persist throughout the "day"
 - [ ] Create a dungeon that is a collection of randomized nodes (5 - 10 rooms/ scenes)
-- [ ] Fully flesh out Warrior class combat tree
 - [ ] Finish 10 enemy types with basic behaviors 
 
 
@@ -17,7 +16,6 @@
 - [ ] Add `Tome` and its pickup interaction
 - [ ] Add SFX to the entire game
 - [ ] Add interactions and VFX/SFX for the Bed and Chest
-- [ ] Replace DialogUI with PlayerUI in StartArea
 
 ## Completed
 |Task                                          |Date                   |
@@ -36,3 +34,4 @@
 | [x] Created inventory UI                     |22 May, 2025           |
 | [x] Add day/night system                      |26 May, 2025          |
 | [x] Create base town area                     |26 May, 2025          |
+| [x] Flesh out Warrior Class                  |1 June, 2025           |
