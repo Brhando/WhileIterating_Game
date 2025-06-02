@@ -17,6 +17,8 @@ public partial class EnemyManager : Node
         {
             QueueFree();
         }
+        
+        InitializeEnemies();
     }
     
     //class to define enemy skills
@@ -28,7 +30,8 @@ public partial class EnemyManager : Node
         private int _shieldValue;
         private bool _isDamageOverTime;
         private bool _isBuff;
-
+        
+        //constructor
         public EnemySkill(string name, int damage, string type, int shield = 0, bool dot = false, bool buff = false)
         {
             _name = name;
@@ -47,7 +50,8 @@ public partial class EnemyManager : Node
         private int _health;
         private int _level;
         private List<EnemySkill> _skills;
-
+        
+        //constructor
         public Enemy(string name, int health, int level = 1)
         {
             _name = name;
@@ -55,38 +59,40 @@ public partial class EnemyManager : Node
             _level = level;
             _skills = new List<EnemySkill>();
         }
-
+        //func used to add skills
         public void AddSkill(EnemySkill skill)
         {
             _skills.Add(skill);
         }
     }
 
-    public EnemySkill Strike = new EnemySkill("Strike", 5, "Attack");
-    public EnemySkill Block = new EnemySkill("Block", 0, "Defend", 5);
+    private EnemySkill _strike = new("Strike", 5, "Attack");
+    private EnemySkill _block = new("Block", 0, "Defend", 5);
 
-    public Enemy Goblin;
-    public Enemy Slime;
-    public Enemy Skeleton;
+    private Enemy _goblin;
+    private Enemy _slime;
+    private Enemy _skeleton;
 
     public List<Enemy> Enemies = new();
 
     //Initialization
     private void InitializeEnemies()
     {
-        Goblin = new Enemy("Goblin", 15);
-        Goblin.AddSkill(Strike);
+        _goblin = new Enemy("Goblin", 15);
+        _goblin.AddSkill(_strike);
+        _goblin.AddSkill(_block);
 
-        Slime = new Enemy("Slime", 12);
-        Slime.AddSkill(Block);
+        _slime = new Enemy("Slime", 12);
+        _slime.AddSkill(_strike);
+        _slime.AddSkill(_block);
 
-        Skeleton = new Enemy("Skeleton", 20);
-        Skeleton.AddSkill(Strike);
-        Skeleton.AddSkill(Block);
+        _skeleton = new Enemy("Skeleton", 20);
+        _skeleton.AddSkill(_strike);
+        _skeleton.AddSkill(_block);
 
-        Enemies.Add(Goblin);
-        Enemies.Add(Slime);
-        Enemies.Add(Skeleton);
+        Enemies.Add(_goblin);
+        Enemies.Add(_slime);
+        Enemies.Add(_skeleton);
     }
     
 }
