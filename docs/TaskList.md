@@ -2,6 +2,7 @@
 
 ## Immediate Goals
 - [ ] Clean up buff code and logic
+- [ ] Reconnect code to singletons (player class update, battle scene management, enemy entity, etc.)
 - [ ] Create WorkBench script and scene
 - [ ] Create an early crafting system and recipes
 - [ ] Create a dungeon that is a collection of randomized nodes (5 - 10 rooms/ scenes)
