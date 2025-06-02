@@ -19,6 +19,58 @@ public partial class CombatManager: Node
         }
 
         _buffApplied = new() {0, 0, 0, 0, 0, 0, 0, 0}; //used to track bools for if a buff was applied from prayer
+        _blessingEffects["Invigorated"] = () =>
+        {
+            PlayerData.Instance.PlayerDamageHeavy += 3;
+            PlayerData.Instance.PlayerDamageMid += 3;
+            PlayerData.Instance.PlayerDamageLight += 3;
+            _buffApplied[0] = 1;
+        };
+
+        _blessingEffects["Stalwart"] = () =>
+        {
+            PlayerData.Instance.PlayerBlock += 3;
+            _buffApplied[1] = 1;
+        };
+
+        _blessingEffects["Mars's Pulse"] = () =>
+        {
+            PlayerData.Instance.IncreaseStamina(1);
+        };
+
+        _blessingEffects["Raven's Claws"] = () =>
+        {
+            PlayerData.Instance.PlayerDamageHeavy += 6;
+            PlayerData.Instance.PlayerDamageMid += 6;
+            PlayerData.Instance.PlayerDamageLight += 6;
+            _buffApplied[2] = 1;
+        };
+
+        _blessingEffects["Vampiric Feast"] = () =>
+        {
+            PlayerData.Instance.Heal(5);
+            // TODO: deal 5 damage to enemy
+            _buffApplied[3] = 1;
+        };
+
+        _blessingEffects["Strategic Knowledge"] = () =>
+        {
+            PlayerData.Instance.PlayerBlock += 6;
+            _buffApplied[4] = 1;
+        };
+
+        _blessingEffects["Eir's Blessing"] = () =>
+        {
+            PlayerData.Instance.Heal(8);
+            _buffApplied[5] = 1;
+        };
+
+        _blessingEffects["Quick Reflexes"] = () =>
+        {
+            // TODO: clear debuffs
+            _buffApplied[6] = 1;
+        };
+
     }
     
     //Combat variables to track
@@ -35,13 +87,16 @@ public partial class CombatManager: Node
     //turn tracker
     public enum BattleState { PlayerTurn, EnemyTurn, Win, Lose }
     public BattleState CurrentBattleState { get; private set; } = BattleState.PlayerTurn;
+    
+    //dictionary to hold buff applying logic
+    private readonly Dictionary<string, Action> _blessingEffects = new();
 
     public void TurnReset()
     {
         ActionsLeft = 3;
         PlayerData.Instance.ResetStamina();
 
-        for (int i = 0; i < 7; i++)
+        for (var i = 0; i < _buffApplied.Count; i++)
         {
             if (i == 0 && _buffApplied[i] == 1)
             {
@@ -102,57 +157,15 @@ public partial class CombatManager: Node
         return true;
     }
 
+    //function to apply the stored player blessing
     public void ApplyBlessing()
     {
         var blessingName = PlayerData.Instance.StoredBuff;
-
-        switch (blessingName)
+        if (_blessingEffects.TryGetValue(blessingName, out var applyEffect))
         {
-            case "Invigorated":
-                PlayerData.Instance.StoredBuff = "None";
-                PlayerData.Instance.PlayerDamageHeavy += 3;
-                PlayerData.Instance.PlayerDamageMid += 3;
-                PlayerData.Instance.PlayerDamageLight += 3;
-                _buffApplied[0] = 1;
-                break;
-            case "Stalwart":
-                PlayerData.Instance.StoredBuff = "None";
-                PlayerData.Instance.PlayerBlock += 3;
-                _buffApplied[1] = 1;
-                break;
-            case "Mars's Pulse":
-                PlayerData.Instance.StoredBuff = "None";
-                PlayerData.Instance.IncreaseStamina(1);
-                break;
-            case "Raven's Claws":
-                PlayerData.Instance.StoredBuff = "None";
-                PlayerData.Instance.PlayerDamageHeavy += 6;
-                PlayerData.Instance.PlayerDamageMid += 6;
-                PlayerData.Instance.PlayerDamageLight += 6;
-                _buffApplied[2] = 1;
-                break;
-            case "Vampiric Feast":
-                PlayerData.Instance.StoredBuff = "None";
-                PlayerData.Instance.Heal(5);
-                //add logic to deal damage to the enemy == 5
-                _buffApplied[3] = 1;
-                break;
-            case "Strategic Knowledge":
-                PlayerData.Instance.StoredBuff = "None";
-                PlayerData.Instance.PlayerBlock += 6;
-                _buffApplied[4] = 1;
-                break;
-            case "Eir's Blessing":
-                PlayerData.Instance.StoredBuff = "None";
-                PlayerData.Instance.Heal(8);
-                _buffApplied[5] = 1;
-                break;
-            case "Quick Reflexes":
-                PlayerData.Instance.StoredBuff = "None";
-                //Todo: set the debuff status of the player to none
-                _buffApplied[6] = 1;
-                break;
+            PlayerData.Instance.StoredBuff = "None";
+            applyEffect.Invoke();
         }
-        
     }
+
 }

@@ -43,8 +43,23 @@ public partial class SkillData : Node
     }
 
     public Prayers CurrentPrayer { get; set; } = Prayers.UnnamedAttackGod;
+    
+    //dictionary to hold cycling logic
+    private readonly Dictionary<Prayers, (Prayers Next, string Buff)> _prayerCycle = new()
+    {
+        { Prayers.UnnamedAttackGod, (Prayers.UnnamedDefenseGod, "Invigorated") },
+        { Prayers.UnnamedDefenseGod, (Prayers.UnnamedAttackGod, "Stalwart") },
+        { Prayers.Mars, (Prayers.Odin, "Mars's Pulse") },
+        { Prayers.Odin, (Prayers.Montu, "Raven's Claws") },
+        { Prayers.Montu, (Prayers.Mars, "Vampiric Feast") },
+        { Prayers.Anicetus, (Prayers.Eir, "Strategic Knowledge") },
+        { Prayers.Eir, (Prayers.Bastet, "Eir's Blessing") },
+        { Prayers.Bastet, (Prayers.Anicetus, "Quick Reflexes") }
+    };
+    
     public Dictionary<string, Skill> SkillLibrary = new();
-
+    
+    //initialize and hold skills in SkillLibrary dictionary
     public void InitializeSkills()
     {
         SkillLibrary["Slash"] = new Skill
@@ -122,54 +137,12 @@ public partial class SkillData : Node
 
     private void GiveGodsBuff()
     {
-        if (CurrentPrayer == Prayers.UnnamedAttackGod)
+        if (_prayerCycle.TryGetValue(CurrentPrayer, out var next))
         {
-            CurrentPrayer = Prayers.UnnamedDefenseGod;
-            PlayerData.Instance.StoredBuff = "Invigorated"; //small attack boost
-        }
-
-        if (CurrentPrayer == Prayers.UnnamedDefenseGod)
-        {
-            CurrentPrayer = Prayers.UnnamedAttackGod;
-            PlayerData.Instance.StoredBuff = "Stalwart"; // small defense boost
-        }
-
-        if (CurrentPrayer == Prayers.Mars)
-        {
-            CurrentPrayer = Prayers.Odin;
-            PlayerData.Instance.StoredBuff = "Mars's Pulse"; // stamina boost
-        }
-
-        if (CurrentPrayer == Prayers.Odin)
-        {
-            CurrentPrayer = Prayers.Montu;
-            PlayerData.Instance.StoredBuff = "Raven's Claws"; //moderate attack boost
-        }
-
-        if (CurrentPrayer == Prayers.Montu)
-        {
-            CurrentPrayer = Prayers.Mars;
-            PlayerData.Instance.StoredBuff = "Vampiric Feast"; //health steal
-        }
-
-        if (CurrentPrayer == Prayers.Anicetus)
-        {
-            CurrentPrayer = Prayers.Eir;
-            PlayerData.Instance.StoredBuff = "Strategic Knowledge"; //moderate defense boost
-        }
-
-        if (CurrentPrayer == Prayers.Eir)
-        {
-            CurrentPrayer = Prayers.Bastet;
-            PlayerData.Instance.StoredBuff = "Eir's Blessing"; //medium heal
-        }
-
-        if (CurrentPrayer == Prayers.Bastet)
-        {
-            CurrentPrayer = Prayers.Anicetus;
-            PlayerData.Instance.StoredBuff = "Quick Reflexes"; //debuff cleanse
+            CurrentPrayer = next.Next;
+            PlayerData.Instance.StoredBuff = next.Buff;
         }
     }
-    
-    
+
+
 }
