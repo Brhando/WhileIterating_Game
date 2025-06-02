@@ -124,7 +124,7 @@ public partial class SkillData : Node
         {
             Name = "Whirlwind",
             StaminaCost = 3,
-            ActionCost = 3,
+            ActionCost = 2,
             Damage = 20,
             ShieldValue = 0,
             ExecuteEffect = () =>
