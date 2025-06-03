@@ -98,6 +98,9 @@ public partial class CombatManager: Node
     //signal to track turn changes 
     [Signal] public delegate void BattleStateChangedEventHandler();
     
+    //signal to track action use
+    [Signal] public delegate void ActionUsedEventHandler();
+    
     //dictionary to hold buff applying logic
     private readonly Dictionary<string, Action> _blessingEffects = new();
     
@@ -190,6 +193,11 @@ public partial class CombatManager: Node
         return _currentBattleState.ToString();
     }
 
+    public int GetActionsLeft()
+    {
+        return ActionsLeft;
+    }
+
     public void TurnReset()
     {
         ActionsLeft = 3;
@@ -260,6 +268,7 @@ public partial class CombatManager: Node
         }
 
         ActionsLeft -= skill.ActionCost;
+        EmitSignalActionUsed();
         skill.ExecuteEffect?.Invoke();
         return true;
     }

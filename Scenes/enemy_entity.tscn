@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dioqfnrkt7ts3"]
+[gd_scene load_steps=19 format=3 uid="uid://dioqfnrkt7ts3"]
 
 [ext_resource type="Script" uid="uid://cf1iqnrytjj2t" path="res://Scripts/EnemyEntity.cs" id="1_k415t"]
 [ext_resource type="Texture2D" uid="uid://igvn3xaqdg2k" path="res://Assets/MadeSprites/slime1.png" id="2_fq2ch"]
@@ -125,6 +125,18 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="LabelSettings" id="LabelSettings_e6pj2"]
+font_size = 10
+font_color = Color(1, 0, 0, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_33i4k"]
+font_size = 10
+font_color = Color(0, 0.752941, 1, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
 [node name="EnemyEntity" type="CharacterBody2D"]
 script = ExtResource("1_k415t")
 GoblinFrames = SubResource("SpriteFrames_e6pj2")
@@ -132,4 +144,31 @@ SlimeFrames = SubResource("SpriteFrames_33i4k")
 SkeletonFrames = SubResource("SpriteFrames_lad0a")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-animation = &"Attack"
+animation = &""
+
+[node name="Panel" type="Panel" parent="AnimatedSprite2D"]
+offset_left = -21.0
+offset_top = -59.0
+offset_right = 21.0
+offset_bottom = -30.0
+
+[node name="HPLabel" type="Label" parent="AnimatedSprite2D/Panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 14.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_e6pj2")
+horizontal_alignment = 1
+
+[node name="BlockLabel" type="Label" parent="AnimatedSprite2D/Panel"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -14.0
+grow_horizontal = 2
+grow_vertical = 0
+label_settings = SubResource("LabelSettings_33i4k")
+horizontal_alignment = 1

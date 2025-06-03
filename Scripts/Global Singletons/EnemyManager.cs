@@ -55,6 +55,7 @@ public partial class EnemyManager : Node
         public int Health => _health;
         public string Name => _name;
         public int MaxHealth => _maxHealth;
+        public int Shield => _shield;
         
         //constructor
         public Enemy(string name, int health, int maxHealth, int level = 1, int shield = 0)
@@ -75,6 +76,9 @@ public partial class EnemyManager : Node
         }
         public void TakeDamage(int amount)
         {
+            var initAmt = amount;
+            _shield = Mathf.Max(0, _shield - amount);
+            amount = Mathf.Max(0, initAmt - _shield);
             _health = Mathf.Max(0, _health - amount);
         }
         public bool IsDead()

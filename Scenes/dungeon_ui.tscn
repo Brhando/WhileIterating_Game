@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://besbjbut407sy"]
+[gd_scene load_steps=7 format=3 uid="uid://besbjbut407sy"]
 
 [ext_resource type="Script" uid="uid://b4v0j1sldpxw2" path="res://Scripts/UI Scripts/DungeonUi.cs" id="1_lnpn2"]
 
@@ -22,6 +22,11 @@ outline_color = Color(0, 0, 0, 1)
 font_size = 20
 font_color = Color(0, 0.737255, 1, 1)
 outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_clj05"]
+font_color = Color(1, 1, 0.501961, 1)
+outline_size = 4
 outline_color = Color(0, 0, 0, 1)
 
 [node name="DungeonUI" type="Node2D"]
@@ -97,7 +102,6 @@ grow_vertical = 0
 
 [node name="Skill2" type="Button" parent="CanvasLayer"]
 custom_minimum_size = Vector2(200, 100)
-anchors_preset = -1
 offset_left = 211.0
 offset_top = 548.0
 offset_right = 411.0
@@ -105,7 +109,6 @@ offset_bottom = 648.0
 
 [node name="Skill3" type="Button" parent="CanvasLayer"]
 custom_minimum_size = Vector2(200, 100)
-anchors_preset = -1
 offset_left = 423.0
 offset_top = 548.0
 offset_right = 623.0
@@ -153,3 +156,12 @@ offset_bottom = 15.5
 grow_horizontal = 0
 grow_vertical = 2
 text = "End Turn"
+
+[node name="ActionLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -235.0
+offset_bottom = 57.0
+grow_horizontal = 0
+label_settings = SubResource("LabelSettings_clj05")

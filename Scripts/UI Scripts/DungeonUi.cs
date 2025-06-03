@@ -7,6 +7,7 @@ public partial class DungeonUi : Node2D
     private Label _playerHp;
     private Label _playerStamina;
     private Label _playerBlock;
+    private Label _actionLabel;
     private Button _skill1;
     private Button _skill2;
     private Button _skill3;
@@ -21,6 +22,7 @@ public partial class DungeonUi : Node2D
         _playerHp = GetNode<Label>("CanvasLayer/Panel_left/PlayerHP");
         _playerBlock = GetNode<Label>("CanvasLayer/Panel_left/PlayerBlock");
         _playerStamina = GetNode<Label>("CanvasLayer/Panel_left/PlayerStamina");
+        _actionLabel = GetNode<Label>("CanvasLayer/ActionLabel");
         
         _skill1 = GetNode<Button>("CanvasLayer/Skill1");
         _skill2 = GetNode<Button>("CanvasLayer/Skill2");
@@ -52,6 +54,12 @@ public partial class DungeonUi : Node2D
         };
         if (PlayerData.Instance != null)
             PlayerData.Instance.HealthBlockStaminaChanged += UpdatePlayerLabels;
+
+        if (CombatManager.Instance != null)
+            CombatManager.Instance.ActionUsed += UpdateActions;
+        
+        UpdateActions();
+
     }
 
     
@@ -59,6 +67,11 @@ public partial class DungeonUi : Node2D
     private void UpdateTurnLabel()
     {
         _turnLabel.Text = CombatManager.Instance.GetBattleState();
+    }
+
+    private void UpdateActions()
+    {
+        _actionLabel.Text = "Actions: " + CombatManager.Instance.GetActionsLeft();
     }
 
     private void UpdatePlayerLabels()

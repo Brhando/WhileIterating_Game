@@ -5,6 +5,8 @@ public partial class EnemyEntity : CharacterBody2D
 {
     private AnimatedSprite2D _anim;
     private EnemyManager.Enemy _enemy;
+    private Label _hpLabel;
+    private Label _blockLabel;
     
     [Export] public SpriteFrames GoblinFrames { get; set; }
     [Export] public SpriteFrames SlimeFrames { get; set; }
@@ -14,6 +16,8 @@ public partial class EnemyEntity : CharacterBody2D
     public override void _Ready()
     {
         _anim = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        _hpLabel = GetNode<Label>("AnimatedSprite2D/Panel/HPLabel");
+        _blockLabel = GetNode<Label>("AnimatedSprite2D/Panel/BlockLabel");
         
         var rng = new RandomNumberGenerator();
         rng.Randomize();
@@ -32,12 +36,20 @@ public partial class EnemyEntity : CharacterBody2D
         GD.Print("Assigned SpriteFrames: " + _anim.SpriteFrames);
         
         PlayAnimationStand();
+        UpdateLabels();
     }
     
     //function to decrease enemy's health when attacked
     public void DecreaseHealth(int amt)
     {
         _enemy.TakeDamage(amt);
+        UpdateLabels();
+    }
+
+    private void UpdateLabels()
+    {
+        _hpLabel.Text = _enemy.Health.ToString();
+        _blockLabel.Text = _enemy.Shield.ToString();
     }
 
     public bool IsDead()
