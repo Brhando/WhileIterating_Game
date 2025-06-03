@@ -34,6 +34,8 @@ public partial class PlayerData: Node
     public int PlayerDamageLight = 5;
     public int PlayerDamageMid = 12;
     public int PlayerDamageHeavy = 20;
+    public int PlayerDotLeft = 0;
+    public int DotDamageTotal = 0;
     public bool PrayerState = false;
     
     private int _healthCap = 25;
@@ -83,10 +85,30 @@ public partial class PlayerData: Node
     public void TakeDamage(int amount)
     {
         var initAmt = amount;
-        PlayerBlock = Mathf.Max(0, PlayerBlock - amount);
         amount = Mathf.Max(0, initAmt - PlayerBlock);
+        PlayerBlock = Mathf.Max(0, PlayerBlock - initAmt);
         _playerHealth = Mathf.Max(0, _playerHealth - amount);
         EmitSignalHealthBlockStaminaChanged();
+    }
+
+    public void ApplyDot(int counter, int damage)
+    {
+        PlayerDotLeft += counter;
+        DotDamageTotal += damage;
+    }
+
+    public void ApplyDotDamage(int amt)
+    {
+        _playerHealth = Mathf.Max(0, _playerHealth - amt);
+    }
+    public bool CheckDot()
+    {
+        if (PlayerDotLeft > 0)
+        {
+            PlayerDotLeft--;
+            return true;
+        }
+        return false;
     }
 
     public void IncreaseStamina(int amount)

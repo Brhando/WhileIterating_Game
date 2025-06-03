@@ -22,6 +22,21 @@ public partial class PlayerEntity : CharacterBody2D
     {
         PlayerData.Instance.TakeDamage(amt);
     }
+
+    public bool CheckDot()
+    {
+        return PlayerData.Instance.CheckDot();
+    }
+
+    public void ApplyDotDamage()
+    {
+        PlayerData.Instance.ApplyDotDamage(PlayerData.Instance.DotDamageTotal);
+    }
+
+    public void ApplyDot(int counter, int damage)
+    {
+        PlayerData.Instance.ApplyDot(counter, damage);
+    }
     
     //play certain animations depending on what is happening
     public void PlayAnimationHurt()

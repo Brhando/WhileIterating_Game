@@ -113,9 +113,22 @@ public partial class CombatManager: Node
         StartPlayerTurn();
     }
     
-    public void StartPlayerTurn()
+    public async void StartPlayerTurn()
     {
         _currentBattleState = BattleState.PlayerTurn;
+
+        if (Player.CheckDot())
+        {
+            Player.PlayAnimationHurt();
+            await ToSignal(GetTree().CreateTimer(1), "timeout");
+            Player.PlayAnimationStand();
+            Player.ApplyDotDamage();
+        }
+        if (Player.IsDead())
+        {
+            _currentBattleState = BattleState.Lose;
+            return;
+        }
         TurnReset();
         ButtonLock = false;
         EmitSignalBattleStateChanged();
@@ -141,10 +154,13 @@ public partial class CombatManager: Node
         await ToSignal(GetTree().CreateTimer(1), "timeout");
         Player.PlayAnimationStand();
 
-        Enemy.PlayAnimationHurt();
-        await ToSignal(GetTree().CreateTimer(1), "timeout");
-        Enemy.PlayAnimationStand();
-        Enemy.DecreaseHealth(skill.Damage);
+        if (skill.Damage > 0)
+        {
+            Enemy.PlayAnimationHurt();
+            await ToSignal(GetTree().CreateTimer(1), "timeout");
+            Enemy.PlayAnimationStand();
+            Enemy.DecreaseHealth(skill.Damage);
+        }
 
         if (Enemy.IsDead())
         {
@@ -162,19 +178,54 @@ public partial class CombatManager: Node
     {
         _currentBattleState = BattleState.EnemyTurn;
         EmitSignalBattleStateChanged();
-        Enemy.PlayAnimationAttack();
-        await ToSignal(GetTree().CreateTimer(1), "timeout");
-        Enemy.PlayAnimationStand();
+
+        // Get enemy skills
+        var skills = Enemy.GetSkills();
+        var rng = new RandomNumberGenerator();
+        rng.Randomize();
+
+        // Choose a random skill
+        var chosenSkill = skills[rng.RandiRange(0, skills.Count - 1)];
+
+        GD.Print($"Enemy uses: {chosenSkill.Name}");
         
-        Player.PlayAnimationHurt();
-        await ToSignal(GetTree().CreateTimer(1), "timeout");
-        Player.PlayAnimationStand();
-        Player.DecreaseHealth(2);
+
+        // Handle skill effects
+        if (chosenSkill.IsBuff)
+        {
+            GD.Print("Enemy casts a buff.");
+            // Apply shield or other effects here
+            // For now, let's just print that something happened
+        }
+
+        if (chosenSkill.IsDamageOverTime)
+        {
+            Player.ApplyDot(chosenSkill.DotCounter, chosenSkill.Damage);
+        }
+        
+        if (chosenSkill.Damage > 0)
+        {
+            // Attack animation (generic for now)
+            Enemy.PlayAnimationAttack();
+            await ToSignal(GetTree().CreateTimer(1), "timeout");
+            Enemy.PlayAnimationStand();
+            
+            Player.PlayAnimationHurt();
+            await ToSignal(GetTree().CreateTimer(1), "timeout");
+            Player.PlayAnimationStand();
+
+            Player.DecreaseHealth(chosenSkill.Damage);
+        }
+        
+        if (chosenSkill.ShieldValue > 0)
+        {
+            GD.Print("Enemy gains shield.");
+            Enemy.AddShield(chosenSkill.ShieldValue);
+        }
 
         if (Player.IsDead())
         {
             _currentBattleState = BattleState.Lose;
-            // Handle loss
             return;
         }
 

@@ -1,5 +1,5 @@
 using Godot;
-using System;
+using System.Collections.Generic;
 
 public partial class EnemyEntity : CharacterBody2D
 {
@@ -46,6 +46,12 @@ public partial class EnemyEntity : CharacterBody2D
         UpdateLabels();
     }
 
+    public void AddShield(int amount)
+    {
+        _enemy.AddShield(amount);
+        UpdateLabels();
+    }
+
     private void UpdateLabels()
     {
         _hpLabel.Text = _enemy.Health.ToString();
@@ -65,6 +71,11 @@ public partial class EnemyEntity : CharacterBody2D
     public int GetMaxHealth()
     {
         return _enemy.MaxHealth;
+    }
+    
+    public List<EnemyManager.EnemySkill> GetSkills()
+    {
+        return _enemy.GetSkills(); //linked to EnemyManager
     }
     
     public void PlayAnimationAttack()
