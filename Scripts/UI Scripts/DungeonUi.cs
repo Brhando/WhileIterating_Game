@@ -13,6 +13,7 @@ public partial class DungeonUi : Node2D
     private Button _skill3;
     private Button _skill4;
     private Button _skill5;
+    private Button _storedBuffButton;
     private Button _victoryButton;
     private Button _endTurnButton;
 
@@ -29,14 +30,16 @@ public partial class DungeonUi : Node2D
         _skill3 = GetNode<Button>("CanvasLayer/Skill3");
         _skill4 = GetNode<Button>("CanvasLayer/Skill4");
         _skill5 = GetNode<Button>("CanvasLayer/Skill5");
+        _storedBuffButton = GetNode<Button>("CanvasLayer/StoredBuffButton");
         _victoryButton = GetNode<Button>("CanvasLayer/VictoryButton");
         _endTurnButton = GetNode<Button>("CanvasLayer/EndTurnButton");
 
         _skill1.Pressed += OnSkill1Pressed;
         _skill2.Pressed += OnSkill2Pressed;
-        //_skill3.Pressed += OnSkill3Pressed();
-        //_skill4.Pressed += OnSkill4Pressed();
-        //_skill5.Pressed += OnSkill5Pressed();
+        _skill3.Pressed += OnSkill3Pressed;
+        _skill4.Pressed += OnSkill4Pressed;
+        _skill5.Pressed += OnSkill5Pressed;
+        _storedBuffButton.Pressed += OnBuffPressed;
         _victoryButton.Pressed += OnVictoryPressed;
         _endTurnButton.Pressed += OnEndPressed;
 
@@ -59,6 +62,7 @@ public partial class DungeonUi : Node2D
             CombatManager.Instance.ActionUsed += UpdateActions;
         
         UpdateActions();
+        UpdateBuffIcon();
 
     }
 
@@ -67,6 +71,11 @@ public partial class DungeonUi : Node2D
     private void UpdateTurnLabel()
     {
         _turnLabel.Text = CombatManager.Instance.GetBattleState();
+    }
+
+    private void UpdateBuffIcon()
+    {
+        _storedBuffButton.Icon = GD.Load<Texture2D>($"res://Assets/Icons/{PlayerData.Instance.StoredBuff}.png");
     }
 
     private void UpdateActions()
@@ -90,6 +99,7 @@ public partial class DungeonUi : Node2D
             _skill3.Disabled = true;
             _skill4.Disabled = true;
             _skill5.Disabled = true;
+            _storedBuffButton.Disabled = true;
             _endTurnButton.Disabled = true;
             _endTurnButton.Visible = false;
         }
@@ -100,6 +110,7 @@ public partial class DungeonUi : Node2D
             _skill3.Disabled = false;
             _skill4.Disabled = false;
             _skill5.Disabled = false;
+            _storedBuffButton.Disabled = false;
             _endTurnButton.Disabled = false;
             _endTurnButton.Visible = true;
         }
@@ -125,6 +136,28 @@ public partial class DungeonUi : Node2D
         CombatManager.Instance.ExecutePlayerSkill(PlayerData.Instance.PlayerSkills["Skill2"]);
     }
 
+    private static void OnSkill3Pressed()
+    {
+        CombatManager.Instance.ExecutePlayerSkill(PlayerData.Instance.PlayerSkills["Skill3"]);
+    }
+
+    private void OnSkill4Pressed()
+    {
+        CombatManager.Instance.ExecutePlayerSkill(PlayerData.Instance.PlayerSkills["Skill4"]);
+        UpdateBuffIcon();
+    }
+
+    private static void OnSkill5Pressed()
+    {
+        CombatManager.Instance.ExecutePlayerSkill(PlayerData.Instance.PlayerSkills["Skill5"]);
+    }
+
+    private void OnBuffPressed()
+    {
+        CombatManager.Instance.ApplyBlessing();
+        UpdateBuffIcon();
+        UpdatePlayerLabels();
+    }
     private static void OnVictoryPressed()
     {
         //add Scene Change logic for next dungeon room or map if boss room

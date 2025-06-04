@@ -31,6 +31,7 @@ public partial class PlayerData: Node
     private string _playerClass;
     private int _playerStamina = 3;
     public int PlayerBlock = 0;
+    public int ZeroDamage = 0; //used to return zero from the func<int> in skill class (SkillData)
     public int PlayerDamageLight = 5;
     public int PlayerDamageMid = 12;
     public int PlayerDamageHeavy = 20;
@@ -80,6 +81,12 @@ public partial class PlayerData: Node
         {
             _playerHealth = _healthCap;
         }
+        EmitSignalHealthBlockStaminaChanged();
+    }
+
+    public void IncreaseBlock(int amount)
+    {
+        PlayerBlock += amount;
         EmitSignalHealthBlockStaminaChanged();
     }
     public void TakeDamage(int amount)
@@ -197,6 +204,11 @@ public partial class PlayerData: Node
     {
         _playerClass = className;
         SetSkills(_playerClass);
+    }
+
+    public string GetPlayerClass()
+    {
+        return _playerClass;
     }
     
 

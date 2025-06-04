@@ -49,7 +49,7 @@ public partial class CombatManager: Node
         _blessingEffects["Vampiric Feast"] = () =>
         {
             PlayerData.Instance.Heal(5);
-            // TODO: deal 5 damage to enemy
+            Enemy.DecreaseHealth(5);
             _buffApplied[3] = 1;
         };
 
@@ -67,7 +67,8 @@ public partial class CombatManager: Node
 
         _blessingEffects["Quick Reflexes"] = () =>
         {
-            // TODO: clear debuffs
+            PlayerData.Instance.PlayerDotLeft = 0;
+            PlayerData.Instance.DotDamageTotal = 0;
             _buffApplied[6] = 1;
         };
 
@@ -127,6 +128,7 @@ public partial class CombatManager: Node
         if (Player.IsDead())
         {
             _currentBattleState = BattleState.Lose;
+            EmitSignalBattleStateChanged();
             return;
         }
         TurnReset();
@@ -150,18 +152,29 @@ public partial class CombatManager: Node
         {
             //Player.PlayAnimationThrust();
         }
+        else if (skill.Name == "Light Block")
+        {
+            //Player.PlayAnimationThrust();
+        }
+        else if (skill.Name == "Prayer")
+        {
+            //Player.PlayAnimationPrayer();
+        }
+        else if (skill.Name == "Whirlwind")
+        {
+            //Player.PlayAnimationWhirlwind()
+        }
 
         await ToSignal(GetTree().CreateTimer(1), "timeout");
         Player.PlayAnimationStand();
 
-        if (skill.Damage > 0)
+        if (skill.GetDamage != null && skill.GetDamage() > 0)
         {
             Enemy.PlayAnimationHurt();
             await ToSignal(GetTree().CreateTimer(1), "timeout");
             Enemy.PlayAnimationStand();
-            Enemy.DecreaseHealth(skill.Damage);
+            Enemy.DecreaseHealth(skill.GetDamage());
         }
-
         if (Enemy.IsDead())
         {
             _currentBattleState = BattleState.Win;
@@ -252,7 +265,6 @@ public partial class CombatManager: Node
     public void TurnReset()
     {
         ActionsLeft = 3;
-        PlayerData.Instance.ResetStamina();
 
         for (var i = 0; i < _buffApplied.Count; i++)
         {
@@ -277,6 +289,7 @@ public partial class CombatManager: Node
             
             _buffApplied[i] = 0;
         }
+        PlayerData.Instance.ResetStamina(); //reset stamina after buff falls off, so labels are properly updated
         
     } 
     public void IncrementAttackCounter()

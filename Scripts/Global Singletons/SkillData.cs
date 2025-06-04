@@ -16,8 +16,10 @@ public partial class SkillData : Node
         {
             QueueFree();
         }
-        
-        InitializeSkills();
+
+        if (PlayerData.Instance != null)
+            InitializeSkills();
+            
     }
     
     public class Skill
@@ -25,9 +27,10 @@ public partial class SkillData : Node
         public string Name;
         public int StaminaCost;
         public int ActionCost;
-        public int Damage;
         public int ShieldValue;
-        public Action ExecuteEffect;
+        public bool IsBuff = false;
+        public Func<int>? GetDamage;
+        public Action? ExecuteEffect;
     }
 
     public enum Prayers
@@ -42,7 +45,9 @@ public partial class SkillData : Node
         Bastet
     }
 
-    public Prayers CurrentPrayer { get; set; } = Prayers.UnnamedAttackGod;
+    public Prayers CurrentPrayer { get; set; }
+
+    private bool _prayerChanged = false;
     
     //dictionary to hold cycling logic
     private readonly Dictionary<Prayers, (Prayers Next, string Buff)> _prayerCycle = new()
@@ -60,18 +65,18 @@ public partial class SkillData : Node
     public Dictionary<string, Skill> SkillLibrary = new();
     
     //initialize and hold skills in SkillLibrary dictionary
-    public void InitializeSkills()
+    private void InitializeSkills()
     {
         SkillLibrary["Slash"] = new Skill
         {
             Name = "Slash",
             StaminaCost = 1,
             ActionCost = 1,
-            Damage = 5,
             ShieldValue = 0,
+            GetDamage = () => PlayerData.Instance.PlayerDamageLight,
             ExecuteEffect = () =>
             {
-                PlayerData.Instance?.DecreaseStamina(1);
+                PlayerData.Instance.DecreaseStamina(SkillLibrary["Slash"].StaminaCost);
                 CombatManager.Instance?.IncrementAttackCounter();
             }
         };
@@ -81,11 +86,11 @@ public partial class SkillData : Node
             Name = "Thrust",
             StaminaCost = 2,
             ActionCost = 1,
-            Damage = 10,
+            GetDamage = () => PlayerData.Instance.PlayerDamageMid,
             ShieldValue = 0,
             ExecuteEffect = () =>
             {
-                PlayerData.Instance?.DecreaseStamina(2);
+                PlayerData.Instance.DecreaseStamina(SkillLibrary["Thrust"].StaminaCost);
                 CombatManager.Instance?.IncrementAttackCounter();
             }
         };
@@ -95,11 +100,12 @@ public partial class SkillData : Node
             Name = "Light Block",
             StaminaCost = 1,
             ActionCost = 1,
-            Damage = 0,
+            GetDamage = () => PlayerData.Instance.ZeroDamage,
             ShieldValue = 5,
             ExecuteEffect = () =>
             {
-                PlayerData.Instance?.DecreaseStamina(1);
+                PlayerData.Instance.DecreaseStamina(SkillLibrary["Light Block"].StaminaCost);
+                PlayerData.Instance.IncreaseBlock(SkillLibrary["Light Block"].ShieldValue);
                 CombatManager.Instance?.IncrementDefendCounter();
             }
         };
@@ -109,8 +115,9 @@ public partial class SkillData : Node
             Name = "Prayer",
             ActionCost = 2,
             StaminaCost = 0,
-            Damage = 0,
+            GetDamage = () => PlayerData.Instance.ZeroDamage,
             ShieldValue = 0,
+            IsBuff = true,
             ExecuteEffect = () =>
             {
                 CombatManager.Instance?.IncrementPrayerCounter();
@@ -126,18 +133,32 @@ public partial class SkillData : Node
             Name = "Whirlwind",
             StaminaCost = 3,
             ActionCost = 2,
-            Damage = 20,
+            GetDamage = () => PlayerData.Instance.PlayerDamageHeavy,
             ShieldValue = 0,
             ExecuteEffect = () =>
             {
-                PlayerData.Instance?.DecreaseStamina(3);
+                PlayerData.Instance.DecreaseStamina(SkillLibrary["Whirlwind"].StaminaCost);
                 CombatManager.Instance?.IncrementDefendCounter();
             }
         };
     }
 
     private void GiveGodsBuff()
-    {
+    {  
+        if (PlayerData.Instance.GetPlayerClass() == "Berserker" && !_prayerChanged)
+        {
+            CurrentPrayer = Prayers.Mars;
+            _prayerChanged = true;
+        }
+        else if (PlayerData.Instance.GetPlayerClass() == "Warder" && !_prayerChanged)
+        {
+            CurrentPrayer = Prayers.Anicetus;
+            _prayerChanged = true;
+        }
+        else if (!_prayerChanged)
+        {
+            CurrentPrayer = Prayers.UnnamedAttackGod;
+        }
         if (_prayerCycle.TryGetValue(CurrentPrayer, out var next))
         {
             CurrentPrayer = next.Next;
