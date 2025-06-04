@@ -18,7 +18,7 @@ public partial class CombatManager: Node
             QueueFree();
         }
 
-        _buffApplied = new() {0, 0, 0, 0, 0, 0, 0, 0}; //used to track bools for if a buff was applied from prayer
+        _buffApplied = new() {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; //used to track if a buff was applied from prayer or chains
         _blessingEffects["Invigorated"] = () =>
         {
             PlayerData.Instance.PlayerDamageHeavy += 3;
@@ -262,7 +262,7 @@ public partial class CombatManager: Node
         return ActionsLeft;
     }
 
-    public void TurnReset()
+    private void TurnReset()
     {
         ActionsLeft = 3;
 
@@ -286,22 +286,60 @@ public partial class CombatManager: Node
                 PlayerData.Instance.PlayerDamageMid -= 6;
                 PlayerData.Instance.PlayerDamageHeavy -= 6;
             }
+
+            if (i == 8 && _buffApplied[i] == 1)
+            {
+                PlayerData.Instance.PlayerDamageLight -= 5;
+                PlayerData.Instance.PlayerDamageMid -= 5;
+                PlayerData.Instance.PlayerDamageHeavy -= 5;
+            }
+
+            if (i == 9 && _buffApplied[i] == 1)
+            {
+                PlayerData.Instance.PlayerSkills["Skill3"].ShieldValue -= 5;
+            }
             
             _buffApplied[i] = 0;
         }
+        ApplyChain();
         PlayerData.Instance.ResetStamina(); //reset stamina after buff falls off, so labels are properly updated
         
-    } 
+    }
+
+    private void ApplyChain()
+    {
+        if (AttackChain)
+        {
+            //Player.PlayAnimationAttackGlow()
+            PlayerData.Instance.PlayerDamageLight += 5;
+            PlayerData.Instance.PlayerDamageMid += 5;
+            PlayerData.Instance.PlayerDamageHeavy += 5;
+            _buffApplied[8] = 1;
+            AttackCounter = 0;
+            GD.Print("Applied chain. Buff: Damage + 5");
+        }
+
+        if (DefendChain)
+        {
+            //Player.PlayAnimationDefenseGlow()
+            PlayerData.Instance.PlayerSkills["Skill3"].ShieldValue += 5;
+            _buffApplied[9] = 1;
+            DefendCounter = 0;
+            GD.Print("Applied chain. Buff: Defense + 5");
+        }
+    }
     public void IncrementAttackCounter()
     {
         AttackCounter++;
-        AttackChain = (AttackCounter != 0 && AttackCounter % 3 == 0);
+        DefendCounter = 0;
+        AttackChain = AttackCounter == 3;
     }
 
     public void IncrementDefendCounter()
     {
         DefendCounter++;
-        DefendChain = (DefendCounter != 0 && DefendCounter % 3 == 0);
+        AttackCounter = 0;
+        DefendChain = DefendCounter == 3;
     }
 
     public void IncrementPrayerCounter()

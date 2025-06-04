@@ -138,7 +138,7 @@ public partial class SkillData : Node
             ExecuteEffect = () =>
             {
                 PlayerData.Instance.DecreaseStamina(SkillLibrary["Whirlwind"].StaminaCost);
-                CombatManager.Instance?.IncrementDefendCounter();
+                CombatManager.Instance?.IncrementAttackCounter();
             }
         };
     }
