@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bgwf3782p4e2m"
-path="res://.godot/imported/mana seed, sprites.png-763cbfd35491fc7d24d1ba553bdece31.ctex"
+uid="uid://hlvys3lspj0g"
+path="res://.godot/imported/cavernTILESET01.png-0bb735c76eaadd2e206dbfe5a3978ab6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/guidelines and requirements for making and selling your own compatible outfits/mana seed, sprites.png"
-dest_files=["res://.godot/imported/mana seed, sprites.png-763cbfd35491fc7d24d1ba553bdece31.ctex"]
+source_file="res://Assets/19.12a - Iconic Castle 2.0/cavernTILESET01.png"
+dest_files=["res://.godot/imported/cavernTILESET01.png-0bb735c76eaadd2e206dbfe5a3978ab6.ctex"]
 
 [params]
 
