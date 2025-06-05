@@ -45,7 +45,7 @@ public partial class SkillData : Node
         Bastet
     }
 
-    public Prayers CurrentPrayer { get; set; }
+    public Prayers CurrentPrayer { get; set; } = Prayers.UnnamedAttackGod;
 
     private bool _prayerChanged = false;
     
@@ -155,10 +155,7 @@ public partial class SkillData : Node
             CurrentPrayer = Prayers.Anicetus;
             _prayerChanged = true;
         }
-        else if (!_prayerChanged)
-        {
-            CurrentPrayer = Prayers.UnnamedAttackGod;
-        }
+        
         if (_prayerCycle.TryGetValue(CurrentPrayer, out var next))
         {
             CurrentPrayer = next.Next;
