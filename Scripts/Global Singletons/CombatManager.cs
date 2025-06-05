@@ -48,8 +48,8 @@ public partial class CombatManager: Node
 
         _blessingEffects["Vampiric Feast"] = () =>
         {
-            PlayerData.Instance.Heal(5);
-            Enemy.DecreaseHealth(5);
+            PlayerData.Instance.Heal(PlayerData.Instance.PlayerDamageLight);
+            Enemy.DecreaseHealth(PlayerData.Instance.PlayerDamageLight);
             _buffApplied[3] = 1;
         };
 
@@ -134,7 +134,7 @@ public partial class CombatManager: Node
         TurnReset();
         ButtonLock = false;
         EmitSignalBattleStateChanged();
-        
+        EmitSignalActionUsed();
     }
     
     public async void ExecutePlayerSkill(SkillData.Skill skill)
