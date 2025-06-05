@@ -23,7 +23,8 @@ public partial class EnemyEntity : CharacterBody2D
         rng.Randomize();
         
         var randomIndex = rng.RandiRange(0, EnemyManager.Instance.Enemies.Count - 1);
-        _enemy = EnemyManager.Instance.Enemies[randomIndex];
+        var templateEnemy = EnemyManager.Instance.Enemies[randomIndex];
+        _enemy = templateEnemy.Clone(); // gives a fresh instance of the enemy, so health doesn't persist between dungeon levels
         
         switch (_enemy.Name)
         {
