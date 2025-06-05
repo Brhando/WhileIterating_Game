@@ -189,4 +189,10 @@ public partial class EnemyManager : Node
         }
     }
     
+    public void RefreshSkills(Enemy enemy)
+    {
+        enemy.GetSkills().Clear(); // clear current skill list
+        AddSkills(enemy);          // re-check eligibility based on new level
+    }
+    
 }
