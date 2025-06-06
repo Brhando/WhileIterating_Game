@@ -37,7 +37,7 @@ public partial class DungeonRoomManager : Node
                 layout.Add("Enemy");
         }
 
-        layout.Add("Boss"); // optional for now
+        //layout.Add("Boss"); 
         return layout;
     }
 

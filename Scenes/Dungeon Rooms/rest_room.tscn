@@ -25,7 +25,7 @@ tile_set = ExtResource("1_ovq65")
 [node name="Above" type="TileMapLayer" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(564, -368)
+position = Vector2(561, -368)
 zoom = Vector2(2, 2)
 
 [node name="Player" parent="." instance=ExtResource("2_uhhcw")]

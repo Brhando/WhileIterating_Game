@@ -178,5 +178,5 @@ horizontal_alignment = 1
 [node name="ClickArea" type="Area2D" parent="AnimatedSprite2D"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/ClickArea"]
-z_index = -1
+z_index = 1
 shape = SubResource("RectangleShape2D_e6pj2")

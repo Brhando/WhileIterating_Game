@@ -30,6 +30,18 @@ position = Vector2(70, -43)
 
 [node name="EnemyContainer" type="Container" parent="."]
 offset_left = 554.0
-offset_top = -224.0
-offset_right = 623.0
+offset_top = -245.0
+offset_right = 679.0
 offset_bottom = -138.0
+
+[node name="Position1" type="Node2D" parent="EnemyContainer"]
+position = Vector2(14, 9)
+
+[node name="Position2" type="Node2D" parent="EnemyContainer"]
+position = Vector2(12, 89)
+
+[node name="Position3" type="Node2D" parent="EnemyContainer"]
+position = Vector2(104, 6)
+
+[node name="Position4" type="Node2D" parent="EnemyContainer"]
+position = Vector2(100, 89)
