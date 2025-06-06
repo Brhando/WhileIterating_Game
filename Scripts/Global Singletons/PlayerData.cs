@@ -100,8 +100,8 @@ public partial class PlayerData: Node
 
     public void ApplyDot(int counter, int damage)
     {
-        PlayerDotLeft += counter;
-        DotDamageTotal += damage;
+        PlayerDotLeft = Mathf.Min(3, PlayerDotLeft + counter);
+        DotDamageTotal += Mathf.Min(7, DotDamageTotal + damage);
     }
 
     public void ApplyDotDamage(int amt)

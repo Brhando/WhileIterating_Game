@@ -146,7 +146,7 @@ public partial class EnemyManager : Node
     //Enemy Skills
     private readonly EnemySkill _strike = new("Strike", "All", 1, 5, "Attack");
     private readonly EnemySkill _block = new("Block","All", 1, 0, "Defend", 5);
-    private readonly EnemySkill _skeletonStab = new("SkeletonStab","Skeleton", 2, 5, "DOT", 0, true, false, 3);
+    private readonly EnemySkill _skeletonStab = new("SkeletonStab","Skeleton", 2, 5, "DOT", 0, true, false, 1);
     private Dictionary<string, EnemySkill> _enemySkillLibrary = new();
     private Enemy _goblin;
     private Enemy _slime;
