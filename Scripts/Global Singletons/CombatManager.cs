@@ -361,14 +361,14 @@ public partial class CombatManager: Node
     {
         AttackCounter++;
         DefendCounter = 0;
-        AttackChain = AttackCounter == 3;
+        AttackChain = AttackCounter >= 3;
     }
 
     public void IncrementDefendCounter()
     {
         DefendCounter++;
         AttackCounter = 0;
-        DefendChain = DefendCounter == 3;
+        DefendChain = DefendCounter >= 3;
     }
 
     public void IncrementPrayerCounter()
