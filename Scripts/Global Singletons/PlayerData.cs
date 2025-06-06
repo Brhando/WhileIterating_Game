@@ -115,6 +115,7 @@ public partial class PlayerData: Node
             PlayerDotLeft--;
             return true;
         }
+        DotDamageTotal = 0;
         return false;
     }
 

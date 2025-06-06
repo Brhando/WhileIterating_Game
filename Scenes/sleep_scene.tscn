@@ -1,0 +1,59 @@
+[gd_scene load_steps=3 format=3 uid="uid://baws0snx4h2qp"]
+
+[ext_resource type="Script" uid="uid://7mm6itey8isb" path="res://Scripts/SleepScene.cs" id="1_6q1g6"]
+[ext_resource type="Texture2D" uid="uid://c2nvp6xc83f63" path="res://Assets/Night/orig.png" id="2_y8dsd"]
+
+[node name="SleepScene" type="CanvasLayer"]
+script = ExtResource("1_6q1g6")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_y8dsd")
+
+[node name="DayCount" type="Label" parent="."]
+z_index = 1
+offset_right = 188.0
+offset_bottom = 52.0
+text = "Test Script"
+
+[node name="DungeonLevel" type="Label" parent="."]
+z_index = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -221.0
+offset_bottom = 43.0
+grow_horizontal = 0
+text = "Test Script"
+
+[node name="DreamText" type="RichTextLabel" parent="."]
+z_index = 1
+offset_left = 159.0
+offset_top = 365.0
+offset_right = 597.0
+offset_bottom = 439.0
+
+[node name="WakeButton" type="Button" parent="."]
+z_index = 1
+offset_left = 874.0
+offset_top = 513.0
+offset_right = 1059.0
+offset_bottom = 598.0
+text = "Test Script"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(575, 324)
+
+[node name="FadeOverlay" type="ColorRect" parent="."]
+modulate = Color(0, 0, 0, 1)
+z_index = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

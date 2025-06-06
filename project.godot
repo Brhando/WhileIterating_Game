@@ -25,6 +25,7 @@ PlayerData="*res://Scripts/Global Singletons/PlayerData.cs"
 SkillData="*res://Scripts/Global Singletons/SkillData.cs"
 DungeonManager="*res://Scripts/Global Singletons/DungeonManager.cs"
 DungeonRoomManager="*res://Scripts/Global Singletons/DungeonRoomManager.cs"
+DreamManager="*res://Scripts/Global Singletons/DreamManager.cs"
 
 [display]
 

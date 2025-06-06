@@ -63,6 +63,7 @@ public partial class HomeInside : Node2D
             {
                 GameManager.Instance.Sleep();
                 _timeLabel.UpdateTimeLabel();
+                GetTree().ChangeSceneToFile("res://Scenes/sleep_scene.tscn");
             }
         }
 
