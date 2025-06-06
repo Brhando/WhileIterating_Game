@@ -293,6 +293,7 @@ public partial class CombatManager: Node
 
     private void TurnReset()
     {
+        Player.ResetGlow();
         ActionsLeft = 3;
 
         for (var i = 0; i < _buffApplied.Count; i++)
@@ -339,21 +340,22 @@ public partial class CombatManager: Node
     {
         if (AttackChain)
         {
-            //Player.PlayAnimationAttackGlow()
             PlayerData.Instance.PlayerDamageLight += 5;
             PlayerData.Instance.PlayerDamageMid += 5;
             PlayerData.Instance.PlayerDamageHeavy += 5;
             _buffApplied[8] = 1;
             AttackCounter = 0;
+            Player.SetGlowColor(new Color(1.0f, 0.4f, 0.4f)); // warm red glow
             GD.Print("Applied chain. Buff: Damage + 5");
         }
 
-        if (DefendChain)
+        else if (DefendChain)
         {
             //Player.PlayAnimationDefenseGlow()
             PlayerData.Instance.PlayerSkills["Skill3"].ShieldValue += 5;
             _buffApplied[9] = 1;
             DefendCounter = 0;
+            Player.SetGlowColor(new Color(0.4f, 0.4f, 1.0f)); // cool blue glow
             GD.Print("Applied chain. Buff: Defense + 5");
         }
     }

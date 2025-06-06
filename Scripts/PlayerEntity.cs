@@ -56,6 +56,18 @@ public partial class PlayerEntity : CharacterBody2D
         _anim1.Play("slash");
         _anim2.Play("slash_s");
     }
+    
+    public void SetGlowColor(Color color)
+    {
+        _anim1.Modulate = color;
+        _anim2.Modulate = color;
+    }
+
+    public void ResetGlow()
+    {
+        _anim1.Modulate = Colors.White;
+        _anim2.Modulate = Colors.White;
+    }
 
     public bool IsDead()
     {
