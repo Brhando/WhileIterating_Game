@@ -127,6 +127,7 @@ public partial class CombatManager: Node
     public void StartBattle(PlayerEntity player)
     {
         Player = player;
+        PlayerData.Instance.PlayerBlock = 0;
 
         _currentBattleState = BattleState.PlayerTurn;
         StartPlayerTurn();
