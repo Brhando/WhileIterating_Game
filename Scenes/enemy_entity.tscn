@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dioqfnrkt7ts3"]
+[gd_scene load_steps=20 format=3 uid="uid://dioqfnrkt7ts3"]
 
 [ext_resource type="Script" uid="uid://cf1iqnrytjj2t" path="res://Scripts/EnemyEntity.cs" id="1_k415t"]
 [ext_resource type="Texture2D" uid="uid://igvn3xaqdg2k" path="res://Assets/MadeSprites/slime1.png" id="2_fq2ch"]
@@ -137,6 +137,8 @@ font_color = Color(0, 0.752941, 1, 1)
 outline_size = 4
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e6pj2"]
+
 [node name="EnemyEntity" type="CharacterBody2D"]
 script = ExtResource("1_k415t")
 GoblinFrames = SubResource("SpriteFrames_e6pj2")
@@ -172,3 +174,9 @@ grow_horizontal = 2
 grow_vertical = 0
 label_settings = SubResource("LabelSettings_33i4k")
 horizontal_alignment = 1
+
+[node name="ClickArea" type="Area2D" parent="AnimatedSprite2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/ClickArea"]
+z_index = -1
+shape = SubResource("RectangleShape2D_e6pj2")

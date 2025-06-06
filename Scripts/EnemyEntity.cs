@@ -15,31 +15,36 @@ public partial class EnemyEntity : CharacterBody2D
 
     public override void _Ready()
     {
+        //nothing here for now; handled by Initialize() func
+    }
+    [Signal] public delegate void EnemyClickedEventHandler(EnemyEntity self);
+    
+    public override void _InputEvent(Viewport viewport, InputEvent @event, int shapeIdx)
+    {
+        if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed && mouseEvent.ButtonIndex == MouseButton.Left)
+        {
+            EmitSignal(nameof(EnemyClicked), this);
+        }
+    }
+    public void Initialize(EnemyManager.Enemy enemy)
+    {
+        _enemy = enemy;
+
         _anim = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _hpLabel = GetNode<Label>("AnimatedSprite2D/Panel/HPLabel");
         _blockLabel = GetNode<Label>("AnimatedSprite2D/Panel/BlockLabel");
-        
-        var rng = new RandomNumberGenerator();
-        rng.Randomize();
-        
-        var randomIndex = rng.RandiRange(0, EnemyManager.Instance.Enemies.Count - 1);
-        var templateEnemy = EnemyManager.Instance.Enemies[randomIndex];
-        _enemy = templateEnemy.Clone(); // gives a fresh instance of the enemy, so health doesn't persist between dungeon levels
-        
+
         switch (_enemy.Name)
         {
             case "Goblin": _anim.SpriteFrames = GoblinFrames; break;
             case "Slime": _anim.SpriteFrames = SlimeFrames; break;
             case "Skeleton": _anim.SpriteFrames = SkeletonFrames; break;
         }
-        
-        GD.Print("Enemy Selected: " + _enemy.Name);
-        GD.Print("Assigned SpriteFrames: " + _anim.SpriteFrames);
-        
+
         PlayAnimationStand();
         UpdateLabels();
     }
-    
+
     //function to decrease enemy's health when attacked
     public void DecreaseHealth(int amt)
     {

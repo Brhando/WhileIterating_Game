@@ -90,19 +90,18 @@ public partial class EnemyManager : Node
         public Enemy Clone()
         {
             var clone = new Enemy(_name, _health, _maxHealth, _level, _shield);
-            foreach (var skill in _skills)
-            {
-                clone.AddSkill(new EnemySkill(
-                    skill.Name, skill.EnemyType, skill.Level, skill.Damage, skill.Type,
-                    skill.ShieldValue, skill.IsDamageOverTime, skill.IsBuff, skill.DotCounter));
-            }
-            GD.Print($"Cloned enemy: {_name}");
+
+            //Generate skills based on level
+            Instance.RefreshSkills(clone);
+
+            GD.Print($"Cloned enemy: {_name} with {clone.GetSkills().Count} skills at level {clone.Level}");
             return clone;
         }
         public void LevelUp()
         {
             _level++;
             ScaleStats();
+            Instance.RefreshSkills(this);
         }
 
         private void ScaleStats()

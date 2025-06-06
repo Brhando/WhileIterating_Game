@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Runtime.CompilerServices;
 
 public partial class DungeonUi : Node2D
 {
@@ -50,11 +51,7 @@ public partial class DungeonUi : Node2D
         _skill5.Text = PlayerData.Instance?.PlayerSkills["Skill5"].Name;
         _victoryButton.Visible = false;
         
-        CombatManager.Instance.BattleStateChanged += () =>
-        {
-            UpdateTurnLabel();
-            UpdateButtons();
-        };
+        CombatManager.Instance.BattleStateChanged += OnBattleStateChanged;
         if (PlayerData.Instance != null)
             PlayerData.Instance.HealthBlockStaminaChanged += UpdatePlayerLabels;
 
@@ -117,6 +114,7 @@ public partial class DungeonUi : Node2D
 
         if (CombatManager.Instance.VictoryButtonLock)
         {
+            _victoryButton.Visible = false;
             _victoryButton.Disabled = true;
         }
         else
@@ -124,8 +122,15 @@ public partial class DungeonUi : Node2D
             _victoryButton.Visible = true;
             _victoryButton.Disabled = false;
         }
+        
     }
-
+    
+    private void OnBattleStateChanged()
+    {
+        UpdateTurnLabel();
+        UpdateButtons();
+    }
+    
     private static void OnSkill1Pressed()
     {
         CombatManager.Instance.ExecutePlayerSkill(PlayerData.Instance.PlayerSkills["Skill1"]);
@@ -158,10 +163,12 @@ public partial class DungeonUi : Node2D
         UpdateBuffIcon();
         UpdatePlayerLabels();
     }
-    private static void OnVictoryPressed()
+    private void OnVictoryPressed()
     {
-        //add Scene Change logic for next dungeon room or map if boss room
-        
+        Cleanup();
+        DungeonRoomManager.Instance.NextRoom();
+        CombatManager.Instance.VictoryButtonLock = true;
+        UpdateButtons();
     }
 
     private static void OnEndPressed()
@@ -176,5 +183,11 @@ public partial class DungeonUi : Node2D
         _skill3.Text = PlayerData.Instance?.PlayerSkills["Skill3"].Name;
         _skill4.Text = PlayerData.Instance?.PlayerSkills["Skill4"].Name;
         _skill5.Text = PlayerData.Instance?.PlayerSkills["Skill5"].Name;
+    }
+    public void Cleanup()
+    {
+        PlayerData.Instance.HealthBlockStaminaChanged -= UpdatePlayerLabels;
+        CombatManager.Instance.BattleStateChanged -= OnBattleStateChanged;
+        CombatManager.Instance.ActionUsed -= UpdateActions;
     }
 }

@@ -57,7 +57,9 @@ public partial class MapInterface : Node2D
         {
             GameManager.Instance.Travel("Dungeon");
             GD.Print("Time advanced!");
-            GetTree().ChangeSceneToFile("res://Scenes/battle_scene.tscn");
+            DungeonManager.Instance.GenerateDungeon(DungeonManager.Instance.CurrentDungeonLevel + 2);
+            DungeonRoomManager.Instance.StartDungeonRun();
+            GD.Print("Dungeon run started!");
         }
         
         private void OnButton2Pressed()

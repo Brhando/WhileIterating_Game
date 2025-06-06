@@ -48,6 +48,10 @@ public partial class DungeonManager : Node
         GD.Print($"Dungeon Level {CurrentDungeonLevel} generated with {ActiveDungeonEncounters.Count} encounters.");
     }
 
+    public void IncreaseCurrentDungeonLevel()
+    {
+        CurrentDungeonLevel++;
+    }
     public void IncreaseEnemiesLevel()
     {
         foreach (var enemy in EnemyManager.Instance.Enemies)
