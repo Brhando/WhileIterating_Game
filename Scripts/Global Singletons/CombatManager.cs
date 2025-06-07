@@ -327,7 +327,13 @@ public partial class CombatManager: Node
 
             if (i == 9 && _buffApplied[i] == 1)
             {
-                PlayerData.Instance.PlayerSkills["Skill3"].ShieldValue -= 5;
+                foreach (var skill in PlayerData.Instance.PlayerSkills.Values)
+                {
+                    if (skill.ShieldValue > 0)
+                    {
+                        skill.ShieldValue -= 5;
+                    }
+                }
             }
             
             _buffApplied[i] = 0;
@@ -353,7 +359,13 @@ public partial class CombatManager: Node
         else if (DefendChain)
         {
             //Player.PlayAnimationDefenseGlow()
-            PlayerData.Instance.PlayerSkills["Skill3"].ShieldValue += 5;
+            foreach (var skill in PlayerData.Instance.PlayerSkills.Values)
+            {
+                if (skill.ShieldValue > 0)
+                {
+                    skill.ShieldValue += 5;
+                }
+            }
             _buffApplied[9] = 1;
             DefendCounter = 0;
             Player.SetGlowColor(new Color(0.4f, 0.4f, 1.0f)); // cool blue glow
