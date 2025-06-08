@@ -71,6 +71,11 @@ public partial class PlayerEntity : CharacterBody2D
     {
         _anim1.Play("block");
     }
+
+    public void PlayAnimationPrayer()
+    {
+        _anim1.Play("prayer");
+    }
     
     public void SetGlowColor(Color color)
     {

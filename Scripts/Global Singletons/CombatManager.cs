@@ -175,7 +175,7 @@ public partial class CombatManager: Node
                 Player.PlayAnimationBlock();
                 break;
             case "Prayer":
-                //Player.PlayAnimationPrayer();
+                Player.PlayAnimationPrayer();
                 break;
             case "Whirlwind":
                 Player.PlayAnimationWhirlwind();

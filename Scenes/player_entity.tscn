@@ -1,8 +1,9 @@
-[gd_scene load_steps=27 format=3 uid="uid://bv23wjku4gjqh"]
+[gd_scene load_steps=31 format=3 uid="uid://bv23wjku4gjqh"]
 
 [ext_resource type="Script" uid="uid://cxtm6aw550gjd" path="res://Scripts/PlayerEntity.cs" id="1_n6s8o"]
 [ext_resource type="Texture2D" uid="uid://ciwvymk61ya53" path="res://Assets/Merged Assets/Sword Swinger Hurt and Combat.png" id="3_88pyd"]
 [ext_resource type="Texture2D" uid="uid://chw5asw3ypqwb" path="res://Assets/Merged Assets/Sword Swinger Combat1.png" id="3_m2hr2"]
+[ext_resource type="Texture2D" uid="uid://b1scbmt4j4jsv" path="res://Assets/Merged Assets/Sword Swinger Prayer.png" id="4_88pyd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ijfsl"]
 atlas = ExtResource("3_m2hr2")
@@ -23,6 +24,18 @@ region = Rect2(256, 128, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_81m28"]
 atlas = ExtResource("3_88pyd")
 region = Rect2(320, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uujil"]
+atlas = ExtResource("4_88pyd")
+region = Rect2(204, 51, 51, 51)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lcj73"]
+atlas = ExtResource("4_88pyd")
+region = Rect2(255, 51, 51, 51)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qgakx"]
+atlas = ExtResource("4_88pyd")
+region = Rect2(255, 102, 51, 51)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_88pyd"]
 atlas = ExtResource("3_m2hr2")
@@ -106,7 +119,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"block",
-"speed": 5.0
+"speed": 3.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -118,6 +131,20 @@ animations = [{
 "loop": true,
 "name": &"hurt",
 "speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uujil")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lcj73")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qgakx")
+}],
+"loop": true,
+"name": &"prayer",
+"speed": 3.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -159,7 +186,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"thrust",
-"speed": 5.0
+"speed": 4.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -188,7 +215,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"whirlwind",
-"speed": 5.0
+"speed": 8.0
 }]
 
 [node name="PlayerEntity" type="CharacterBody2D"]
@@ -199,5 +226,3 @@ position = Vector2(0, -0.5)
 scale = Vector2(1, 0.984375)
 sprite_frames = SubResource("SpriteFrames_vokl8")
 animation = &"block"
-frame = 1
-frame_progress = 0.45794
