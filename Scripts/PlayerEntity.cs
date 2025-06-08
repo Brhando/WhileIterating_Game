@@ -6,12 +6,12 @@ public partial class PlayerEntity : CharacterBody2D
     public int PlayerHealth;
     public int PlayerMaxHealth;
     private AnimatedSprite2D _anim1;
-    private AnimatedSprite2D _anim2;
+    
     
     public override void _Ready()
     {
         _anim1 = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-        _anim2 = GetNode<AnimatedSprite2D>("AnimatedSprite2D2");
+        
 
         PlayerHealth = PlayerData.Instance.GetPlayerHealth();
         PlayerMaxHealth = PlayerData.Instance.GetPlayerMaxHealth();
@@ -42,31 +42,44 @@ public partial class PlayerEntity : CharacterBody2D
     public void PlayAnimationHurt()
     {
         _anim1.Play("hurt");
-        _anim2.Play("hurt_s");
+        
     }
 
     public void PlayAnimationStand()
     {
         _anim1.Play("stand");
-        _anim2.Play("stand_s");
+        
     }
 
     public void PlayAnimationSlash()
     {
         _anim1.Play("slash");
-        _anim2.Play("slash_s");
+        
+    }
+
+    public void PlayAnimationThrust()
+    {
+        _anim1.Play("thrust");
+    }
+
+    public void PlayAnimationWhirlwind()
+    {
+        _anim1.Play("whirlwind");
+    }
+
+    public void PlayAnimationBlock()
+    {
+        _anim1.Play("block");
     }
     
     public void SetGlowColor(Color color)
     {
         _anim1.Modulate = color;
-        _anim2.Modulate = color;
     }
 
     public void ResetGlow()
     {
         _anim1.Modulate = Colors.White;
-        _anim2.Modulate = Colors.White;
     }
 
     public bool IsDead()

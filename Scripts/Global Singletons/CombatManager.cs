@@ -169,16 +169,16 @@ public partial class CombatManager: Node
                 Player.PlayAnimationSlash();
                 break;
             case "Thrust":
-                //Player.PlayAnimationThrust();
+                Player.PlayAnimationThrust();
                 break;
             case "Light Block":
-                //Player.PlayAnimationBlock();
+                Player.PlayAnimationBlock();
                 break;
             case "Prayer":
                 //Player.PlayAnimationPrayer();
                 break;
             case "Whirlwind":
-                //Player.PlayAnimationWhirlwind();
+                Player.PlayAnimationWhirlwind();
                 break;
         }
 
