@@ -376,6 +376,7 @@ public partial class CombatManager: Node
     {
         AttackCounter++;
         DefendCounter = 0;
+        DefendChain = false;
         AttackChain = AttackCounter >= 3;
     }
 
@@ -383,6 +384,7 @@ public partial class CombatManager: Node
     {
         DefendCounter++;
         AttackCounter = 0;
+        AttackChain = false;
         DefendChain = DefendCounter >= 3;
     }
 
