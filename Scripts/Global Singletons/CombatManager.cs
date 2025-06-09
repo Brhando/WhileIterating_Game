@@ -87,6 +87,8 @@ public partial class CombatManager: Node
     private int AttackCounter = 0;
     private int DefendCounter = 0;
     private int PrayCounter = 0;
+    public int EnemiesDefeated = 0;
+    public bool DungeonDefeated = false;
     public bool AttackChain;
     public bool DefendChain;
     public bool PrayerChain;
@@ -196,6 +198,7 @@ public partial class CombatManager: Node
         {
             _enemies.Remove(_currentTarget);
             _currentTarget.QueueFree();
+            EnemiesDefeated++;
             _currentTarget = null;
 
             if (_enemies.Count > 0)
@@ -206,6 +209,7 @@ public partial class CombatManager: Node
             {
                 GD.Print("All enemies defeated! Victory!");
                 _currentBattleState = BattleState.Win;
+                DungeonDefeated = true;
                 ButtonLock = true;
                 VictoryButtonLock = false;
                 EmitSignalBattleStateChanged();

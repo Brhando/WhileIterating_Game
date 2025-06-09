@@ -192,6 +192,7 @@ public partial class GameManager : Node
     {
         CurrentTimeOfDay = TimeOfDay.Morning;
         DayCount++;
+        DreamManager.Instance.RefreshDreamTextList2();
         PlayerData.Instance.Heal(PlayerData.Instance.GetPlayerMaxHealth()); //make this less effective for future runs
         EmitSignalTimeOfDayChanged(CurrentTimeOfDay);
         GD.Print("New day started. Day: " + DayCount);

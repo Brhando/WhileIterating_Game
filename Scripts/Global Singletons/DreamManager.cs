@@ -34,16 +34,25 @@ public partial class DreamManager : Node
 
     private void InitializeDreamTextList2()
     {
-        DreamTextList2.Add("Enemies Defeated: "); //add enemies defeated tracker -> in CombatManager
-        DreamTextList2.Add("Enemies that remember: "); //add enemies that leveled up due to dungeon progression -> in EnemyManager
+        DreamTextList2.Add("Enemies Thwarted: 0"); //add enemies defeated tracker -> in CombatManager
+        DreamTextList2.Add("Enemies that remember: none");
         //Add other trackers: NPCs talked to? Special Boss messages? 
-        //If Dungeon was defeated: "The corruption grows...The world remembers..."
     }
 
     public void RefreshDreamTextList2()
     {
         DreamTextList2.Clear();
-        //add in updated trackers here
+        DreamTextList2.Add($"Enemies Thwarted: {CombatManager.Instance.EnemiesDefeated}");
+        if (CombatManager.Instance.DungeonDefeated)
+        {
+            DreamTextList2.Add("You cleared the dungeon. It rumbles restlessly. The enemies you've defeated remember their bitter end...");
+            DreamTextList2.Add("The corruption grows...The world remembers...");
+            CombatManager.Instance.DungeonDefeated = false;
+        }
+        else
+        {
+            DreamTextList2.Add("The dungeon watches, but remains still.");
+        }
     }
 
     private void InitializeRandomDreamTextList()
