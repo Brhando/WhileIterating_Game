@@ -60,7 +60,6 @@ public partial class DungeonManager : Node
             {
                 enemy.LevelUp();
                 EnemyManager.Instance.RefreshSkills(enemy);
-                GD.Print($"Leveled up {enemy.Name} to level {enemy.Level}");
             }
         }
     }

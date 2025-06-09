@@ -103,6 +103,7 @@ public partial class EnemyManager : Node
         public void LevelUp()
         {
             _level++;
+            GD.Print($"Leveled {_name} to level {_level}");
             Instance.RefreshSkills(this);
             ScaleStats();
         }
@@ -113,12 +114,11 @@ public partial class EnemyManager : Node
             foreach (var skill in _skills)
             {
                 skill.Damage = skill.BaseDamage;
-                skill.Level++;
                 
-                if (skill.Damage > 0)
+                if (skill.Damage > 0 && skill.Level < _level)
                 {
                     skill.Damage += Mathf.RoundToInt(Mathf.Pow(_level, 2));
-                    GD.Print($"{skill.Name} is now level {skill.Level}. Now does {skill.Damage} damage.");
+                    GD.Print($"{skill.Name} now does {skill.Damage} damage.");
                 }
             }
         }
