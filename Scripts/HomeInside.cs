@@ -63,7 +63,7 @@ public partial class HomeInside : Node2D
             {
                 GameManager.Instance.Sleep();
                 _timeLabel.UpdateTimeLabel();
-                GetTree().ChangeSceneToFile("res://Scenes/sleep_scene.tscn");
+                CallDeferred("ChangeToSleepScene");
             }
         }
 
@@ -75,5 +75,10 @@ public partial class HomeInside : Node2D
         {
             _playerUi.Visible = false;
         }
+    }
+
+    private void ChangeToSleepScene()
+    {
+        GetTree().ChangeSceneToFile("res://Scenes/sleep_scene.tscn");
     }
 }

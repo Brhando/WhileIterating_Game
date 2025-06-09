@@ -10,7 +10,7 @@ public partial class TimeLabel : Label
     
     public void UpdateTimeLabel()
     {
-        Text = $"Time: {GameManager.Instance.CurrentTimeOfDay}\nDay: {GameManager.Instance.DayCount}";
+        Text = $"Time: {GameManager.Instance.CurrentTimeOfDay}\nDay: {GameManager.Instance.DayCount}\nHealth: {PlayerData.Instance.GetPlayerHealth()}";
     }
     
     

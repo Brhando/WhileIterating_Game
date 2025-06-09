@@ -29,6 +29,7 @@ public partial class EnemyManager : Node
         private int _level;
         private string _enemyType;
         private int _damage;
+        private int _baseDamage;
         private string _type;
         private int _shieldValue;
         private bool _isDamageOverTime;
@@ -36,22 +37,24 @@ public partial class EnemyManager : Node
         private int _dotCounter;
         
         public int Damage { get => _damage; set => _damage = value; }
+        public int BaseDamage { get => _baseDamage; set => _baseDamage = value; }
         public string Type { get => _type; set => _type = value; }
         public int ShieldValue { get => _shieldValue; set => _shieldValue = value; }
         public string Name {get => _name; set => _name = value;}
-        public int Level => _level;
+        public int Level {get => _level; set => _level = value;}
         public string EnemyType => _enemyType;
         public bool IsDamageOverTime => _isDamageOverTime;
         public bool IsBuff => _isBuff;
         public int DotCounter => _dotCounter;
         
         //constructor
-        public EnemySkill(string name, string etype, int level, int damage, string type, int shield = 0, bool dot = false, bool buff = false, int dotCounter = 0)
+        public EnemySkill(string name, string etype, int level, int damage, int baseDamage, string type, int shield = 0, bool dot = false, bool buff = false, int dotCounter = 0)
         {
             _name = name;
             _level = level;
             _enemyType = etype;
             _damage = damage;
+            _baseDamage = baseDamage;
             _type = type;
             _shieldValue = shield;
             _isDamageOverTime = dot;
@@ -100,19 +103,24 @@ public partial class EnemyManager : Node
         public void LevelUp()
         {
             _level++;
-            ScaleStats();
             Instance.RefreshSkills(this);
+            ScaleStats();
         }
 
         private void ScaleStats()
         {
-            _health += Mathf.RoundToInt(_maxHealth * 0.2f);
-            _skills.ForEach(skill =>
+            _health += Mathf.RoundToInt(_maxHealth * 0.1f);
+            foreach (var skill in _skills)
             {
-                //scale the damage of each skill in the list
-                var newDamage = skill.Damage + (_level * 2);
-                skill.Damage = newDamage;
-            });
+                skill.Damage = skill.BaseDamage;
+                skill.Level++;
+                
+                if (skill.Damage > 0)
+                {
+                    skill.Damage += Mathf.RoundToInt(Mathf.Pow(_level, 2));
+                    GD.Print($"{skill.Name} is now level {skill.Level}. Now does {skill.Damage} damage.");
+                }
+            }
         }
         
         
@@ -144,9 +152,9 @@ public partial class EnemyManager : Node
         }
     }
     //Enemy Skills
-    private readonly EnemySkill _strike = new("Strike", "All", 1, 5, "Attack");
-    private readonly EnemySkill _block = new("Block","All", 1, 0, "Defend", 5);
-    private readonly EnemySkill _skeletonStab = new("SkeletonStab","Skeleton", 2, 5, "DOT", 0, true, false, 1);
+    private readonly EnemySkill _strike = new("Strike", "All", 1, 5, 5, "Attack");
+    private readonly EnemySkill _block = new("Block","All", 1, 0, 0, "Defend", 5);
+    private readonly EnemySkill _skeletonStab = new("SkeletonStab","Skeleton", 2, 5, 5, "DOT", 0, true, false, 1);
     private Dictionary<string, EnemySkill> _enemySkillLibrary = new();
     private Enemy _goblin;
     private Enemy _slime;
