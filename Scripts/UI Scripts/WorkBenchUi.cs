@@ -31,8 +31,9 @@ public partial class WorkBenchUi : CanvasLayer
 		var index = 0;
 		foreach (var recipe in CraftingManager.Instance.CraftingRecipes)
 		{
-			_recipeList.AddItem(recipe.Key);
-			_recipeList.SetItemTooltip(index, recipe.Value.ToolTip);
+			var icon = GD.Load<Texture2D>($"res://Assets/Icons/{recipe.Key}.png");
+			_recipeList.AddItem(recipe.Key, icon);
+			_recipeList.SetItemTooltip(index, recipe.Value.ToolTip + "\n\t" + recipe.Value.FlavorText);
 			index++;
 		}
 		GD.Print("ItemList has ", _recipeList.GetItemCount(), " items after population.");
