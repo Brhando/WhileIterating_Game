@@ -7,7 +7,7 @@ public partial class HomeInside : Node2D
     private Label _playerUi;
     private TimeLabel _timeLabel;
     private Area2D _exitHouse;
-    
+    private CanvasLayer _inventoryUI;
 
     private bool _playerInTravelArea = false;
 
@@ -18,9 +18,13 @@ public partial class HomeInside : Node2D
         _bed = GetNode<Bed>("Bed");
         _playerUi = GetNode<Label>("PlayerUI/CanvasLayer/Panel/Label");
         _timeLabel = GetNode<TimeLabel>("PlayerUI/CanvasLayer/TimeLabel");
+        _inventoryUI = GetNode<CanvasLayer>("InventoryUI/CanvasLayer");
         _exitHouse = GetNode<Area2D>("ExitHouse");
+        
         _exitHouse.Connect("body_entered", new Callable(this, nameof(BodyEntered)));
         _exitHouse.Connect("body_exited", new Callable(this, nameof(BodyExited)));
+
+        _inventoryUI.Visible = false;
     }
 
     private void BodyEntered(Node body)
@@ -65,6 +69,11 @@ public partial class HomeInside : Node2D
                 _timeLabel.UpdateTimeLabel();
                 CallDeferred("ChangeToSleepScene");
             }
+        }
+
+        if (Input.IsActionJustPressed("inventory"))
+        {
+            _inventoryUI.Visible = !_inventoryUI.Visible;
         }
 
         if (message != "")

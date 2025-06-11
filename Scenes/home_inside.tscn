@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://drco83vjm63c2"]
+[gd_scene load_steps=23 format=4 uid="uid://drco83vjm63c2"]
 
 [ext_resource type="Script" uid="uid://o655lld5gtr4" path="res://Scripts/HomeInside.cs" id="1_joxel"]
 [ext_resource type="Texture2D" uid="uid://d2x82hfph3xfj" path="res://Assets/18.09a - Iconic Homestead 2.0/iconic interiors.png" id="2_34yrj"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://shfjxqbmno74" path="res://Scenes/bed.tscn" id="4_arut6"]
 [ext_resource type="PackedScene" uid="uid://dn66aeqs7wgvn" path="res://Scenes/player_ui.tscn" id="5_vwyo7"]
 [ext_resource type="PackedScene" uid="uid://ceikeeywfkpr6" path="res://Scenes/player.tscn" id="6_cpcja"]
+[ext_resource type="PackedScene" uid="uid://cxqbp4g1saan7" path="res://Scenes/work_bench.tscn" id="7_34yrj"]
+[ext_resource type="PackedScene" uid="uid://kvqdd0ee8alw" path="res://Scenes/UIs/work_bench_ui.tscn" id="8_0ebrc"]
+[ext_resource type="PackedScene" uid="uid://bcl54vqu80yk7" path="res://Scenes/UIs/inventory_ui.tscn" id="9_arut6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dr0vm"]
 texture = ExtResource("2_34yrj")
@@ -2496,7 +2499,22 @@ shape = SubResource("RectangleShape2D_5k0je")
 position = Vector2(-8, 83)
 
 [node name="Player" parent="." instance=ExtResource("6_cpcja")]
+z_index = 2
+y_sort_enabled = true
 position = Vector2(-1, 1)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(2, 2)
+
+[node name="WorkBench" parent="." instance=ExtResource("7_34yrj")]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(-72, -103)
+
+[node name="WorkBenchUI" parent="." instance=ExtResource("8_0ebrc")]
+
+[node name="InventoryUI" parent="." instance=ExtResource("9_arut6")]
+offset_left = -244.0
+offset_top = 59.0
+offset_right = -204.0
+offset_bottom = 99.0
