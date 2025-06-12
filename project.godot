@@ -27,6 +27,8 @@ DungeonManager="*res://Scripts/Global Singletons/DungeonManager.cs"
 DungeonRoomManager="*res://Scripts/Global Singletons/DungeonRoomManager.cs"
 DreamManager="*res://Scripts/Global Singletons/DreamManager.cs"
 CraftingManager="*res://Scripts/Global Singletons/CraftingManager.cs"
+ItemDatabase="*res://Scripts/Global Singletons/ItemDatabase.cs"
+MerchantManager="*res://Scripts/Global Singletons/MerchantManager.cs"
 
 [display]
 
