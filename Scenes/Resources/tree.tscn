@@ -29,6 +29,9 @@ height = 36.0
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_08l02")
+ItemID = "wood_log"
+DropAmount = 3
+MaxHealth = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, -19)

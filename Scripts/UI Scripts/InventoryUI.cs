@@ -43,9 +43,9 @@ public partial class InventoryUI : Control
         }
     }
 
-    private static Texture2D GetIconForItem(string itemName)
+    private static Texture2D GetIconForItem(string itemId)
     {
         // Replace with actual item icon lookup
-        return GD.Load<Texture2D>($"res://Assets/Icons/{itemName}.png");
+        return GD.Load<Texture2D>(ItemDatabase.Instance.Items[itemId].IconPath);
     }
 }
