@@ -38,7 +38,7 @@ public partial class CraftingManager : Node
     private void InitializeRecipes()
     {
         CraftingRecipes.Add("Plank", new CraftingRecipe("Plank", 1, new Dictionary<string, int> { { "Wood", 3 } }, "A material with several uses", "You feel accomplished 'refining' this, but you are really only splitting wood into more wood"));
-        CraftingRecipes.Add("Stone Plate", new CraftingRecipe("Stone Plate", 1, new Dictionary<string, int> { { "Stone", 5 } }, "Basic defensive material. Combining 3 gives you a base shield.", "Welcome to the stone age." ));
+        CraftingRecipes.Add("Stone Plate", new CraftingRecipe("Stone Plate", 1, new Dictionary<string, int> { { "Stone", 5 } }, "Basic defensive material. Gives you a base shield.", "Welcome to the stone age." ));
     }
 
     private bool CheckItems(string item)
