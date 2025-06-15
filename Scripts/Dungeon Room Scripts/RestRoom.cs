@@ -9,12 +9,14 @@ public partial class RestRoom : Node2D
     private bool _playerInBedArea;
     private bool _playerHealed = false;
     private Label _playerUi;
+    private TimeLabel _timeLabel;
 
     public override void _Ready()
     {
         _travelArea = GetNode<Area2D>("TravelArea");
         _bedArea = GetNode<Area2D>("BedArea");
         _playerUi = GetNode<Label>("PlayerUI/CanvasLayer/Panel/Label");
+        _timeLabel = GetNode<TimeLabel>("PlayerUI/CanvasLayer/TimeLabel");
         
         _travelArea.Connect("body_entered", new Callable(this, nameof(BodyEntered)));
         _travelArea.Connect("body_exited", new Callable(this, nameof(BodyExited)));
@@ -61,7 +63,6 @@ public partial class RestRoom : Node2D
         
             if (Input.IsActionJustPressed("interact"))
             {
-                //add a scene change to choose the next dungeon room
                 DungeonRoomManager.Instance.NextRoom();
             }
         }
@@ -75,6 +76,8 @@ public partial class RestRoom : Node2D
                 PlayerData.Instance.Heal(Mathf.RoundToInt(PlayerData.Instance.GetPlayerMaxHealth() * 0.33f));
                 _playerHealed = true;
                 //play audio queue for heal effect
+                //update player ui
+                _timeLabel.UpdateTimeLabel();
             }
         }
         
