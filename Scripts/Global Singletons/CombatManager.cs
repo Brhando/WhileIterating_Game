@@ -21,9 +21,7 @@ public partial class CombatManager: Node
         _buffApplied = new() {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; //used to track if a buff was applied from prayer or chains
         _blessingEffects["Invigorated"] = () =>
         {
-            PlayerData.Instance.PlayerDamageHeavy += 3;
-            PlayerData.Instance.PlayerDamageMid += 3;
-            PlayerData.Instance.PlayerDamageLight += 3;
+            PlayerData.Instance.DamageBonus += 3;
             _buffApplied[0] = 1;
         };
 
@@ -40,16 +38,14 @@ public partial class CombatManager: Node
 
         _blessingEffects["Raven's Claws"] = () =>
         {
-            PlayerData.Instance.PlayerDamageHeavy += 6;
-            PlayerData.Instance.PlayerDamageMid += 6;
-            PlayerData.Instance.PlayerDamageLight += 6;
+            PlayerData.Instance.DamageBonus += 6;
             _buffApplied[2] = 1;
         };
 
         _blessingEffects["Vampiric Feast"] = () =>
         {
-            PlayerData.Instance.Heal(PlayerData.Instance.PlayerDamageLight);
-            _currentTarget.DecreaseHealth(PlayerData.Instance.PlayerDamageLight);
+            PlayerData.Instance.Heal(PlayerData.Instance.PlayerDamageLight + PlayerData.Instance.DamageBonus);
+            _currentTarget.DecreaseHealth(PlayerData.Instance.PlayerDamageLight + PlayerData.Instance.DamageBonus);
             _buffApplied[3] = 1;
         };
 
@@ -131,6 +127,9 @@ public partial class CombatManager: Node
         Player = player;
         PlayerData.Instance.PlayerBlock = 0;
 
+        if (_enemies.Count > 0)
+            SetTarget(_enemies[0]); // Always pick first enemy for new combat
+
         _currentBattleState = BattleState.PlayerTurn;
         StartPlayerTurn();
     }
@@ -158,66 +157,31 @@ public partial class CombatManager: Node
         EmitSignalActionUsed();
     }
     
-    public async void ExecutePlayerSkill(SkillData.Skill skill)
+    public void ExecutePlayerSkill(Skill skill)
     {
         GD.Print($"Trying to execute skill: {skill.Name}");
-        var success = UseSkill(skill.Name); // Already handles stamina & damage
+
+        var success = UseSkill(skill.Name);
         if (!success) return;
 
-        // Play animations based on skill
-        switch (skill.Name)
-        {
-            case "Slash":
-                Player.PlayAnimationSlash();
-                break;
-            case "Thrust":
-                Player.PlayAnimationThrust();
-                break;
-            case "Light Block":
-                Player.PlayAnimationBlock();
-                break;
-            case "Prayer":
-                Player.PlayAnimationPrayer();
-                break;
-            case "Whirlwind":
-                Player.PlayAnimationWhirlwind();
-                break;
-        }
+        PlaySkillAnimation(skill.Name); // animation helper
+    }
 
-        await ToSignal(GetTree().CreateTimer(1), "timeout");
-        Player.PlayAnimationStand();
+    private void HandleEnemyDefeat(EnemyEntity enemy)
+    {
+        _enemies.Remove(enemy);
+        enemy.QueueFree();
+        EnemiesDefeated++;
+    }
 
-        if (skill.GetDamage != null && skill.GetDamage() > 0)
-        {
-            _currentTarget.PlayAnimationHurt();
-            await ToSignal(GetTree().CreateTimer(1), "timeout");
-            _currentTarget.PlayAnimationStand();
-            _currentTarget.DecreaseHealth(skill.GetDamage());
-        }
-        if (_currentTarget.IsDead())
-        {
-            _enemies.Remove(_currentTarget);
-            _currentTarget.QueueFree();
-            EnemiesDefeated++;
-            _currentTarget = null;
-
-            if (_enemies.Count > 0)
-            {
-                SetTarget(_enemies[0]);
-            }
-            else
-            {
-                GD.Print("All enemies defeated! Victory!");
-                _currentBattleState = BattleState.Win;
-                DungeonDefeated = true;
-                ButtonLock = true;
-                VictoryButtonLock = false;
-                EmitSignalBattleStateChanged();
-                return;
-            }
-        }
-
-        await ToSignal(GetTree().CreateTimer(1), "timeout");
+    private void EndCombatVictory()
+    {
+        GD.Print("All enemies defeated! Victory!");
+        _currentBattleState = BattleState.Win;
+        DungeonDefeated = true;
+        ButtonLock = true;
+        VictoryButtonLock = false;
+        EmitSignalBattleStateChanged();
     }
 
     public async void StartEnemyTurn()
@@ -324,20 +288,12 @@ public partial class CombatManager: Node
 
             if (i == 8 && _buffApplied[i] == 1)
             {
-                PlayerData.Instance.PlayerDamageLight -= 5;
-                PlayerData.Instance.PlayerDamageMid -= 5;
-                PlayerData.Instance.PlayerDamageHeavy -= 5;
+                PlayerData.Instance.DamageBonus = 0;
             }
 
             if (i == 9 && _buffApplied[i] == 1)
             {
-                foreach (var skill in PlayerData.Instance.PlayerSkills.Values)
-                {
-                    if (skill.ShieldValue > 0)
-                    {
-                        skill.ShieldValue -= 5;
-                    }
-                }
+                PlayerData.Instance.BlockBonus = 0;
             }
             
             _buffApplied[i] = 0;
@@ -351,9 +307,7 @@ public partial class CombatManager: Node
     {
         if (AttackChain)
         {
-            PlayerData.Instance.PlayerDamageLight += 5;
-            PlayerData.Instance.PlayerDamageMid += 5;
-            PlayerData.Instance.PlayerDamageHeavy += 5;
+            PlayerData.Instance.DamageBonus = 5;
             _buffApplied[8] = 1;
             AttackCounter = 0;
             Player.SetGlowColor(new Color(1.0f, 0.4f, 0.4f)); // warm red glow
@@ -362,14 +316,7 @@ public partial class CombatManager: Node
 
         else if (DefendChain)
         {
-            //Player.PlayAnimationDefenseGlow()
-            foreach (var skill in PlayerData.Instance.PlayerSkills.Values)
-            {
-                if (skill.ShieldValue > 0)
-                {
-                    skill.ShieldValue += 5;
-                }
-            }
+            PlayerData.Instance.BlockBonus = 5;
             _buffApplied[9] = 1;
             DefendCounter = 0;
             Player.SetGlowColor(new Color(0.4f, 0.4f, 1.0f)); // cool blue glow
@@ -401,6 +348,7 @@ public partial class CombatManager: Node
     public bool UseSkill(string skillName)
     {
         GD.Print($"Stamina: {PlayerData.Instance.GetPlayerStamina()}, Action: {ActionsLeft}");
+
         if (!SkillData.Instance.SkillLibrary.TryGetValue(skillName, out var skill))
         {
             GD.PrintErr($"Skill '{skillName}' not found in SkillLibrary.");
@@ -421,7 +369,11 @@ public partial class CombatManager: Node
 
         ActionsLeft -= skill.ActionCost;
         EmitSignalActionUsed();
-        skill.ExecuteEffect?.Invoke();
+
+        var result = skill.Execute?.Invoke();
+        if (result != null)
+            ApplySkillResult(result);
+
         return true;
     }
 
@@ -435,5 +387,67 @@ public partial class CombatManager: Node
             applyEffect.Invoke();
         }
     }
+    
+    private async void ApplySkillResult(SkillResult result)
+    {
+        if (result.Damage > 0)
+        {
+            var target = _currentTarget;
 
+            if (target != null && !target.IsQueuedForDeletion())
+            {
+                target.PlayAnimationHurt();
+                await ToSignal(GetTree().CreateTimer(1f), "timeout");
+
+                if (target == null || target.IsQueuedForDeletion())
+                    return;
+
+                target.PlayAnimationStand();
+                target.DecreaseHealth(result.Damage + PlayerData.Instance.DamageBonus);
+
+                if (target.IsDead())
+                {
+                    HandleEnemyDefeat(target);
+
+                    if (_enemies.Count > 0)
+                        SetTarget(_enemies[0]);
+                    else
+                        EndCombatVictory();
+                }
+            }
+        }
+
+        if (result.Healing > 0)
+            PlayerData.Instance.Heal(result.Healing);
+
+        if (result.ShieldValue > 0)
+            PlayerData.Instance.IncreaseBlock(result.ShieldValue + PlayerData.Instance.BlockBonus);
+
+        if (result.Buff != null)
+            GD.Print($"Buff applied: {result.Buff}");
+    }
+
+    public async void PlaySkillAnimation(string name)
+    {
+        switch (name)
+        {
+            case "Slash":
+                Player.PlayAnimationSlash();
+                break;
+            case "Thrust":
+                Player.PlayAnimationThrust();
+                break;
+            case "Light Block":
+                Player.PlayAnimationBlock();
+                break;
+            case "Prayer":
+                Player.PlayAnimationPrayer();
+                break;
+            case "Whirlwind":
+                Player.PlayAnimationWhirlwind();
+                break;
+        }
+        await ToSignal(GetTree().CreateTimer(1), "timeout");
+        Player.PlayAnimationStand();
+    }
 }

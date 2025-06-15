@@ -22,45 +22,9 @@ public partial class SkillData : Node
             
     }
     
-    public class Skill
-    {
-        public string Name;
-        public int StaminaCost;
-        public int ActionCost;
-        public int ShieldValue;
-        public bool IsBuff = false;
-        public Func<int>? GetDamage;
-        public Action? ExecuteEffect;
-    }
-
-    public enum Prayers
-    {
-        UnnamedAttackGod,
-        UnnamedDefenseGod,
-        Mars,
-        Odin,
-        Montu,
-        Anicetus,
-        Eir,
-        Bastet
-    }
-
-    public Prayers CurrentPrayer { get; set; } = Prayers.UnnamedAttackGod;
+    public PrayerType CurrentPrayer { get; set; } = PrayerType.UnnamedAttackGod;
 
     private bool _prayerChanged = false;
-    
-    //dictionary to hold cycling logic
-    private readonly Dictionary<Prayers, (Prayers Next, string Buff)> _prayerCycle = new()
-    {
-        { Prayers.UnnamedAttackGod, (Prayers.UnnamedDefenseGod, "Invigorated") },
-        { Prayers.UnnamedDefenseGod, (Prayers.UnnamedAttackGod, "Stalwart") },
-        { Prayers.Mars, (Prayers.Odin, "Mars's Pulse") },
-        { Prayers.Odin, (Prayers.Montu, "Raven's Claws") },
-        { Prayers.Montu, (Prayers.Mars, "Vampiric Feast") },
-        { Prayers.Anicetus, (Prayers.Eir, "Strategic Knowledge") },
-        { Prayers.Eir, (Prayers.Bastet, "Eir's Blessing") },
-        { Prayers.Bastet, (Prayers.Anicetus, "Quick Reflexes") }
-    };
     
     public Dictionary<string, Skill> SkillLibrary = new();
     
@@ -72,12 +36,11 @@ public partial class SkillData : Node
             Name = "Slash",
             StaminaCost = 1,
             ActionCost = 1,
-            ShieldValue = 0,
-            GetDamage = () => PlayerData.Instance.PlayerDamageLight,
-            ExecuteEffect = () =>
-            {
-                PlayerData.Instance.DecreaseStamina(SkillLibrary["Slash"].StaminaCost);
+            SkillType = SkillType.Damage,
+            Execute = () => {
+                PlayerData.Instance.DecreaseStamina(1);
                 CombatManager.Instance?.IncrementAttackCounter();
+                return new SkillResult { Damage = PlayerData.Instance.PlayerDamageLight };
             }
         };
 
@@ -86,12 +49,12 @@ public partial class SkillData : Node
             Name = "Thrust",
             StaminaCost = 2,
             ActionCost = 1,
-            GetDamage = () => PlayerData.Instance.PlayerDamageMid,
-            ShieldValue = 0,
-            ExecuteEffect = () =>
+            SkillType = SkillType.Damage,
+            Execute = () =>
             {
                 PlayerData.Instance.DecreaseStamina(SkillLibrary["Thrust"].StaminaCost);
                 CombatManager.Instance?.IncrementAttackCounter();
+                return new SkillResult { Damage = PlayerData.Instance.PlayerDamageMid };
             }
         };
 
@@ -100,13 +63,17 @@ public partial class SkillData : Node
             Name = "Light Block",
             StaminaCost = 1,
             ActionCost = 1,
-            GetDamage = () => PlayerData.Instance.ZeroDamage,
-            ShieldValue = 5,
-            ExecuteEffect = () =>
+            SkillType = SkillType.Shield,
+            Execute = () =>
             {
                 PlayerData.Instance.DecreaseStamina(SkillLibrary["Light Block"].StaminaCost);
-                PlayerData.Instance.IncreaseBlock(SkillLibrary["Light Block"].ShieldValue);
                 CombatManager.Instance?.IncrementDefendCounter();
+                return new SkillResult
+                {
+                    Damage = 0,
+                    ShieldValue = 5,
+                    Healing = 0
+                };
             }
         };
 
@@ -115,16 +82,20 @@ public partial class SkillData : Node
             Name = "Prayer",
             ActionCost = 2,
             StaminaCost = 0,
-            GetDamage = () => PlayerData.Instance.ZeroDamage,
-            ShieldValue = 0,
-            IsBuff = true,
-            ExecuteEffect = () =>
+            SkillType = SkillType.Buff,
+            Execute = () =>
             {
                 CombatManager.Instance?.IncrementPrayerCounter();
                 if (PlayerData.Instance != null)
                 {
                     GiveGodsBuff();
                 }
+                return new SkillResult
+                {
+                    Damage = 0,
+                    ShieldValue = 0,
+                    Healing = 0
+                };
             }
         };
 
@@ -133,12 +104,18 @@ public partial class SkillData : Node
             Name = "Whirlwind",
             StaminaCost = 3,
             ActionCost = 2,
-            GetDamage = () => PlayerData.Instance.PlayerDamageHeavy,
-            ShieldValue = 0,
-            ExecuteEffect = () =>
+            SkillType = SkillType.Aoe,
+            
+            Execute = () =>
             {
                 PlayerData.Instance.DecreaseStamina(SkillLibrary["Whirlwind"].StaminaCost);
                 CombatManager.Instance?.IncrementAttackCounter();
+                return new SkillResult()
+                {
+                    Damage = PlayerData.Instance.PlayerDamageHeavy,
+                    ShieldValue = 0,
+                    Healing = 0
+                };
             }
         };
     }
@@ -147,16 +124,16 @@ public partial class SkillData : Node
     {  
         if (PlayerData.Instance.GetPlayerClass() == "Berserker" && !_prayerChanged)
         {
-            CurrentPrayer = Prayers.Mars;
+            CurrentPrayer = PrayerType.Mars;
             _prayerChanged = true;
         }
         else if (PlayerData.Instance.GetPlayerClass() == "Warder" && !_prayerChanged)
         {
-            CurrentPrayer = Prayers.Anicetus;
+            CurrentPrayer = PrayerType.Anicetus;
             _prayerChanged = true;
         }
         
-        if (_prayerCycle.TryGetValue(CurrentPrayer, out var next))
+        if (PrayerData.PrayerCycle.TryGetValue(CurrentPrayer, out var next))
         {
             CurrentPrayer = next.Next;
             PlayerData.Instance.StoredBuff = next.Buff;

@@ -31,6 +31,8 @@ public partial class PlayerData: Node
     private string _playerClass;
     private int _playerStamina = 3;
     public int PlayerBlock = 0;
+    public int BlockBonus = 0;
+    public int DamageBonus = 0;
     public int ZeroDamage = 0; //used to return zero from the func<int> in skill class (SkillData)
     public int PlayerDamageLight = 5;
     public int PlayerDamageMid = 12;
@@ -47,7 +49,7 @@ public partial class PlayerData: Node
     //Todo: add a list or class to store debuffs
     
     //player loadout
-    public Dictionary<string, SkillData.Skill> PlayerSkills = new();
+    public Dictionary<string, Skill> PlayerSkills = new();
     
      private void SetSkills(string playerClass) {
          if (playerClass == null)

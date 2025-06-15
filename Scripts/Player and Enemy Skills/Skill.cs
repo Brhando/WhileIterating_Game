@@ -1,0 +1,10 @@
+﻿using System;
+public class Skill
+{
+    public string Name;
+    public int StaminaCost;
+    public int ActionCost;
+    public SkillType SkillType;
+    
+    public Func<SkillResult> Execute;
+}
