@@ -53,6 +53,7 @@ public partial class DreamManager : Node
         {
             DreamTextList2.Add("The dungeon watches, but remains still.");
         }
+        CombatManager.Instance.EnemiesDefeated = 0; //reset enemies defeated
     }
 
     private void InitializeRandomDreamTextList()
