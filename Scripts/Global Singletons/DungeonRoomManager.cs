@@ -7,7 +7,8 @@ public partial class DungeonRoomManager : Node
     public static DungeonRoomManager Instance;
 
     private int _currentRoomIndex = 0;
-    private List<string> _roomTypes = new(); // Example: "Enemy", "Rest", "Enemy", ...
+    private List<RoomNode> _rooms = new(); // Example: Enemy, Rest, Enemy, ...
+    private SceneLoader _sceneLoader = new();
 
     public override void _Ready()
     {
@@ -20,56 +21,39 @@ public partial class DungeonRoomManager : Node
     public void StartDungeonRun()
     {
         _currentRoomIndex = 0;
-        _roomTypes = GenerateRoomTypes(); // Decide layout
+        _rooms = GenerateRoomTypes(); // Decide layout
         LoadCurrentRoom();
     }
 
-    private List<string> GenerateRoomTypes()
+    private List<RoomNode> GenerateRoomTypes()
     {
-        var layout = new List<string>();
+        var layout = new List<RoomNode>();
 
-        // For example: alternating rest/enemy with boss at the end
         for (int i = 0; i < DungeonManager.Instance.ActiveDungeonEncounters.Count; i++)
         {
-            if (i != 0 && i % 3 == 2) //spawn a 'rest' room every 3rd room
-                layout.Add("Rest");
-            else
-                layout.Add("Enemy");
+            var type = (i != 0 && i % 3 == 2) ? RoomType.Rest : RoomType.Enemy; //spawn a 'rest' room every third room
+            layout.Add(new RoomNode(type));
         }
-
-        //layout.Add("Boss"); 
+        
+        //var room = new RoomNode(RoomType.Boss)
+        //layout.Add(room); 
         return layout;
     }
 
     public void LoadCurrentRoom()
     {
-        var roomType = _roomTypes[_currentRoomIndex];
-
-        switch (roomType)
-        {
-            case "Enemy":
-                GetTree().ChangeSceneToFile("res://Scenes/Dungeon Rooms/enemy_room.tscn");
-                break;
-            case "Rest":
-                GetTree().ChangeSceneToFile("res://Scenes/Dungeon Rooms/rest_room.tscn");
-                break;
-            case "Boss":
-                GetTree().ChangeSceneToFile("res://Scenes/Dungeon Rooms/boss_room.tscn");
-                break;
-        }
+        var roomType = _rooms[_currentRoomIndex].Type;
+        _sceneLoader.LoadDungeonRoom(roomType);
     }
 
     public void NextRoom()
     {
         _currentRoomIndex++;
 
-        if (_currentRoomIndex >= _roomTypes.Count)
+        if (_currentRoomIndex >= _rooms.Count)
         {
             GD.Print("Dungeon complete!");
-            DungeonManager.Instance.IncreaseCurrentDungeonLevel();
-            DungeonManager.Instance.IncreaseEnemiesLevel();
-            //return to overworld
-            GetTree().ChangeSceneToFile("res://Scenes/map_interface.tscn");
+            DungeonCompletionManager.Instance.HandleDungeonEnd(true);
         }
         else
         {
@@ -82,8 +66,8 @@ public partial class DungeonRoomManager : Node
         return _currentRoomIndex;
     }
 
-    public string GetCurrentRoomType()
+    public RoomType GetCurrentRoomType()
     {
-        return _roomTypes[_currentRoomIndex];
+        return _rooms[_currentRoomIndex].Type;
     }
 }

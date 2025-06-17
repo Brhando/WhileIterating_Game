@@ -43,11 +43,11 @@ public partial class DreamManager : Node
     {
         DreamTextList2.Clear();
         DreamTextList2.Add($"Enemies Thwarted: {CombatManager.Instance.EnemiesDefeated}");
-        if (CombatManager.Instance.DungeonDefeated)
+        if (DungeonCompletionManager.Instance.DungeonDefeated)
         {
             DreamTextList2.Add("You cleared the dungeon. It rumbles restlessly. The enemies you've defeated remember their bitter end...");
             DreamTextList2.Add("The corruption grows...The world remembers...");
-            CombatManager.Instance.DungeonDefeated = false;
+            DungeonCompletionManager.Instance.DungeonDefeated = false;
         }
         else
         {
