@@ -47,17 +47,23 @@ public partial class PlayerData: Node
     //player loadout
     public Dictionary<string, Skill> PlayerSkills = new();
     
-     private void SetSkills()
-     {
-         var i = 1;
-         foreach (var skill in PlayerClassManager.Instance.CurrentPlayerClass.Skills.Values)
-         {
-             PlayerSkills["Skill" + i] = skill;
-             i++;
-         }
+    private void SetSkills()
+    {
+        PlayerSkills.Clear();
 
-     }
-    
+        for (int i = 1; i <= 5; i++)
+        {
+            var skill = PlayerClassManager.Instance.CurrentPlayerClass.GetSkillForSlot(i);
+            if (skill != null)
+            {
+                PlayerSkills["Skill" + i] = skill;
+            }
+            else
+            {
+                GD.PrintErr($"Skill{i} is null — not assigned in UnlockedSkillBySlot!");
+            }
+        }
+    }
     public void Heal(int amount)
     {
         var health = _playerHealth;
@@ -173,9 +179,20 @@ public partial class PlayerData: Node
     public void SetClass(string className) 
     {
         PlayerClassManager.Instance.SetCurrentPlayerClass(className); 
+
+        if (className == "Berserker")
+        {
+            PlayerClassManager.Instance.CurrentPlayerClass.UnlockSkillForSlot(3, "Vampiric Strike"); // Replaces Block
+        }
+        else if (className == "Warder")
+        {
+            PlayerClassManager.Instance.CurrentPlayerClass.UnlockSkillForSlot(2, "Heavy Block"); // Replaces Thrust
+        }
+
+        // Fill all remaining slots with default base class skills
+        PlayerClassManager.Instance.CurrentPlayerClass.EnsureFallbackSkills();
+
         SetSkills();
     }
     
-    
-
 }

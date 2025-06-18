@@ -41,6 +41,7 @@ public partial class SkillData : Node
             Execute = () => {
                 PlayerData.Instance.DecreaseStamina(1);
                 CombatManager.Instance?.IncrementAttackCounter();
+                DevotionTree.Instance?.IncrementSelectedPoints('a');
                 return new SkillResult { Damage = PlayerData.Instance.PlayerDamageLight };
             }
         };
@@ -56,6 +57,7 @@ public partial class SkillData : Node
             {
                 PlayerData.Instance.DecreaseStamina(SkillLibrary["Thrust"].StaminaCost);
                 CombatManager.Instance?.IncrementAttackCounter();
+                DevotionTree.Instance?.IncrementSelectedPoints('a');
                 return new SkillResult { Damage = PlayerData.Instance.PlayerDamageMid };
             }
         };
@@ -71,6 +73,7 @@ public partial class SkillData : Node
             {
                 PlayerData.Instance.DecreaseStamina(SkillLibrary["Light Block"].StaminaCost);
                 CombatManager.Instance?.IncrementDefendCounter();
+                DevotionTree.Instance?.IncrementSelectedPoints('d');
                 return new SkillResult
                 {
                     Damage = 0,
@@ -90,6 +93,7 @@ public partial class SkillData : Node
             Execute = () =>
             {
                 CombatManager.Instance?.IncrementPrayerCounter();
+                DevotionTree.Instance?.IncrementSelectedPoints('p');
                 if (PlayerData.Instance != null)
                 {
                     GiveGodsBuff();
@@ -115,11 +119,53 @@ public partial class SkillData : Node
             {
                 PlayerData.Instance.DecreaseStamina(SkillLibrary["Whirlwind"].StaminaCost);
                 CombatManager.Instance?.IncrementAttackCounter();
+                DevotionTree.Instance?.IncrementSelectedPoints('a');
                 return new SkillResult()
                 {
                     Damage = PlayerData.Instance.PlayerDamageHeavy,
                     ShieldValue = 0,
                     Healing = 0
+                };
+            }
+        };
+        SkillLibrary["Vampiric Strike"] = new Skill
+        {
+            Name = "Vampiric Strike",
+            StaminaCost = 2,
+            ActionCost = 1,
+            SkillType = SkillType.Damage,
+            ForClassType = PlayerClassType.Berserker,
+            DevotionReq = 15,
+
+            Execute = () =>
+            {
+                PlayerData.Instance.DecreaseStamina(SkillLibrary["Vampiric Strike"].StaminaCost);
+                CombatManager.Instance?.IncrementAttackCounter();
+                DevotionTree.Instance?.IncrementSelectedPoints('a');
+                return new SkillResult()
+                {
+                    Damage = PlayerData.Instance.PlayerDamageMid,
+                    Healing = PlayerData.Instance.PlayerDamageMid
+                };
+            }
+        };
+        SkillLibrary["Heavy Block"] = new Skill
+        {
+            Name = "Heavy Block",
+            StaminaCost = 2,
+            ActionCost = 1,
+            SkillType = SkillType.Shield,
+            ForClassType = PlayerClassType.Warder,
+            DevotionReq = 15,
+
+            Execute = () =>
+            {
+                PlayerData.Instance.DecreaseStamina(SkillLibrary["Heavy Block"].StaminaCost);
+                CombatManager.Instance?.IncrementDefendCounter();
+                DevotionTree.Instance?.IncrementSelectedPoints('d');
+                return new SkillResult()
+                {
+                    ShieldValue = 12
                 };
             }
         };

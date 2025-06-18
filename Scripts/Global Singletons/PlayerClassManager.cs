@@ -32,21 +32,13 @@ public partial class PlayerClassManager : Node
 
     private void LoadSkills(PlayerClassData playerClass)
     {
-        if (SkillData.Instance == null)
-        {
-            GD.PrintErr("SkillData.Instance is null in LoadSkills()");
-            return;
-        }
-        if (SkillData.Instance.SkillLibrary == null)
-        {
-            GD.PrintErr("SkillLibrary is null in LoadSkills()");
-            return;
-        }
+        if (SkillData.Instance?.SkillLibrary == null) return;
+
         foreach (var skill in SkillData.Instance.SkillLibrary.Values)
         {
             if (skill.ForClassType == playerClass.Type || skill.ForClassType == PlayerClassType.All)
             {
-                playerClass.Skills[skill.Name] = skill;
+                playerClass.AllSkills[skill.Name] = skill;
             }
         }
     }
@@ -72,6 +64,7 @@ public partial class PlayerClassManager : Node
         if (!PlayerClasses.ContainsKey(playerClass.Name))
             PlayerClasses.Add(playerClass.Name, playerClass);
     }
+    
 
     
 
