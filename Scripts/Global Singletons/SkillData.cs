@@ -31,7 +31,7 @@ public partial class SkillData : Node
     //initialize and hold skills in SkillLibrary dictionary
     private void InitializeSkills()
     {
-        SkillLibrary["Slash"] = new Skill
+        SkillLibrary["Slash"] = new Skill //slot 1
         {
             Name = "Slash",
             StaminaCost = 1,
@@ -46,7 +46,7 @@ public partial class SkillData : Node
             }
         };
 
-        SkillLibrary["Thrust"] = new Skill
+        SkillLibrary["Thrust"] = new Skill //slot 2
         {
             Name = "Thrust",
             StaminaCost = 2,
@@ -62,7 +62,7 @@ public partial class SkillData : Node
             }
         };
 
-        SkillLibrary["Light Block"] = new Skill
+        SkillLibrary["Light Block"] = new Skill //slot 3
         {
             Name = "Light Block",
             StaminaCost = 1,
@@ -83,7 +83,7 @@ public partial class SkillData : Node
             }
         };
 
-        SkillLibrary["Prayer"] = new Skill
+        SkillLibrary["Prayer"] = new Skill //slot 4
         {
             Name = "Prayer",
             ActionCost = 2,
@@ -107,11 +107,11 @@ public partial class SkillData : Node
             }
         };
 
-        SkillLibrary["Whirlwind"] = new Skill
+        SkillLibrary["Whirlwind"] = new Skill //slot 5
         {
             Name = "Whirlwind",
             StaminaCost = 3,
-            ActionCost = 2,
+            ActionCost = 1,
             SkillType = SkillType.Aoe,
             ForClassType = PlayerClassType.SwordSwinger,
             
@@ -128,14 +128,13 @@ public partial class SkillData : Node
                 };
             }
         };
-        SkillLibrary["Vampiric Strike"] = new Skill
+        SkillLibrary["Vampiric Strike"] = new Skill //replaces light block (slot 3)
         {
             Name = "Vampiric Strike",
-            StaminaCost = 2,
+            StaminaCost = 1,
             ActionCost = 1,
             SkillType = SkillType.Damage,
             ForClassType = PlayerClassType.Berserker,
-            DevotionReq = 15,
 
             Execute = () =>
             {
@@ -146,17 +145,17 @@ public partial class SkillData : Node
                 {
                     Damage = PlayerData.Instance.PlayerDamageMid,
                     Healing = PlayerData.Instance.PlayerDamageMid
+                    //apply 'blood fatigue' debuff to enemy if active attack chain
                 };
             }
         };
-        SkillLibrary["Heavy Block"] = new Skill
+        SkillLibrary["Heavy Block"] = new Skill //replaces thrust (slot 2)
         {
             Name = "Heavy Block",
             StaminaCost = 2,
             ActionCost = 1,
             SkillType = SkillType.Shield,
             ForClassType = PlayerClassType.Warder,
-            DevotionReq = 15,
 
             Execute = () =>
             {
@@ -166,6 +165,90 @@ public partial class SkillData : Node
                 return new SkillResult()
                 {
                     ShieldValue = 12
+                    //apply the 'disarm' debuff to enemy if active defend chain
+                };
+            }
+        };
+        SkillLibrary["Rage Slash"] = new Skill // replaces thrust (slot 2)
+        {
+            Name = "Rage Slash",
+            StaminaCost = 2,
+            ActionCost = 1,
+            SkillType = SkillType.Aoe,
+            ForClassType = PlayerClassType.Berserker,
+
+            Execute = () =>
+            {
+                PlayerData.Instance.DecreaseStamina(SkillLibrary["Rage Slash"].StaminaCost);
+                CombatManager.Instance?.IncrementAttackCounter();
+                DevotionTree.Instance?.IncrementSelectedPoints('a');
+                return new SkillResult()
+                {
+                    Damage = PlayerData.Instance.PlayerDamageLight
+                };
+            }
+        };
+        SkillLibrary["Skull Splitter"] = new Skill //replaces whirlwind (slot 5)
+        {
+            Name = "Skull Splitter",
+            StaminaCost = 3,
+            ActionCost = 1,
+            SkillType = SkillType.Ultimate,
+            ForClassType = PlayerClassType.Berserker,
+
+            Execute = () =>
+            {
+                PlayerData.Instance.DecreaseStamina(SkillLibrary["Skull Splitter"].StaminaCost);
+                CombatManager.Instance?.IncrementAttackCounter();
+                DevotionTree.Instance?.IncrementSelectedPoints('a');
+                return new SkillResult()
+                {
+                    Damage = PlayerData.Instance.PlayerDamageHeavy,
+                    Healing = PlayerData.Instance.PlayerDamageHeavy
+                    //apply extra damage and healing if enemy has bloodfatigue
+                };
+            }
+        };
+        SkillLibrary["Deflect Slash"] = new Skill //replaces slash (slot 1)
+        {
+            Name = "Deflect Slash",
+            StaminaCost = 1,
+            ActionCost = 1,
+            SkillType = SkillType.Debuff,
+            ForClassType = PlayerClassType.Warder,
+            
+            Execute = () =>
+            {
+                PlayerData.Instance.DecreaseStamina(SkillLibrary["Deflect Slash"].StaminaCost);
+                CombatManager.Instance?.IncrementDefendCounter();
+                DevotionTree.Instance?.IncrementSelectedPoints('d');
+                return new SkillResult()
+                {
+                    ShieldValue = PlayerData.Instance.PlayerDamageLight / 3
+                    //need to write logic to reflect half of the damage onto the enemy
+                    //this can be done by simply applying a debuff to the enemy that detonates upon it attacking
+                    //maybe include a Debuff string value in SkillResult?
+                };
+            }
+        };
+        SkillLibrary["Immovable Judgement"] = new Skill //replaces whirlwind (slot 5)
+        {
+            Name = "Immovable Judgement",
+            StaminaCost = 3,
+            ActionCost = 1,
+            SkillType = SkillType.Ultimate,
+            ForClassType = PlayerClassType.Warder,
+
+            Execute = () =>
+            {
+                PlayerData.Instance.DecreaseStamina(SkillLibrary["Immovable Judgement"].StaminaCost);
+                CombatManager.Instance.IncrementDefendCounter();
+                DevotionTree.Instance?.IncrementSelectedPoints('d');
+                return new SkillResult()
+                {
+                    Damage = PlayerData.Instance.PlayerDamageHeavy
+                    //stun enemies that have disarm debuff
+                    //gain massive (50+) one turn shield
                 };
             }
         };

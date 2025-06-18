@@ -5,5 +5,6 @@
     Debuff,
     Shield,
     Dot,
-    Aoe
+    Aoe,
+    Ultimate,
 }

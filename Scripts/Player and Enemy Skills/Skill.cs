@@ -6,7 +6,6 @@ public class Skill
     public int ActionCost;
     public SkillType SkillType;
     public PlayerClassType ForClassType;
-    public int DevotionReq = 0;
     
     public Func<SkillResult> Execute;
 }

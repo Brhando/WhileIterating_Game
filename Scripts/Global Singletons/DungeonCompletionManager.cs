@@ -20,7 +20,9 @@ public partial class DungeonCompletionManager : Node
         {
             DungeonManager.Instance.IncreaseCurrentDungeonLevel();
             DungeonManager.Instance.IncreaseEnemiesLevel();
-            //Show summary or reward screen
+            //Add summary or reward screen
+            //normalize devotion points earned in combat
+            DevotionTree.Instance.NormalizeDevotionPoints();
         }
 
         SceneManager.Instance.Change("res://Scenes/map_interface.tscn");

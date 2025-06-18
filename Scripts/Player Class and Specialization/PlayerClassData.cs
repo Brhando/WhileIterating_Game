@@ -6,7 +6,6 @@ public class PlayerClassData
     public PlayerClassType Type { get; set; }
     public Dictionary<string, Skill> AllSkills { get; set; }
     public Dictionary<int, string> UnlockedSkillBySlot { get; set; } // SLOT → SkillName
-    public int DevotionPoints { get; set; }
 
     public PlayerClassData(string name = "", PlayerClassType type = PlayerClassType.None)
     {
@@ -14,7 +13,6 @@ public class PlayerClassData
         Type = type;
         AllSkills = new Dictionary<string, Skill>();
         UnlockedSkillBySlot = new Dictionary<int, string>();
-        DevotionPoints = 0;
     }
 
     public void UnlockSkillForSlot(int slotIndex, string skillName)
