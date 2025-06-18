@@ -10,6 +10,7 @@ public partial class ItemDatabase : Node
             Instance = this;
         else
             QueueFree();
+        
         LoadItems();
     }
 

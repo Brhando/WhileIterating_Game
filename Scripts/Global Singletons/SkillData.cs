@@ -37,6 +37,7 @@ public partial class SkillData : Node
             StaminaCost = 1,
             ActionCost = 1,
             SkillType = SkillType.Damage,
+            ForClassType = PlayerClassType.SwordSwinger,
             Execute = () => {
                 PlayerData.Instance.DecreaseStamina(1);
                 CombatManager.Instance?.IncrementAttackCounter();
@@ -50,6 +51,7 @@ public partial class SkillData : Node
             StaminaCost = 2,
             ActionCost = 1,
             SkillType = SkillType.Damage,
+            ForClassType = PlayerClassType.SwordSwinger,
             Execute = () =>
             {
                 PlayerData.Instance.DecreaseStamina(SkillLibrary["Thrust"].StaminaCost);
@@ -64,6 +66,7 @@ public partial class SkillData : Node
             StaminaCost = 1,
             ActionCost = 1,
             SkillType = SkillType.Shield,
+            ForClassType = PlayerClassType.SwordSwinger,
             Execute = () =>
             {
                 PlayerData.Instance.DecreaseStamina(SkillLibrary["Light Block"].StaminaCost);
@@ -83,6 +86,7 @@ public partial class SkillData : Node
             ActionCost = 2,
             StaminaCost = 0,
             SkillType = SkillType.Buff,
+            ForClassType = PlayerClassType.All,
             Execute = () =>
             {
                 CombatManager.Instance?.IncrementPrayerCounter();
@@ -105,6 +109,7 @@ public partial class SkillData : Node
             StaminaCost = 3,
             ActionCost = 2,
             SkillType = SkillType.Aoe,
+            ForClassType = PlayerClassType.SwordSwinger,
             
             Execute = () =>
             {
@@ -122,12 +127,12 @@ public partial class SkillData : Node
 
     private void GiveGodsBuff()
     {  
-        if (PlayerData.Instance.GetPlayerClass() == "Berserker" && !_prayerChanged)
+        if (PlayerClassManager.Instance.GetClassName() == "Berserker" && !_prayerChanged)
         {
             CurrentPrayer = PrayerType.Mars;
             _prayerChanged = true;
         }
-        else if (PlayerData.Instance.GetPlayerClass() == "Warder" && !_prayerChanged)
+        else if (PlayerClassManager.Instance.GetClassName() == "Warder" && !_prayerChanged)
         {
             CurrentPrayer = PrayerType.Anicetus;
             _prayerChanged = true;

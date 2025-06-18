@@ -78,7 +78,6 @@ public partial class ShortSword : Area2D
 		
 		
 		PlayerData.Instance.SetClass("Sword Swinger");
-		GD.Print("Class set to Sword Swinger.");
 		
 		QueueFree(); // Remove sword
 	}

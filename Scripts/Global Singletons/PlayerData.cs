@@ -18,7 +18,6 @@ public partial class PlayerData: Node
             QueueFree();
         }
         
-        SetSkills(_playerClass);
         
     }
     
@@ -28,7 +27,6 @@ public partial class PlayerData: Node
     
     //player stats to be tracked globally
     private int _playerHealth = 25;
-    private string _playerClass;
     private int _playerStamina = 3;
     public int PlayerBlock = 0;
     public int BlockBonus = 0;
@@ -43,32 +41,23 @@ public partial class PlayerData: Node
     
     private int _healthCap = 25;
     private int _staminaCap = 3;
-    private int _totalHeavy = 0;
-    private int _totalBlocks = 0;
     public string StoredBuff = "None";
     //Todo: add a list or class to store debuffs
     
     //player loadout
     public Dictionary<string, Skill> PlayerSkills = new();
     
-     private void SetSkills(string playerClass) {
-         if (playerClass == null)
+     private void SetSkills()
+     {
+         var i = 1;
+         foreach (var skill in PlayerClassManager.Instance.CurrentPlayerClass.Skills.Values)
          {
-             PlayerSkills["Skill1"] = null;
-             PlayerSkills["Skill2"] = null;
-             PlayerSkills["Skill3"] = null;
-             PlayerSkills["Skill4"] = null;
-             PlayerSkills["Skill5"] = null;
+             PlayerSkills["Skill" + i] = skill;
+             i++;
          }
-         else if (playerClass == "Sword Swinger") {
-            PlayerSkills["Skill1"] = SkillData.Instance?.SkillLibrary["Slash"];
-            PlayerSkills["Skill2"] = SkillData.Instance?.SkillLibrary["Thrust"];
-            PlayerSkills["Skill3"] = SkillData.Instance?.SkillLibrary["Light Block"];
-            PlayerSkills["Skill4"] = SkillData.Instance?.SkillLibrary["Prayer"];
-            PlayerSkills["Skill5"] = SkillData.Instance?.SkillLibrary["Whirlwind"];
-         }
-     
-     } 
+
+     }
+    
     public void Heal(int amount)
     {
         var health = _playerHealth;
@@ -181,38 +170,12 @@ public partial class PlayerData: Node
         EmitSignalHealthBlockStaminaChanged();
     }
     
-
-    public void IncrementBlocks()
+    public void SetClass(string className) 
     {
-        _totalBlocks++;
-        EmitSignalHealthBlockStaminaChanged();
+        PlayerClassManager.Instance.SetCurrentPlayerClass(className); 
+        SetSkills();
     }
-
-    public void IncrementHeavy()
-    {
-        _totalHeavy++;
-    }
-
-    public int GetBlocks()
-    {
-        return _totalBlocks;
-    }
-
-    public int GetHeavy()
-    {
-        return _totalHeavy;
-    }
-
-    public void SetClass(string className)
-    {
-        _playerClass = className;
-        SetSkills(_playerClass);
-    }
-
-    public string GetPlayerClass()
-    {
-        return _playerClass;
-    }
+    
     
 
 }
