@@ -4,4 +4,5 @@
     public int Healing = 0;
     public int ShieldValue = 0;
     public string Buff = null;
+    public DebuffType AppliedDebuff = DebuffType.None;
 }

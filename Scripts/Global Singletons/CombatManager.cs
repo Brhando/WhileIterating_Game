@@ -63,8 +63,10 @@ public partial class CombatManager: Node
 
         _blessingEffects["Quick Reflexes"] = () =>
         {
-            PlayerData.Instance.PlayerDotLeft = 0;
-            PlayerData.Instance.DotDamageTotal = 0;
+            foreach (var count in PlayerData.Instance.Debuffs.Keys)
+            {
+                PlayerData.Instance.Debuffs[count] = 0;
+            }
             _buffApplied[6] = 1;
         };
 
@@ -137,13 +139,20 @@ public partial class CombatManager: Node
     {
         _currentBattleState = BattleState.PlayerTurn;
 
-        if (Player.CheckDot())
+        foreach (var runningDebuff in PlayerData.Instance.Debuffs.Keys)
         {
-            Player.PlayAnimationHurt();
-            await ToSignal(GetTree().CreateTimer(1), "timeout");
-            Player.PlayAnimationStand();
-            Player.ApplyDotDamage();
+            if (Player.CheckDot(runningDebuff))
+            {
+                if (DebuffData.Instance.DebuffLibrary[runningDebuff].Damage > 0)
+                {
+                    Player.PlayAnimationHurt();
+                    await ToSignal(GetTree().CreateTimer(1), "timeout");
+                    Player.PlayAnimationStand();
+                    Player.ApplyDebuffDamage(DebuffData.Instance.DebuffLibrary[runningDebuff].Damage);
+                }
+            }
         }
+
         if (Player.IsDead())
         {
             _currentBattleState = BattleState.Lose;
@@ -211,9 +220,9 @@ public partial class CombatManager: Node
                 GD.Print("Enemy casts a buff.");
             }
 
-            if (chosenSkill.IsDamageOverTime)
+            if (chosenSkill.DebuffType == DebuffType.Bleed) //make this into a function that chooses the correct debuff
             {
-                Player.ApplyDot(chosenSkill.DotCounter, chosenSkill.Damage);
+                Player.ApplyDebuff(DebuffType.Bleed);
             }
 
             if (chosenSkill.Damage > 0)
@@ -424,6 +433,10 @@ public partial class CombatManager: Node
 
         if (result.Buff != null)
             GD.Print($"Buff applied: {result.Buff}");
+        if (result.AppliedDebuff != DebuffType.None)
+        {
+            PlayerData.Instance.ApplyDebuff(result.AppliedDebuff);
+        }
     }
 
     public async void PlaySkillAnimation(string name)

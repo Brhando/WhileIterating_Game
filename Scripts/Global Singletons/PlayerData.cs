@@ -18,7 +18,7 @@ public partial class PlayerData: Node
             QueueFree();
         }
         
-        
+        InitializeDebuffs();
     }
     
     //signals to track  when the player's health/stamina/block changes
@@ -35,14 +35,13 @@ public partial class PlayerData: Node
     public int PlayerDamageLight = 5;
     public int PlayerDamageMid = 12;
     public int PlayerDamageHeavy = 20;
-    public int PlayerDotLeft = 0;
-    public int DotDamageTotal = 0;
     public bool PrayerState = false;
     
     private int _healthCap = 25;
     private int _staminaCap = 3;
     public string StoredBuff = "None";
-    //Todo: add a list or class to store debuffs
+    //dictionary to track debuffs on the player
+    public Dictionary<DebuffType, int> Debuffs = new();
     
     //player loadout
     public Dictionary<string, Skill> PlayerSkills = new();
@@ -95,24 +94,23 @@ public partial class PlayerData: Node
         EmitSignalHealthBlockStaminaChanged();
     }
 
-    public void ApplyDot(int counter, int damage)
+    public void ApplyDebuff(DebuffType appliedDebuff)
     {
-        PlayerDotLeft = Mathf.Min(3, PlayerDotLeft + counter);
-        DotDamageTotal += Mathf.Min(7, DotDamageTotal + damage);
+        Debuffs[appliedDebuff] = Mathf.Min(3, Debuffs[appliedDebuff] + DebuffData.Instance.DebuffLibrary[appliedDebuff].CountAmt);
     }
 
     public void ApplyDotDamage(int amt)
     {
         _playerHealth = Mathf.Max(0, _playerHealth - amt);
     }
-    public bool CheckDot()
+    public bool CheckDot(DebuffType appliedDebuff)
     {
-        if (PlayerDotLeft > 0)
+        if (Debuffs[appliedDebuff] > 0)
         {
-            PlayerDotLeft--;
+            Debuffs[appliedDebuff]--;
             return true;
         }
-        DotDamageTotal = 0;
+        
         return false;
     }
 
@@ -193,6 +191,15 @@ public partial class PlayerData: Node
         PlayerClassManager.Instance.CurrentPlayerClass.EnsureFallbackSkills();
 
         SetSkills();
+    }
+
+    private void InitializeDebuffs()
+    {
+        Debuffs[DebuffType.Bleed] = 0;
+        Debuffs[DebuffType.Poison] = 0;
+        Debuffs[DebuffType.Deflect] = 0;
+        Debuffs[DebuffType.BloodFatigue] = 0;
+        Debuffs[DebuffType.Weak] = 0;
     }
     
 }

@@ -23,19 +23,19 @@ public partial class PlayerEntity : CharacterBody2D
         PlayerData.Instance.TakeDamage(amt);
     }
 
-    public bool CheckDot()
+    public bool CheckDot(DebuffType appliedDebuff)
     {
-        return PlayerData.Instance.CheckDot();
+        return PlayerData.Instance.CheckDot(appliedDebuff);
     }
 
-    public void ApplyDotDamage()
+    public void ApplyDebuffDamage(int dmg)
     {
-        PlayerData.Instance.ApplyDotDamage(PlayerData.Instance.DotDamageTotal);
+        PlayerData.Instance.TakeDamage(dmg);
     }
 
-    public void ApplyDot(int counter, int damage)
+    public void ApplyDebuff(DebuffType appliedDebuff)
     {
-        PlayerData.Instance.ApplyDot(counter, damage);
+        PlayerData.Instance.ApplyDebuff(appliedDebuff);
     }
     
     //play certain animations depending on what is happening

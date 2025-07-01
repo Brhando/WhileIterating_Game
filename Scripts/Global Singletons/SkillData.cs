@@ -144,8 +144,8 @@ public partial class SkillData : Node
                 return new SkillResult()
                 {
                     Damage = PlayerData.Instance.PlayerDamageMid,
-                    Healing = PlayerData.Instance.PlayerDamageMid
-                    //apply 'blood fatigue' debuff to enemy if active attack chain
+                    Healing = PlayerData.Instance.PlayerDamageMid,
+                    AppliedDebuff = CombatManager.Instance.AttackChain ? DebuffType.BloodFatigue : DebuffType.None,
                 };
             }
         };

@@ -33,6 +33,7 @@ SceneManager="*res://Scripts/Global Singletons/SceneManager.cs"
 DungeonCompletionManager="*res://Scripts/Global Singletons/DungeonCompletionManager.cs"
 PlayerClassManager="*res://Scripts/Global Singletons/PlayerClassManager.cs"
 DevotionTree="*res://Scripts/Global Singletons/DevotionTree.cs"
+DebuffData="*res://Scripts/Global Singletons/DebuffData.cs"
 
 [display]
 

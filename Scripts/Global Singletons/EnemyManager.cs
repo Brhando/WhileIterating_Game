@@ -30,36 +30,30 @@ public partial class EnemyManager : Node
         private string _enemyType;
         private int _damage;
         private int _baseDamage;
-        private string _type;
+        private DebuffType _debuffType;
         private int _shieldValue;
-        private bool _isDamageOverTime;
         private bool _isBuff;
-        private int _dotCounter;
         
         public int Damage { get => _damage; set => _damage = value; }
         public int BaseDamage { get => _baseDamage; set => _baseDamage = value; }
-        public string Type { get => _type; set => _type = value; }
+        public DebuffType DebuffType { get => _debuffType; set => _debuffType = value; }
         public int ShieldValue { get => _shieldValue; set => _shieldValue = value; }
         public string Name {get => _name; set => _name = value;}
         public int Level {get => _level; set => _level = value;}
         public string EnemyType => _enemyType;
-        public bool IsDamageOverTime => _isDamageOverTime;
         public bool IsBuff => _isBuff;
-        public int DotCounter => _dotCounter;
         
         //constructor
-        public EnemySkill(string name, string etype, int level, int damage, int baseDamage, string type, int shield = 0, bool dot = false, bool buff = false, int dotCounter = 0)
+        public EnemySkill(string name, string etype, int level, int damage, int baseDamage, int shield = 0, DebuffType type = DebuffType.None, bool buff = false)
         {
             _name = name;
             _level = level;
             _enemyType = etype;
             _damage = damage;
             _baseDamage = baseDamage;
-            _type = type;
             _shieldValue = shield;
-            _isDamageOverTime = dot;
+            _debuffType = type;
             _isBuff = buff;
-            _dotCounter = dotCounter;
         }
         
     }
@@ -152,9 +146,9 @@ public partial class EnemyManager : Node
         }
     }
     //Enemy Skills
-    private readonly EnemySkill _strike = new("Strike", "All", 1, 5, 5, "Attack");
-    private readonly EnemySkill _block = new("Block","All", 1, 0, 0, "Defend", 5);
-    private readonly EnemySkill _skeletonStab = new("SkeletonStab","Skeleton", 2, 5, 5, "DOT", 0, true, false, 1);
+    private readonly EnemySkill _strike = new("Strike", "All", 1, 5, 5);
+    private readonly EnemySkill _block = new("Block","All", 1, 0, 0, 5);
+    private readonly EnemySkill _skeletonStab = new("SkeletonStab","Skeleton", 2, 5, 5, 0, DebuffType.Bleed, false);
     private Dictionary<string, EnemySkill> _enemySkillLibrary = new();
     private Enemy _goblin;
     private Enemy _slime;
