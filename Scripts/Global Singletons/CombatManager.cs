@@ -208,6 +208,7 @@ public partial class CombatManager: Node
                 return;
             }
 
+            e.CheckDebuffs();
             var skills = e.GetSkills();
             var rng = new RandomNumberGenerator();
             rng.Randomize();
@@ -400,19 +401,27 @@ public partial class CombatManager: Node
     {
         if (result.Damage > 0)
         {
+            var AddedBonusForFatigue = false;
             var target = _currentTarget;
-
+            
             if (target != null && !target.IsQueuedForDeletion())
             {
+                if (target.CheckForFatigue())
+                {
+                    PlayerData.Instance.DamageBonus +=
+                        DebuffData.Instance.DebuffLibrary[DebuffType.BloodFatigue].Damage;
+                    AddedBonusForFatigue = true;
+                }
                 target.PlayAnimationHurt();
                 await ToSignal(GetTree().CreateTimer(1f), "timeout");
-
-                if (target == null || target.IsQueuedForDeletion())
-                    return;
-
+                
                 target.PlayAnimationStand();
                 target.DecreaseHealth(result.Damage + PlayerData.Instance.DamageBonus);
-
+                if (AddedBonusForFatigue)
+                {
+                    PlayerData.Instance.DamageBonus -=
+                        DebuffData.Instance.DebuffLibrary[DebuffType.BloodFatigue].Damage;
+                }
                 if (target.IsDead())
                 {
                     HandleEnemyDefeat(target);
@@ -433,9 +442,10 @@ public partial class CombatManager: Node
 
         if (result.Buff != null)
             GD.Print($"Buff applied: {result.Buff}");
-        if (result.AppliedDebuff != DebuffType.None)
+        if (result.AppliedDebuff != DebuffType.None && _currentTarget != null)
         {
-            PlayerData.Instance.ApplyDebuff(result.AppliedDebuff);
+            GD.Print($"Debuff applied: {result.AppliedDebuff}");
+            _currentTarget.AddOrIncrementDebuff(result.AppliedDebuff);
         }
     }
 

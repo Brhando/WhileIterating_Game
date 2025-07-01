@@ -72,6 +72,7 @@ public partial class EnemyManager : Node
         public int MaxHealth => _maxHealth;
         public int Shield => _shield;
         public int Level => _level;
+        public Dictionary<DebuffType, int> Debuffs = new();
         
         //constructor
         public Enemy(string name, int health, int maxHealth, int level = 1, int shield = 0)
@@ -117,6 +118,43 @@ public partial class EnemyManager : Node
             }
         }
         
+        //func to add applied debuffs
+        public void AddOrIncrementDebuff(DebuffType appliedDebuff)
+        {
+            if (Debuffs.ContainsKey(appliedDebuff))
+            {
+                Debuffs[appliedDebuff] += DebuffData.Instance.DebuffLibrary[appliedDebuff].CountAmt;
+            }
+            else
+            {
+                Debuffs.Add(appliedDebuff, DebuffData.Instance.DebuffLibrary[appliedDebuff].CountAmt);
+            }
+        }
+
+        public void DecrementDebuff(DebuffType appliedDebuff)
+        {
+            if (Debuffs.ContainsKey(appliedDebuff))
+            {
+                Debuffs[appliedDebuff]--;
+                if (Debuffs[appliedDebuff] <= 0)
+                {
+                    Debuffs.Remove(appliedDebuff);
+                }
+            }
+        }
+
+        public void TickAllDebuffsDown()
+        {
+            List<DebuffType> expired = new();
+            foreach (var debuff in Debuffs.Keys)
+            {
+                Debuffs[debuff]--;
+                if (Debuffs[debuff] <= 0)
+                    expired.Add(debuff);
+            }
+            foreach (var d in expired)
+                Debuffs.Remove(d);
+        }
         
         //func used to add skills
         public void AddSkill(EnemySkill skill)

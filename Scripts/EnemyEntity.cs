@@ -45,6 +45,38 @@ public partial class EnemyEntity : CharacterBody2D
         UpdateLabels();
     }
 
+    public bool CheckForFatigue()
+    {
+        if (_enemy.Debuffs.ContainsKey(DebuffType.BloodFatigue))
+        {
+            _enemy.DecrementDebuff(DebuffType.BloodFatigue);
+            return true;
+        }
+        return false;
+    }
+    public void AddOrIncrementDebuff(DebuffType appliedDebuff)
+    {
+        _enemy.AddOrIncrementDebuff(appliedDebuff);
+    }
+
+    public void TickAllDebuffsDown()
+    {
+        _enemy.TickAllDebuffsDown();
+    }
+
+    public void CheckDebuffs()
+    {
+        //check debuffs and apply visual cues
+        //until I have icons we will just add a glow for blood fatigue and disarm
+        if (_enemy.Debuffs.ContainsKey(DebuffType.BloodFatigue))
+            SetGlowColor(Colors.OrangeRed);
+        //else if (_enemy.Debuffs.ContainsKey(DebuffType.Disarm)) {SetGlowColor(Colors.Purple)}
+        else
+        {
+            ResetGlow();
+        }
+    }
+
     //function to decrease enemy's health when attacked
     public void DecreaseHealth(int amt)
     {
@@ -97,5 +129,15 @@ public partial class EnemyEntity : CharacterBody2D
     public void PlayAnimationHurt()
     {
         _anim.Play("Hurt");
+    }
+    
+    public void SetGlowColor(Color color)
+    {
+        _anim.Modulate = color;
+    }
+
+    public void ResetGlow()
+    {
+        _anim.Modulate = Colors.White;
     }
 }
