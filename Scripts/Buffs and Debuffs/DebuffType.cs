@@ -5,5 +5,6 @@
     Deflect,
     Weak,
     BloodFatigue,
+    Disarm,
     None
 }
