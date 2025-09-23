@@ -1,10 +1,10 @@
-# WhileIterating_Game 🎮
+# WhileIterating_Game 
 A modular, turn-based 2D RPG built in **Godot 4 with C#**.  
 This project was developed over Summer 2025 as a way to practice **object-oriented design**, modular architecture, and scalable system design while creating a playable vertical slice of an RPG.
 
 ---
 
-## ✨ Features
+## Features
 - **Turn-Based Combat System**  
   - Stamina & action mechanics (3 stamina, 3 actions per turn)  
   - Player and enemy skill sets (e.g., Slash, Thrust, Prayer, Block, Whirlwind)  
@@ -29,7 +29,7 @@ This project was developed over Summer 2025 as a way to practice **object-orient
 
 ---
 
-## 🛠️ Technologies
+## Technologies
 - **Engine:** Godot 4  
 - **Language:** C#  
 - **Version Control:** Git/GitHub  
@@ -37,14 +37,14 @@ This project was developed over Summer 2025 as a way to practice **object-orient
 
 ---
 
-## 📸 Screenshots / Devlog
+## Screenshots / Devlog
 *Coming soon — development screenshots and short gameplay clips.*  
 
 Devlog site: [View my development journey](https://github.com/Brhando/devlog-site)
 
 ---
 
-## 🎯 Learning Outcomes
+## Learning Outcomes
 - Built a complete vertical slice of a turn-based RPG  
 - Strengthened **Git/GitHub workflows** (daily commits, devlogs, version control)  
 - Applied **object-oriented design** principles to modular systems  
@@ -52,7 +52,7 @@ Devlog site: [View my development journey](https://github.com/Brhando/devlog-sit
 
 ---
 
-## 🚀 Next Steps
+## Next Steps
 - Refactor and modularize UI code  
 - Add polished animations and combat visual effects  
 - Expand farming & crafting systems to support long-term progression  
